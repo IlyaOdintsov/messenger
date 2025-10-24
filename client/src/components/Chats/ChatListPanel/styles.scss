@@ -1,0 +1,29 @@
+.chatListPanel {
+	@include flex-col-2();
+	@include border-padding();
+	background-color: $color-area;
+	width: 29%;
+	justify-content: start;
+
+	.chats-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		.chats-manage-btn {
+			cursor: pointer;
+			font-size: 40px;
+			width: 40px;
+			height: 40px;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			padding: 6px;
+
+			border-radius: 24px;
+			background-color: $color-secondary;
+		}
+	}
+}

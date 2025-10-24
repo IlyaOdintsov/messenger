@@ -1,0 +1,58 @@
+$color-light: white;
+$color-dark: black;
+$transition-duration: 0.8s;
+
+@mixin icon-opacity($sun-opacity, $moon-opacity) {
+	.img.sun {
+		opacity: $sun-opacity;
+		transition: opacity $transition-duration ease;
+	}
+	.img.moon {
+		opacity: $moon-opacity;
+		transition: opacity $transition-duration ease;
+	}
+}
+
+.theme-btn {
+	position: relative;
+	cursor: pointer;
+
+	input {
+		position: absolute;
+		left: 0;
+		top: 0;
+		opacity: 0;
+	}
+
+	input:checked + .switchIcons {
+		background-color: $color-light;
+		@include icon-opacity(1, 0);
+		transition: background-color $transition-duration ease;
+
+		&:hover {
+			background-color: $color-dark;
+			@include icon-opacity(0, 1);
+		}
+	}
+
+	.switchIcons {
+		position: relative;
+		background-color: $color-dark;
+		border-radius: 8px;
+		transition: background-color $transition-duration ease;
+
+		.img {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		@include icon-opacity(0, 1);
+
+		&:hover {
+			background-color: $color-light;
+			@include icon-opacity(1, 0);
+		}
+	}
+}

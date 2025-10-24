@@ -1,0 +1,13 @@
+.searchWrapper {
+	@include flex-row();
+	justify-content: left;
+	gap: 0;
+	cursor: text;
+
+	input {
+		width: 100%;
+		background: none;
+		border: none;
+		outline: none;
+	}
+}

@@ -1,0 +1,19 @@
+.chatBox {
+	width: 70%;
+	border: 2px solid black;
+	border-radius: 24px;
+	overflow: hidden;
+
+	@include flex-col-1();
+
+	&.empty {
+		img {
+			width: 120px;
+			height: 120px;
+		}
+
+		@include flex-col-1();
+		justify-content: center;
+		align-items: center;
+	}
+}

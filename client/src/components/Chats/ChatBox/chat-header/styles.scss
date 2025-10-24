@@ -1,0 +1,7 @@
+.chat-header {
+	@include border-padding();
+	width: 100%;
+	background-color: $color-secondary;
+	background-color: $color-accent;
+	border-radius: 0;
+}
