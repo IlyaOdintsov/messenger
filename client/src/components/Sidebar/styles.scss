@@ -1,0 +1,21 @@
+.sidebar {
+	@include flex-col-2();
+	@include border-padding();
+	background-color: $color-area;
+
+	max-width: 64px;
+
+	.side-navs-panel {
+		@include flex-col-1();
+		height: 100%;
+		padding-top: 3rem;
+
+		.navBar {
+			@include flex-col-1();
+		}
+
+		.settingsWrapper {
+			@include flex-col-1();
+		}
+	}
+}

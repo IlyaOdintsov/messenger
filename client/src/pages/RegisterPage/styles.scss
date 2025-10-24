@@ -1,0 +1,100 @@
+.registerForm {
+	width: 50%;
+	@include border-padding();
+	background-color: $color-area;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: $def-padding-gap;
+	position: relative;
+
+	.backBtn {
+		position: absolute;
+		top: 5%;
+		left: 3%;
+		width: 32px;
+		height: 32px;
+		background: none;
+	}
+
+	.stepContainer {
+		@include flex-col-1();
+		justify-content: center;
+		text-align: center;
+		width: 50%;
+
+		.emailBtn {
+			background-color: $color-secondary;
+		}
+
+		.nextBtn {
+			width: 25%;
+			align-self: flex-end;
+		}
+
+		.resendBtn {
+			background: none;
+			color: #0f6488;
+		}
+
+		.showPass {
+			margin-left: $def-padding-gap;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			cursor: pointer;
+			user-select: none;
+
+			.visibilityBtn {
+				width: 32px;
+				height: 32px;
+				background: none;
+			}
+		}
+
+		.error {
+			color: red;
+		}
+	}
+
+	.codeInput {
+		display: flex;
+		gap: 12px;
+		justify-content: center;
+
+		.inputCell {
+			width: 48px;
+			height: 48px;
+			font-size: 24px;
+			text-align: center;
+			border-radius: 12px;
+			border: 2px solid #e5e7eb;
+			background-color: #f8fafc;
+			outline: none;
+			font-weight: 500;
+		}
+	}
+
+	a {
+		color: #0f6488;
+
+		&:active {
+			color: #0f6488;
+		}
+	}
+}
+
+.registerLogo {
+	width: 50%;
+	position: relative;
+	padding: 7rem;
+
+	.overlay {
+		position: absolute;
+		inset: 0;
+		background: rgba(47, 43, 66, 0.82);
+		pointer-events: none;
+		z-index: 1;
+	}
+}

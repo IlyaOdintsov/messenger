@@ -1,0 +1,17 @@
+:root {
+	--color-bg: #2f2b42;
+	--color-accent: #9a68ef;
+	--color-secondary: #574e7b;
+	--color-area: #393251;
+	--color-hover: rgba(154, 104, 239, 0.4);
+
+	--border-radius: 24px;
+	--def-padding-gap: 1rem;
+}
+
+.light-theme {
+	--color-bg: white;
+	--color-accent: '';
+	--color-secondary: '';
+	--color-area: '';
+}

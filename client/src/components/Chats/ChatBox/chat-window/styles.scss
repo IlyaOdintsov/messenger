@@ -1,0 +1,7 @@
+.chat-window {
+	@include border-padding();
+	padding-top: 0;
+
+	border: 1px solid white;
+	height: 100%;
+}
