@@ -13,8 +13,8 @@ export const Step3 = () => {
 		console.log(`письмо отправлено на ${currentEmail}`);
 		try {
 			await AuthService.sendEmailActivationCode(email);
-		} catch (e: unknown) {
-			if (typeof e === 'string') setError(e);
+		} catch (e: any) {
+			setError(e.response.data.message);
 		}
 	}
 
@@ -22,8 +22,8 @@ export const Step3 = () => {
 		try {
 			const response = await AuthService.activateEmail(email, code);
 			return response.data;
-		} catch (e: unknown) {
-			if (typeof e === 'string') setError(e);
+		} catch (e: any) {
+			setError(e.response.data.message);
 		}
 	}
 

@@ -38,7 +38,7 @@ export const LoginPage = () => {
 	function handleSubmit(e: React.FormEvent) {
 		e.preventDefault();
 
-		dispatch(login({ email, password }));
+		dispatch(login({ email, password, rememberMe }));
 	}
 
 	useEffect(() => {
@@ -70,7 +70,7 @@ export const LoginPage = () => {
 				<form method="POST" onSubmit={handleSubmit} action="/submit" autoComplete="off" noValidate>
 					<div className="group-wrapper">
 						<span>Email address</span>
-						<FormInput inputValue={email} callback={handleEmailInput} inputType="email" inputName="email" placeholder="Введите email" />
+						<FormInput inputValue={email} callback={handleEmailInput} inputType="email" inputName="email" placeholder="mail@example.com" />
 
 						<span>Password</span>
 						<div className="passwordInput">
@@ -79,7 +79,7 @@ export const LoginPage = () => {
 								callback={handlePasswordInput}
 								inputType={isVisible ? 'text' : 'password'}
 								inputName="pass"
-								placeholder="Введите пароль"
+								placeholder="* * * * * *"
 							/>
 							{password && (
 								<button
@@ -100,7 +100,7 @@ export const LoginPage = () => {
 							<input checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} type="checkbox" name="remember" id="remember" />
 							<span className="rememberCheckbox"></span>Remember for 30 days
 						</label>
-						<Link to="/">Forgot password</Link>
+						<Link to="/forgot-password">Forgot password</Link>
 					</div>
 
 					{error && <div className="error">{error}</div>}

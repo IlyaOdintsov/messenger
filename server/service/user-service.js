@@ -5,7 +5,8 @@ const tokenService = require('./token-service');
 const UserDto = require('../dtos/user-dto');
 const ApiError = require('../exceptions/api-error');
 const tokenModel = require('../models/token-model');
-const codeService = require('./code-service');
+const redisService = require('./redis-service');
+const crypto = require('crypto');
 
 class UserService {
 	async registration(formData) {
@@ -26,7 +27,7 @@ class UserService {
 		return { ...tokens, user: userDto };
 	}
 
-	async login(email, password) {
+	async login(email, password, rememberMe) {
 		const user = await UserModel.findOne({ email });
 
 		if (!user) {
@@ -40,7 +41,7 @@ class UserService {
 		}
 
 		const userDto = new UserDto(user);
-		const tokens = tokenService.generateToken({ ...userDto });
+		const tokens = tokenService.generateToken({ ...userDto }, rememberMe);
 		await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
 		return { ...tokens, user: userDto };
@@ -76,27 +77,20 @@ class UserService {
 	}
 
 	async sendEmailActivationCode(email) {
-		function generateCode(length = 6) {
-			return Math.floor(Math.random() * Math.pow(10, length))
-				.toString()
-				.padStart(length, '0');
+		function generateCode() {
+			return crypto.randomInt(100000, 999999);
 		}
 
-		await codeService.deleteActivationCode(email);
+		await redisService.deleteActivationCode(email);
 
 		const code = generateCode();
-		await codeService.saveActivationCode(email, code);
+		await redisService.saveActivationCode(email, code);
 
 		await mailService.sendEmailActivationCode(email, code);
 	}
 
 	async activateEmail(email, code) {
-		// const user = await UserModel.findOne({ email });
-		const correctCode = await codeService.getActivationCode(email);
-
-		// if (!user) {
-		// throw ApiError.BadRequest('Некорректный код активации');
-		// }
+		const correctCode = await redisService.getActivationCode(email);
 
 		if (!correctCode) {
 			throw ApiError.BadRequest('Код активации истёк');
@@ -106,13 +100,42 @@ class UserService {
 
 		if (code === correctCode) {
 			res = true;
-			await codeService.deleteActivationCode(email);
+			await redisService.deleteActivationCode(email);
 		}
 
-		// user.isEmailActivated = res;
-		// await user.save();
-
 		return res;
+	}
+
+	async sendResetPassEmail(email) {
+		const user = await UserModel.findOne({ email });
+
+		if (!user) {
+			throw ApiError.BadRequest('Пользователь не найден');
+		}
+
+		const token = crypto.randomBytes(32).toString('hex');
+		const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+
+		await redisService.saveResetToken(tokenHash, email);
+
+		const link = `${process.env.CLIENT_URL}/reset-password?token=${token}`;
+
+		await mailService.sendResetLink(email, link);
+	}
+
+	async resetPassword(newPassword, token) {
+		const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+		const email = await redisService.getResetToken(tokenHash);
+
+		if (!email) {
+			throw ApiError.BadRequest('Неверный или истёкший токен');
+		}
+
+		const user = await UserModel.findOne({ email });
+		user.password = await bcrypt.hash(newPassword, 3);
+		await user.save();
+
+		await redisService.deleteResetToken(tokenHash);
 	}
 }
 

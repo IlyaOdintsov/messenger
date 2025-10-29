@@ -16,6 +16,19 @@
 
 		.settingsWrapper {
 			@include flex-col-1();
+
+			.profile {
+				padding: 0;
+				border-radius: 50%;
+				background: $color-secondary;
+				box-shadow: 0 0 0 2px $color-accent;
+				transition: box-shadow 0.15s;
+				overflow: hidden;
+
+				&:hover {
+					box-shadow: 0 0 0 3px $color-accent;
+				}
+			}
 		}
 	}
 }

@@ -30,9 +30,9 @@ export const Step5 = () => {
 
 		const isFormValid =
 			formData.isEmailConfirmed &&
-			(formData.email.trim() !== '' || formData.phone.trim() !== '') &&
+			formData.email.trim() !== '' &&
 			Object.entries(formData)
-				.filter(([key]) => !['email', 'phone', 'isEmailConfirmed', 'avatarUrl', 'secondName'].includes(key))
+				.filter(([key]) => !['email', 'isEmailConfirmed', 'avatarUrl', 'secondName'].includes(key))
 				.every(([, value]) => value.trim() !== '');
 
 		if (!isFormValid) {

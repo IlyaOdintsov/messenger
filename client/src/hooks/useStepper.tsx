@@ -3,8 +3,6 @@ import type { FormData } from '../types/users_Types';
 
 interface StepperContextType {
 	step: number;
-	selectedType: 'phone' | 'email' | '';
-	setSelectedType: (type: 'phone' | 'email' | '') => void;
 	formData: FormData;
 	setFormData: React.Dispatch<React.SetStateAction<FormData>>;
 	resetFormData: () => void;
@@ -23,7 +21,6 @@ const defaultFormData: FormData = {
 	firstName: '',
 	secondName: '',
 	email: '',
-	phone: '',
 	password: '',
 	isEmailConfirmed: false,
 };
@@ -32,7 +29,6 @@ const StepperContext = createContext<StepperContextType | undefined>(undefined);
 
 export const StepperProvider = ({ children, maxSteps }: StepperProviderType) => {
 	const [step, setStep] = useState(1);
-	const [selectedType, setSelectedType] = useState<'phone' | 'email' | ''>('');
 	const [formData, setFormData] = useState<FormData>(defaultFormData);
 
 	const resetFormData = () => setFormData(defaultFormData);
@@ -43,11 +39,7 @@ export const StepperProvider = ({ children, maxSteps }: StepperProviderType) => 
 		if (s >= 1 && s <= maxSteps) setStep(s);
 	};
 
-	return (
-		<StepperContext.Provider value={{ step, selectedType, setSelectedType, formData, setFormData, resetFormData, nextStep, prevStep, goToStep }}>
-			{children}
-		</StepperContext.Provider>
-	);
+	return <StepperContext.Provider value={{ step, formData, setFormData, resetFormData, nextStep, prevStep, goToStep }}>{children}</StepperContext.Provider>;
 };
 
 export const useStepper = () => {

@@ -1,7 +1,7 @@
 const userService = require('../service/user-service');
 const { validationResult } = require('express-validator');
 const ApiError = require('../exceptions/api-error');
-
+const jwt = require('jsonwebtoken');
 class UserController {
 	async registration(req, res, next) {
 		try {
@@ -12,7 +12,7 @@ class UserController {
 			const { formData } = req.body;
 			const userData = await userService.registration(formData);
 
-			res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+			res.cookie('refreshToken', userData.refreshToken, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
 			return res.json(userData);
 		} catch (e) {
 			next(e);
@@ -21,10 +21,10 @@ class UserController {
 
 	async login(req, res, next) {
 		try {
-			const { email, password } = req.body;
-			const userData = await userService.login(email, password);
+			const { email, password, rememberMe } = req.body;
+			const userData = await userService.login(email, password, rememberMe);
 
-			res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+			res.cookie('refreshToken', userData.refreshToken, { maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : null, httpOnly: true });
 			return res.json(userData);
 		} catch (e) {
 			next(e);
@@ -64,19 +64,15 @@ class UserController {
 		}
 	}
 
-	async activatePhone(req, res, next) {
-		try {
-		} catch (e) {
-			next(e);
-		}
-	}
-
 	async refresh(req, res, next) {
 		try {
 			const { refreshToken } = req.cookies;
 			const userData = await userService.refresh(refreshToken);
 
-			res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+			const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+			const rememberMe = decoded.rememberMe || false;
+
+			res.cookie('refreshToken', userData.refreshToken, { maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : null, httpOnly: true });
 			return res.json(userData);
 		} catch (e) {
 			next(e);
@@ -87,6 +83,28 @@ class UserController {
 		try {
 			const users = await userService.getAllUsers();
 			res.json(users);
+		} catch (e) {
+			next(e);
+		}
+	}
+
+	async forgotPassword(req, res, next) {
+		try {
+			const { email } = req.body;
+			await userService.sendResetPassEmail(email);
+		} catch (e) {
+			next(e);
+		}
+	}
+
+	async resetPassword(req, res, next) {
+		try {
+			const errors = validationResult(req);
+			if (!errors.isEmpty()) {
+				return next(ApiError.BadRequest('Ошибка при валидации', errors.array()));
+			}
+			const { newPassword, token } = req.body;
+			await userService.resetPassword(newPassword, token);
 		} catch (e) {
 			next(e);
 		}

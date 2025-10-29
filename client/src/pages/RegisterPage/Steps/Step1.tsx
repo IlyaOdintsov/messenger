@@ -3,12 +3,7 @@ import { useStepper } from '../../../hooks/useStepper';
 import { useEffect } from 'react';
 
 export const Step1 = () => {
-	const { nextStep, setSelectedType, resetFormData } = useStepper();
-
-	function handleSelect(type: 'phone' | 'email') {
-		setSelectedType(type);
-		nextStep();
-	}
+	const { nextStep, resetFormData } = useStepper();
 
 	useEffect(() => {
 		resetFormData();
@@ -17,11 +12,12 @@ export const Step1 = () => {
 	return (
 		<>
 			<h2>Sign up</h2>
-			<button onClick={() => handleSelect('phone')} className="defaultBtn">
-				Continue with phone
-			</button>
-			<button onClick={() => handleSelect('email')} className="defaultBtn emailBtn">
+
+			<button onClick={nextStep} className="defaultBtn">
 				Continue with email
+			</button>
+			<button onClick={() => {}} className="defaultBtn guestBtn">
+				Continue as a guest
 			</button>
 			<div className="navigate-row">
 				Already have an account?
