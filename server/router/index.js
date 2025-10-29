@@ -13,7 +13,6 @@ router.post(
 		body('formData.password')
 			.matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)
 			.isLength({ min: 8, max: 32 }),
-		body('formData.phone').optional({ checkFalsy: true }).isMobilePhone('any'),
 		body('formData.isEmailConfirmed').equals('true'),
 	],
 	userController.registration
@@ -22,8 +21,15 @@ router.post('/login', userController.login);
 router.post('/logout', userController.logout);
 router.post('/sendEmailActivationCode', userController.sendEmailActivationCode);
 router.post('/activateEmail', userController.activateEmail);
-// router.get('/activatePhone/:link', userController.activatePhone);
 router.get('/refresh', userController.refresh);
 router.get('/users', authMiddleware, userController.getUsers);
+router.post('/forgotPassword', userController.forgotPassword);
+router.post(
+	'/resetPassword',
+	body('newPassword')
+		.matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)
+		.isLength({ min: 8, max: 32 }),
+	userController.resetPassword
+);
 
 module.exports = router;

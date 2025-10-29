@@ -96,11 +96,11 @@ const authSLice = createSlice({
 	},
 });
 
-export const login = createAsyncThunk<AuthResponse, { email: string; password: string }, { rejectValue: string }>(
+export const login = createAsyncThunk<AuthResponse, { email: string; password: string; rememberMe: boolean }, { rejectValue: string }>(
 	'authorization/login',
-	async ({ email, password }, thunkAPI) => {
+	async ({ email, password, rememberMe }, thunkAPI) => {
 		try {
-			const response = await AuthService.login(email, password);
+			const response = await AuthService.login(email, password, rememberMe);
 			return response.data;
 		} catch (e: any) {
 			return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка проверки');

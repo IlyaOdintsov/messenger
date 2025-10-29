@@ -1,0 +1,111 @@
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { FormInput } from '../../shared';
+import './styles.scss';
+import { useState } from 'react';
+import AuthService from '../../services/AuthService';
+
+import eye from '../../assets/eye.svg';
+import eyeClosed from '../../assets/eyeClosed.svg';
+
+export const ResetPassword = () => {
+	const [isVisible, setIsVisible] = useState(false);
+	const [newPassword, setNewPassword] = useState('');
+	const [conPassword, setConPassword] = useState('');
+	const [error, setError] = useState('');
+
+	const [searchParams] = useSearchParams();
+	const token = searchParams.get('token');
+
+	const navigate = useNavigate();
+
+	function validatePassword(password: string): boolean {
+		const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+		return regex.test(password);
+	}
+
+	function handleReset(e: React.FormEvent) {
+		e.preventDefault();
+
+		if (!newPassword) {
+			setError('Введите новый пароль');
+			return;
+		}
+
+		if (newPassword.length > 32) {
+			setError('Пароль не должен превышать 32 символа');
+			return;
+		}
+
+		if (!validatePassword(newPassword)) {
+			setError('Пароль должен содержать не менее 8 символов, хотя бы одну заглавную букву, цифру и специальный символ');
+			return;
+		}
+
+		if (newPassword !== conPassword) {
+			setError('Введенные пароли не совпадают');
+			return;
+		}
+
+		try {
+			AuthService.resetPassword(newPassword, token || '');
+			navigate('/login', { replace: true });
+		} catch (e: any) {
+			setError(e.response.data.message);
+		}
+	}
+
+	return (
+		<div className="container">
+			<div className="resetPassFrom">
+				<div>
+					<h2>New password</h2>
+					<p>Change the password for your account</p>
+				</div>
+				<form method="POST" action="/submit" autoComplete="off" noValidate>
+					<b>New password</b>
+					<FormInput
+						callback={(e) => {
+							setError('');
+							setNewPassword(e);
+						}}
+						inputValue={newPassword}
+						inputType={isVisible ? 'text' : 'password'}
+						inputName="newPassword"
+						placeholder="* * * * * *"
+					/>
+
+					<b>Confirm the password</b>
+					<FormInput
+						callback={(e) => {
+							setError('');
+							setConPassword(e);
+						}}
+						inputValue={conPassword}
+						inputType={isVisible ? 'text' : 'password'}
+						inputName="conPassword"
+						placeholder="* * * * * *"
+					/>
+
+					<label className="showPass">
+						<button
+							type="button"
+							className="visibilityBtn"
+							onClick={() => {
+								setIsVisible(!isVisible);
+							}}
+						>
+							{isVisible ? <img src={eye} alt="eye" /> : <img src={eyeClosed} alt="eyeClosed" />}
+						</button>
+						показать пароль
+					</label>
+
+					<button onClick={handleReset} className="defaultBtn">
+						Continue
+					</button>
+				</form>
+				{error && <div className="error">{error}</div>}
+				<Link to="/login">Войти в аккаунт</Link>
+			</div>
+		</div>
+	);
+};

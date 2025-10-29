@@ -5,6 +5,8 @@ import { ChatBox } from '../components/Chats/ChatBox/ChatBox';
 import { LoginPage } from '../pages/LoginPage/LoginPage';
 import { RegisterPage } from '../pages/RegisterPage/RegisterPage';
 import { StepperProvider } from '../hooks/useStepper';
+import { ForgotPassword } from '../pages/ForgotPassword/ForgotPassword';
+import { ResetPassword } from '../pages/ResetPassword/ResetPassword';
 
 const router = createBrowserRouter([
 	{
@@ -13,7 +15,7 @@ const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: <>No page</>,
+				element: 'err',
 			},
 			{
 				path: 'chats',
@@ -43,6 +45,14 @@ const router = createBrowserRouter([
 	{
 		path: 'login',
 		element: <LoginPage />,
+	},
+	{
+		path: 'forgot-password',
+		element: <ForgotPassword />,
+	},
+	{
+		path: 'reset-password',
+		element: <ResetPassword />,
 	},
 	{
 		path: 'register',

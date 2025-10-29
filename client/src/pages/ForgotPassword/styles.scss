@@ -1,0 +1,26 @@
+.forgotPassFrom {
+	@include flex-col-2();
+	@include border-padding();
+
+	position: absolute;
+	top: 40%;
+	left: 50%;
+	margin-top: 20px;
+	transform: translate(-50%, -50%);
+
+	width: 25%;
+
+	background-color: $color-area;
+	.error {
+		align-self: center;
+		color: red;
+	}
+	form {
+		@include flex-col-1();
+		width: 100%;
+	}
+
+	a {
+		align-self: center;
+	}
+}
