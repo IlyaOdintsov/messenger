@@ -1,4 +1,4 @@
-export interface FormData {
+export interface IFormData {
 	avatarUrl: File | null;
 	firstName: string;
 	secondName: string;

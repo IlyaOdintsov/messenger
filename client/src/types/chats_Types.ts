@@ -3,15 +3,16 @@ export interface Message {
 	time: number;
 }
 
-export interface Chat {
-	chatId: number;
-	title: string;
-	lastMessage: Message;
-	unreadCounter: number;
-	participants: [];
-	avatar?: string;
+interface Member {
+	userId: string;
+	role: 'owner' | 'member';
 }
 
-// Group ??
-
-// мб типы сообщений
+export interface Group {
+	id: string;
+	avatarUrl: string;
+	groupName: string;
+	members: Member[];
+	lastMessage: string;
+	unreadCounter: number;
+}

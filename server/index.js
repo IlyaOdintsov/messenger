@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 5001;
 const app = express();
 
 app.use(express.json());
+app.use('/uploads/', express.static('uploads'));
 app.use(cookieParser());
 app.use(
 	cors({

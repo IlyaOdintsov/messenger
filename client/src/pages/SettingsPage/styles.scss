@@ -1,0 +1,16 @@
+.settingsPage {
+	@include flex-col-2();
+	@include border-padding();
+	align-items: center;
+
+	position: absolute;
+	top: 40%;
+	left: 50%;
+	margin-top: 20px;
+	transform: translate(-50%, -50%);
+
+	width: 25%;
+	min-height: 50%;
+
+	background-color: $color-area;
+}

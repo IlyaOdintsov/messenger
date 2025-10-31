@@ -7,13 +7,13 @@ const authMiddleware = require('../middlewares/auth-middleware');
 router.post(
 	'/registration',
 	[
-		body('formData.email').isEmail(),
-		body('formData.firstName').isLength({ min: 3 }),
-		body('formData.secondName').optional({ checkFalsy: true }).isLength({ min: 3 }),
-		body('formData.password')
+		body('email').isEmail(),
+		body('firstName').isLength({ min: 3 }),
+		body('secondName').optional({ checkFalsy: true }).isLength({ min: 3 }),
+		body('password')
 			.matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)
 			.isLength({ min: 8, max: 32 }),
-		body('formData.isEmailConfirmed').equals('true'),
+		body('isEmailConfirmed').equals('true'),
 	],
 	userController.registration
 );
@@ -22,7 +22,7 @@ router.post('/logout', userController.logout);
 router.post('/sendEmailActivationCode', userController.sendEmailActivationCode);
 router.post('/activateEmail', userController.activateEmail);
 router.get('/refresh', userController.refresh);
-router.get('/users', authMiddleware, userController.getUsers);
+// router.get('/users', authMiddleware, userController.getUsers);
 router.post('/forgotPassword', userController.forgotPassword);
 router.post(
 	'/resetPassword',
@@ -31,5 +31,8 @@ router.post(
 		.isLength({ min: 8, max: 32 }),
 	userController.resetPassword
 );
+
+router.post('/createGroup', userController.createGroup);
+router.post('/getGroupList', userController.getGroupList);
 
 module.exports = router;

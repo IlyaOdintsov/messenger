@@ -5,6 +5,7 @@ import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { registration } from '../../../store/slices/AuthSlice';
 import { useTypedSelector } from '../../../hooks/useAppSelector';
 import { useNavigate } from 'react-router-dom';
+import type { IFormData } from '../../../types/users_Types';
 
 export const Step5 = () => {
 	const auth = useTypedSelector((state) => state.auth.isAuth);
@@ -40,7 +41,23 @@ export const Step5 = () => {
 			return;
 		}
 
-		dispatch(registration({ formData }));
+		function conversionToFormData(obj: IFormData): FormData {
+			const data = new FormData();
+			if (obj.avatarUrl) data.append('avatar', obj.avatarUrl);
+			data.append('firstName', obj.firstName);
+			if (obj.secondName) data.append('secondName', obj.secondName);
+			data.append('email', obj.email);
+			data.append('password', obj.password);
+			data.append('isEmailConfirmed', obj.isEmailConfirmed.toString());
+
+			return data;
+		}
+		console.log(formData);
+
+		const data = conversionToFormData(formData);
+		console.log(data);
+
+		dispatch(registration({ formData: data }));
 	}
 
 	useEffect(() => {

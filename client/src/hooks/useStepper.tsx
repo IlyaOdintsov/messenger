@@ -1,10 +1,10 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-import type { FormData } from '../types/users_Types';
+import type { IFormData } from '../types/users_Types';
 
 interface StepperContextType {
 	step: number;
-	formData: FormData;
-	setFormData: React.Dispatch<React.SetStateAction<FormData>>;
+	formData: IFormData;
+	setFormData: React.Dispatch<React.SetStateAction<IFormData>>;
 	resetFormData: () => void;
 	nextStep: () => void;
 	prevStep: () => void;
@@ -16,7 +16,7 @@ interface StepperProviderType {
 	maxSteps: number;
 }
 
-const defaultFormData: FormData = {
+const defaultFormData: IFormData = {
 	avatarUrl: null,
 	firstName: '',
 	secondName: '',
@@ -29,7 +29,7 @@ const StepperContext = createContext<StepperContextType | undefined>(undefined);
 
 export const StepperProvider = ({ children, maxSteps }: StepperProviderType) => {
 	const [step, setStep] = useState(1);
-	const [formData, setFormData] = useState<FormData>(defaultFormData);
+	const [formData, setFormData] = useState<IFormData>(defaultFormData);
 
 	const resetFormData = () => setFormData(defaultFormData);
 

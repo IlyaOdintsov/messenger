@@ -7,18 +7,35 @@ const ApiError = require('../exceptions/api-error');
 const tokenModel = require('../models/token-model');
 const redisService = require('./redis-service');
 const crypto = require('crypto');
+const path = require('path');
 
 class UserService {
-	async registration(formData) {
+	async registration(formData, avatar) {
+		if (!formData.isEmailConfirmed) {
+			throw ApiError.BadRequest('Ошибка регистрации. Email не подтвержден');
+		}
+
 		const email = formData.email;
+		const password = formData.password;
+		const firstName = formData.firstName;
+		const secondName = formData.secondName;
+
 		const candidate = await UserModel.findOne({ email });
 		if (candidate) {
 			throw ApiError.BadRequest(`Пользователь с почтовым адресом ${email} уже существует`);
 		}
 
-		const hashPassword = await bcrypt.hash(formData.password, 3);
+		const hashPassword = await bcrypt.hash(password, 3);
 
-		const user = await UserModel.create({ email, password: hashPassword });
+		let avatarUrl = '';
+		if (avatar) {
+			const uniqueName = Date.now() + '-' + avatar.name;
+			const avatarPath = path.join(__dirname, '..', 'uploads', 'avatars', uniqueName);
+			await avatar.mv(avatarPath);
+			avatarUrl = `/uploads/avatars/${uniqueName}`;
+		}
+
+		const user = await UserModel.create({ avatarUrl, firstName, secondName, email, password: hashPassword });
 		const userDto = new UserDto(user);
 
 		const tokens = tokenService.generateToken({ ...userDto });
@@ -69,11 +86,6 @@ class UserService {
 		await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
 		return { ...tokens, user: userDto };
-	}
-
-	async getAllUsers() {
-		const users = await UserModel.find();
-		return users;
 	}
 
 	async sendEmailActivationCode(email) {

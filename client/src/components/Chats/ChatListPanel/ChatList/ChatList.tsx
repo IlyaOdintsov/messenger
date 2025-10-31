@@ -1,30 +1,28 @@
-import type { Chat } from '../../../../types/chats_Types';
 import { ChatBlock } from '../../../../shared/index';
-
 import './styles.scss';
 import emptyChatListIcon from '../../../../assets/emptyChatList.svg';
 import { useScrollbar } from '../../../../hooks/useScrollbar';
-import { useRef } from 'react';
-
-// const chats: Chat[] = [];
-const chats: Chat[] = [
-	{ chatId: 1, title: '1 title', lastMessage: { text: 'last messageeeee 1', time: 1760368728140 }, unreadCounter: 0, participants: [] },
-	{ chatId: 2, title: '2 title', lastMessage: { text: 'last messageeeee 2', time: 1760368273643 }, unreadCounter: 2, participants: [] },
-	{ chatId: 3, title: '3 title', lastMessage: { text: 'last messageeeee 3', time: 1760213928483 }, unreadCounter: 6, participants: [] },
-	{ chatId: 4, title: '3 title', lastMessage: { text: 'last messageeeee 3', time: 1760213928483 }, unreadCounter: 6, participants: [] },
-	{ chatId: 5, title: '3 title', lastMessage: { text: 'last messageeeee 3', time: 1760213928483 }, unreadCounter: 6, participants: [] },
-	{ chatId: 6, title: '3 title', lastMessage: { text: 'last messageeeee 3', time: 1760213928483 }, unreadCounter: 6, participants: [] },
-	{ chatId: 7, title: '3 title', lastMessage: { text: 'last messageeeee 3', time: 1760213928483 }, unreadCounter: 6, participants: [] },
-	{ chatId: 8, title: '3 title', lastMessage: { text: 'last messageeeee 3', time: 1760213928483 }, unreadCounter: 6, participants: [] },
-];
+import { useEffect, useRef } from 'react';
+import { useTypedSelector } from '../../../../hooks/useAppSelector';
+import { useAppDispatch } from '../../../../hooks/useAppDispatch';
+import { getGroupList } from '../../../../store/slices/ChatSlice';
 
 export const ChatList = () => {
+	const userId = useTypedSelector((state) => state.auth.data?.user.id);
+	const groups = useTypedSelector((state) => state.chats.groupData);
+
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		if (userId) dispatch(getGroupList({ userId }));
+	}, []);
+
 	const chatList = useRef<HTMLDivElement>(null);
-	const hasScrollbar = useScrollbar(chatList, chats);
+	const hasScrollbar = useScrollbar(chatList, groups);
 
 	return (
-		<div ref={chatList} className={`chatsList ${chats.length <= 0 ? 'empty' : ''} ${hasScrollbar ? 'has-scrollbar' : ''}`}>
-			{chats.length <= 0 && (
+		<div ref={chatList} className={`chatsList ${groups.length <= 0 ? 'empty' : ''} ${hasScrollbar ? 'has-scrollbar' : ''}`}>
+			{groups.length <= 0 && (
 				<>
 					<img src={emptyChatListIcon} alt="emptyChat" />
 					<h4>No Conversations Yet</h4>
@@ -32,8 +30,8 @@ export const ChatList = () => {
 				</>
 			)}
 
-			{chats.map((chat) => (
-				<ChatBlock key={chat.chatId} {...chat} />
+			{groups.map((group) => (
+				<ChatBlock key={group.id} {...group} />
 			))}
 		</div>
 	);

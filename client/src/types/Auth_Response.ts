@@ -1,6 +1,8 @@
 export interface IUser {
+	avatarUrl: string;
 	email: string;
-	isActivated: boolean;
+	firstName: string;
+	secondName: string;
 	id: string;
 }
 
