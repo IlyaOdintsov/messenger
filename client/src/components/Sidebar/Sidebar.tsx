@@ -6,11 +6,13 @@ import chatIcon from '../../assets/chat.svg';
 import settingsIcon from '../../assets/settings.svg';
 import bellIcon from '../../assets/bell.svg';
 import profileIcon from '../../assets/camera.svg';
-import test from '../../assets/testPic.png';
 
 import { Link } from 'react-router-dom';
+import { useTypedSelector } from '../../hooks/useAppSelector';
 
 export const Sidebar = () => {
+	const profileAvatar = useTypedSelector((state) => state.auth.data?.user.avatarUrl);
+
 	return (
 		<>
 			<div className="sidebar">
@@ -40,12 +42,15 @@ export const Sidebar = () => {
 					</nav>
 
 					<div className="settingsWrapper">
-						<Link to="/" className="iconWrapper profile">
-							<img src={test} alt="test" />
-							{/* <img src={profileIcon} alt="profile" /> */}
+						<Link to="/profile" className="iconWrapper profile">
+							<img
+								src={profileAvatar ? `http://localhost:5000${profileAvatar}` : profileIcon}
+								alt="profile"
+								style={{ padding: profileAvatar ? '' : '4px' }}
+							/>
 						</Link>
 
-						<Link to="/" className="iconWrapper">
+						<Link to="/settings" className="iconWrapper">
 							<img src={settingsIcon} alt="settings" />
 						</Link>
 

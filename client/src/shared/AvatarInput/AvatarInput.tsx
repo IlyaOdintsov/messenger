@@ -1,9 +1,10 @@
 import './styles.scss';
 import camera from '../../assets/camera.svg';
-import { useRef, useState } from 'react';
+import { useRef, useState, type Dispatch, type SetStateAction } from 'react';
 
 interface AvatarInput {
 	onChange: (value: File) => void;
+	// onChange: Dispatch<SetStateAction<string>>
 	value: File | null;
 	size?: number;
 }

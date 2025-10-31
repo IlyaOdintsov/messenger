@@ -1,7 +1,6 @@
 import type { AxiosResponse } from 'axios';
 import $api from '../http';
 import type { AuthResponse } from '../types/Auth_Response';
-import type { FormData } from '../types/users_Types';
 
 export default class AuthService {
 	static async login(email: string, password: string, rememberMe: boolean): Promise<AxiosResponse<AuthResponse>> {
@@ -9,7 +8,7 @@ export default class AuthService {
 	}
 
 	static async registration(formData: FormData): Promise<AxiosResponse<AuthResponse>> {
-		return $api.post<AuthResponse>('/registration', { formData });
+		return $api.post<AuthResponse>('/registration', formData);
 	}
 
 	static async logout(): Promise<void> {

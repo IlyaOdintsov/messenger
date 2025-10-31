@@ -2,6 +2,7 @@ const userService = require('../service/user-service');
 const { validationResult } = require('express-validator');
 const ApiError = require('../exceptions/api-error');
 const jwt = require('jsonwebtoken');
+const chatsService = require('../service/chats-service');
 class UserController {
 	async registration(req, res, next) {
 		try {
@@ -9,8 +10,13 @@ class UserController {
 			if (!errors.isEmpty()) {
 				return next(ApiError.BadRequest('Ошибка при валидации', errors.array()));
 			}
-			const { formData } = req.body;
-			const userData = await userService.registration(formData);
+
+			// const { avatar, firstName, secondName, email, password } = req.body;
+			const formData = req.body;
+			const avatar = req.files ? req.files.avatar : null;
+
+			const userData = await userService.registration(formData, avatar);
+			console.log(userData);
 
 			res.cookie('refreshToken', userData.refreshToken, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
 			return res.json(userData);
@@ -79,15 +85,6 @@ class UserController {
 		}
 	}
 
-	async getUsers(req, res, next) {
-		try {
-			const users = await userService.getAllUsers();
-			res.json(users);
-		} catch (e) {
-			next(e);
-		}
-	}
-
 	async forgotPassword(req, res, next) {
 		try {
 			const { email } = req.body;
@@ -105,6 +102,34 @@ class UserController {
 			}
 			const { newPassword, token } = req.body;
 			await userService.resetPassword(newPassword, token);
+		} catch (e) {
+			next(e);
+		}
+	}
+
+	async createGroup(req, res, next) {
+		try {
+			const email = req.body.email;
+			const groupName = req.body.groupName;
+			const avatar = req.files ? req.files.avatar : null;
+
+			const groupData = await chatsService.createGroup(email, avatar, groupName);
+
+			return res.json(groupData);
+		} catch (e) {
+			next(e);
+		}
+	}
+
+	async getGroupList(req, res, next) {
+		try {
+			const { userId } = req.body;
+			console.log('ID:', userId);
+
+			const groupList = await chatsService.getGroupList(userId);
+			console.log(groupList);
+
+			return res.json(groupList);
 		} catch (e) {
 			next(e);
 		}

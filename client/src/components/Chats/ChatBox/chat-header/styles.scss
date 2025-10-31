@@ -1,7 +1,38 @@
 .chat-header {
 	@include border-padding();
 	width: 100%;
-	background-color: $color-secondary;
 	background-color: $color-accent;
 	border-radius: 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 3rem;
+
+	.avatarWrapper {
+		width: 6em;
+		height: 6em;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		box-shadow: 0 0 0 4px $color-area;
+		background-color: $color-area;
+		overflow: hidden;
+		flex-shrink: 0;
+	}
+
+	.infoWrapper {
+		width: 100%;
+		@include flex-col-1();
+	}
+
+	.buttonsWrapper {
+		display: flex;
+
+		.menuBtn {
+			background: none;
+			width: 40px;
+			height: 40px;
+		}
+	}
 }

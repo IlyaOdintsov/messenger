@@ -3,7 +3,6 @@ import AuthService from '../../services/AuthService';
 import type { AuthResponse } from '../../types/Auth_Response';
 import { LS_ACCESS_TOKEN } from '../../constants/storage';
 import $api, { API_URL } from '../../http';
-import type { FormData } from '../../types/users_Types';
 
 export interface AuthState {
 	status: string;

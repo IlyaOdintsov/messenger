@@ -4,36 +4,26 @@ import './styles.scss';
 import emptyChatIcon from '../../../assets/emptyChat.svg';
 import { ChatHeader } from './chat-header/ChatHeader';
 import { ChatWindow } from './chat-window/ChatWindow';
-import type { Chat } from '../../../types/chats_Types';
 import { useEffect, useState } from 'react';
-
-const chats: Chat[] = [
-	{ chatId: 1, title: '1 title', lastMessage: { text: 'last messageeeee 1', time: 1760368728140 }, unreadCounter: 0, participants: [] },
-	{ chatId: 2, title: '2 title', lastMessage: { text: 'last messageeeee 2', time: 1760368273643 }, unreadCounter: 2, participants: [] },
-	{ chatId: 3, title: '3 title', lastMessage: { text: 'last messageeeee 3', time: 1760213928483 }, unreadCounter: 6, participants: [] },
-	{ chatId: 4, title: '3 title', lastMessage: { text: 'last messageeeee 3', time: 1760213928483 }, unreadCounter: 6, participants: [] },
-	{ chatId: 5, title: '3 title', lastMessage: { text: 'last messageeeee 3', time: 1760213928483 }, unreadCounter: 6, participants: [] },
-	{ chatId: 6, title: '3 title', lastMessage: { text: 'last messageeeee 3', time: 1760213928483 }, unreadCounter: 6, participants: [] },
-	{ chatId: 7, title: '3 title', lastMessage: { text: 'last messageeeee 3', time: 1760213928483 }, unreadCounter: 6, participants: [] },
-	{ chatId: 8, title: '3 title', lastMessage: { text: 'last messageeeee 3', time: 1760213928483 }, unreadCounter: 6, participants: [] },
-];
+import type { Group } from '../../../types/chats_Types';
+import { useTypedSelector } from '../../../hooks/useAppSelector';
 
 export const ChatBox = () => {
-	const [currentChat, setCurrentChat] = useState<Chat | null>(null);
+	const [currentChat, setCurrentChat] = useState<Group | null>(null);
 	const { chatId } = useParams();
 
+	const groups = useTypedSelector((state) => state.chats.groupData);
+
 	useEffect(() => {
-		if (chats.length > 0 && chatId) {
-			const currChat = chats.find((chat) => chat.chatId === Number(chatId));
+		if (groups.length > 0 && chatId) {
+			const currChat = groups.find((group) => group.id === chatId);
 
 			if (currChat) {
 				setCurrentChat(currChat);
 			}
-			console.log(currChat);
 		}
-	}, [chatId, chats]);
+	}, [chatId, groups]);
 
-	///// TODO: сделать проверку id
 	if (!chatId) {
 		return (
 			<div className="chatBox empty">
@@ -48,7 +38,7 @@ export const ChatBox = () => {
 		<>
 			<div className="chatBox">
 				<ChatHeader currentChat={currentChat} />
-				<ChatWindow />
+				<ChatWindow currentChat={currentChat} />
 			</div>
 		</>
 	);
