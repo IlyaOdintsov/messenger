@@ -7,14 +7,18 @@ import { RegisterPage } from '../pages/RegisterPage/RegisterPage';
 import { StepperProvider } from '../hooks/useStepper';
 import { ForgotPassword } from '../pages/ForgotPassword/ForgotPassword';
 import { ResetPassword } from '../pages/ResetPassword/ResetPassword';
-import { NewChatPage } from '../pages/NewChatPage/NewChatPage';
 import { ProfilePage } from '../pages/ProfilePage/ProfilePage';
 import { SettingsPage } from '../pages/SettingsPage/SettingPage';
+import { RequireAuth } from './RequireAuth';
 
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <Layout />,
+		element: (
+			// <RequireAuth>
+			<Layout />
+			// </RequireAuth>
+		),
 		children: [
 			{
 				index: true,
@@ -71,10 +75,6 @@ const router = createBrowserRouter([
 				<RegisterPage />,
 			</StepperProvider>
 		),
-	},
-	{
-		path: '*',
-		element: <>error</>,
 	},
 ]);
 

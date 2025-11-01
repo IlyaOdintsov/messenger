@@ -24,11 +24,11 @@ export const ProfilePage = () => {
 		<div className="container">
 			<div className="profilePage">
 				<div className="profile-header">
-					<h4>Мой профиль</h4>
+					<h4>My profile</h4>
 				</div>
 
 				<div className="avatar-wrapper">
-					<img src={`http://localhost:5000${avatar}`} alt="avatar" className="avatar-img" />
+					<img src={avatar} alt="avatar" className="avatar-img" />
 				</div>
 
 				<div className="row">

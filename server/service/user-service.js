@@ -32,7 +32,7 @@ class UserService {
 			const uniqueName = Date.now() + '-' + avatar.name;
 			const avatarPath = path.join(__dirname, '..', 'uploads', 'avatars', uniqueName);
 			await avatar.mv(avatarPath);
-			avatarUrl = `/uploads/avatars/${uniqueName}`;
+			avatarUrl = `${process.env.API_URL}/uploads/avatars/${uniqueName}`;
 		}
 
 		const user = await UserModel.create({ avatarUrl, firstName, secondName, email, password: hashPassword });

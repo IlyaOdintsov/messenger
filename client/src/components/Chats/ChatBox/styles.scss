@@ -1,5 +1,5 @@
 .chatBox {
-	width: 70%;
+	width: 100%;
 	border: 2px solid black;
 	border-radius: 24px;
 	overflow: hidden;
@@ -15,5 +15,6 @@
 		@include flex-col-1();
 		justify-content: center;
 		align-items: center;
+		text-align: center;
 	}
 }

@@ -4,7 +4,7 @@ import { ChatList } from './ChatList/ChatList';
 import './styles.scss';
 import plus from '../../../assets/plus.svg';
 import { ModalOverlay } from '../../../shared/ModalOverlay/ModalOverlay';
-import { NewChatPage } from '../../../pages/NewChatPage/NewChatPage';
+import { NewChat } from './NewChat/NewChat';
 import { useState } from 'react';
 
 export const ChatListPanel = () => {
@@ -13,12 +13,12 @@ export const ChatListPanel = () => {
 	return (
 		<div className="chatListPanel">
 			<div className="chats-row">
-				<h2>Chats</h2>
+				<h3>Chats</h3>
 				<div className="chats-manage-btn" onClick={() => setIsModalShown(true)}>
 					<img src={plus} alt="plus" />
 				</div>
 				<ModalOverlay isOpen={isModalShown} onClose={() => setIsModalShown(false)}>
-					<NewChatPage onClose={() => setIsModalShown(false)} />
+					<NewChat onClose={() => setIsModalShown(false)} />
 				</ModalOverlay>
 			</div>
 

@@ -20,7 +20,7 @@ export default class AuthService {
 	}
 
 	static async activateEmail(email: string, code: string): Promise<AxiosResponse<boolean>> {
-		return $api.post('/activateEmail', { email, code });
+		return $api.post<boolean>('/activateEmail', { email, code });
 	}
 
 	static async forgotPassword(email: string): Promise<void> {

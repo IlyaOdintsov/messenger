@@ -1,6 +1,12 @@
 import type { Group } from '../../../../types/chats_Types';
 import './styles.scss';
 import menuIcon from '../../../../assets/menu.svg';
+import { useState } from 'react';
+import { useAppDispatch } from '../../../../hooks/useAppDispatch';
+import { deleteGroup, getGroupList } from '../../../../store/slices/ChatSlice';
+import { useNavigate } from 'react-router-dom';
+import { useTypedSelector } from '../../../../hooks/useAppSelector';
+import ChatService from '../../../../services/ChatService';
 
 interface ChatHeader {
 	currentChat: Group | null;
@@ -10,13 +16,26 @@ export const ChatHeader = ({ currentChat }: ChatHeader) => {
 	const avatarUrl = currentChat?.avatarUrl;
 	const groupName = currentChat?.groupName;
 	const membersCount = currentChat?.members.length;
+	const groupId = currentChat?.id;
 
-	if (!currentChat) return;
+	const userId = useTypedSelector((state) => state.auth.data?.user.id);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+
+	function handleDelete() {
+		if (!groupId || !userId) return;
+		dispatch(deleteGroup({ groupId }));
+		dispatch(getGroupList({ userId }));
+		// await ChatService.deleteGroup(groupId);
+		// await ChatService.getGroupList(userId);
+		navigate('/chats', { replace: true });
+	}
+
 	return (
-		<div className="chat-header">
-			<div className="avatarWrapper">
-				{avatarUrl ? <img src={`http://localhost:5000${avatarUrl}`} alt="groupAvatar" /> : <h1>{groupName?.[0].toUpperCase()}</h1>}
-			</div>
+		<div className="chat-header" onClick={() => setIsMenuOpen(false)}>
+			<div className="avatarWrapper">{avatarUrl ? <img src={avatarUrl} alt="groupAvatar" /> : <h1>{groupName?.[0].toUpperCase()}</h1>}</div>
 
 			<div className="infoWrapper">
 				<h3>{groupName}</h3>
@@ -24,9 +43,22 @@ export const ChatHeader = ({ currentChat }: ChatHeader) => {
 			</div>
 
 			<div className="buttonsWrapper">
-				<button className="menuBtn">
+				<button
+					onClick={(e) => {
+						e.stopPropagation();
+						setIsMenuOpen((prev) => !prev);
+					}}
+					className={`menuBtn ${isMenuOpen ? 'menuBtn_active' : ''}`}
+				>
 					<img src={menuIcon} alt="menu" />
 				</button>
+
+				<div className={`groupMenu ${isMenuOpen ? 'groupMenu_active' : ''}`} onClick={(e) => e.stopPropagation()}>
+					<button className="defaultBtn">редактировать</button>
+					<button onClick={handleDelete} className="defaultBtn">
+						Удалить чат
+					</button>
+				</div>
 			</div>
 		</div>
 	);

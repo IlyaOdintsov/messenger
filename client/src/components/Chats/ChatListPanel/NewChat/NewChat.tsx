@@ -1,20 +1,21 @@
 import './styles.scss';
-import { AvatarInput, FormInput } from '../../shared';
+import { AvatarInput, FormInput } from '../../../../shared';
 import { useState } from 'react';
-import { useTypedSelector } from '../../hooks/useAppSelector';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { createGroup } from '../../store/slices/ChatSlice';
+import { useTypedSelector } from '../../../../hooks/useAppSelector';
+import { useAppDispatch } from '../../../../hooks/useAppDispatch';
+import { createGroup, getGroupList } from '../../../../store/slices/ChatSlice';
 
-export const NewChatPage = ({ onClose }: { onClose: () => void }) => {
+export const NewChat = ({ onClose }: { onClose: () => void }) => {
 	const [groupAvatarInput, setGroupAvatarInput] = useState<File | null>(null);
 	const [groupName, setGroupName] = useState('');
 	const [error, setError] = useState('');
 
 	const email = useTypedSelector((state) => state.auth.data?.user.email);
+	const userId = useTypedSelector((state) => state.auth.data?.user.id);
 
 	const dispatch = useAppDispatch();
 
-	async function handleCreation() {
+	function handleCreation() {
 		if (!email) {
 			setError('Необходимо авторизоваться');
 			return;
@@ -31,7 +32,9 @@ export const NewChatPage = ({ onClose }: { onClose: () => void }) => {
 		data.append('groupName', groupName);
 
 		try {
-			await dispatch(createGroup({ formData: data }));
+			dispatch(createGroup({ formData: data }));
+			if (userId) dispatch(getGroupList({ userId }));
+
 			onClose();
 		} catch (e: any) {
 			setError(e);

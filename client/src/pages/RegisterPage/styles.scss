@@ -9,6 +9,10 @@
 	gap: $def-padding-gap;
 	position: relative;
 
+	@media (max-width: 480px) {
+		width: 100%;
+	}
+
 	.backBtn {
 		position: absolute;
 		top: 5%;
@@ -24,12 +28,9 @@
 		text-align: center;
 		width: 50%;
 
-		.guestBtn {
-			background-color: $color-secondary;
-		}
-
 		.nextBtn {
-			width: 25%;
+			min-width: 25%;
+			width: auto;
 			align-self: flex-end;
 		}
 
@@ -72,6 +73,11 @@
 			border: 2px solid #e5e7eb;
 			background-color: #f8fafc;
 			font-weight: 500;
+
+			@media (max-width: 480px) {
+				width: 36px;
+				height: 36px;
+			}
 		}
 	}
 
@@ -88,6 +94,10 @@
 	width: 50%;
 	position: relative;
 	padding: 7rem;
+
+	@media (max-width: 480px) {
+		display: none;
+	}
 
 	.overlay {
 		position: absolute;

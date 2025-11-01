@@ -15,10 +15,11 @@ export const ChatBlock = ({ id, avatarUrl, groupName, lastMessage, unreadCounter
 
 	// 	return `${hours}:${mins}`;
 	// };
+	console.log(avatarUrl);
 
 	return (
 		<NavLink to={String(id)} replace className="chatBlock">
-			<div className="avatarWrapper">{avatarUrl ? <img src={`http://localhost:5000${avatarUrl}`} alt="ava" /> : <h2>{groupName[0].toUpperCase()}</h2>}</div>
+			<div className="avatarWrapper">{avatarUrl ? <img src={avatarUrl} alt="ava" /> : <h2>{groupName[0].toUpperCase()}</h2>}</div>
 
 			<div className="chat-description">
 				<h4 className="chat-title">{groupName}</h4>

@@ -9,8 +9,8 @@
 	gap: 3rem;
 
 	.avatarWrapper {
-		width: 6em;
-		height: 6em;
+		width: 5em;
+		height: 5em;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -28,11 +28,54 @@
 
 	.buttonsWrapper {
 		display: flex;
+		position: relative;
 
 		.menuBtn {
 			background: none;
 			width: 40px;
 			height: 40px;
+			border-radius: 50%;
+			padding: 4px;
+			overflow: hidden;
+			z-index: 1;
+
+			&::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				z-index: -1;
+				border-radius: 50%;
+				background-color: $color-area;
+				transform: scale(0);
+				opacity: 0;
+				transition: transform 0.4s cubic-bezier(0.33, 1.45, 0.6, 1), opacity 0.2s;
+			}
+
+			&_active::before {
+				transform: scale(1);
+				opacity: 1;
+			}
+		}
+
+		.groupMenu {
+			@include border-padding();
+			@include flex-col-1();
+			background-color: $color-area;
+			position: absolute;
+			top: 100%;
+			right: 0;
+
+			transform-origin: top right;
+			transform: scale(0.1) translate(20px, -20px);
+			opacity: 0;
+			transition: transform 0.2s ease, opacity 0.2s ease;
+			pointer-events: none;
+
+			&_active {
+				transform: scale(1) translate(0, 0);
+				opacity: 1;
+				pointer-events: auto;
+			}
 		}
 	}
 }

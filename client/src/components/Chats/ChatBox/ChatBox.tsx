@@ -24,7 +24,7 @@ export const ChatBox = () => {
 		}
 	}, [chatId, groups]);
 
-	if (!chatId) {
+	if (!chatId || !currentChat) {
 		return (
 			<div className="chatBox empty">
 				<img src={emptyChatIcon} alt="emptyChat" />

@@ -20,20 +20,6 @@ const ChatSlice = createSlice({
 	reducers: {},
 	extraReducers: (builder) => {
 		builder
-			.addCase(createGroup.pending, (state) => {
-				state.status = 'loading';
-				state.error = null;
-			})
-			.addCase(createGroup.fulfilled, (state, action) => {
-				state.status = 'succeeded';
-				// state.groupData = action.payload;
-			})
-			.addCase(createGroup.rejected, (state, action) => {
-				state.status = 'failed';
-				state.groupData = [];
-				state.error = action.payload || 'Ошибка создания группы';
-			})
-
 			.addCase(getGroupList.pending, (state) => {
 				state.status = 'loading';
 				state.error = null;
@@ -50,12 +36,11 @@ const ChatSlice = createSlice({
 	},
 });
 
-export const createGroup = createAsyncThunk<Group, { formData: FormData }, { rejectValue: string }>('chats/createGroup', async ({ formData }, thunkAPI) => {
+export const createGroup = createAsyncThunk<void, { formData: FormData }, { rejectValue: string }>('chats/createGroup', async ({ formData }, thunkAPI) => {
 	try {
-		const response = await ChatService.creategroup(formData);
-		return response.data;
+		await ChatService.creategroup(formData);
 	} catch (e: any) {
-		return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка проверки');
+		return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка создания группы');
 	}
 });
 
@@ -64,7 +49,15 @@ export const getGroupList = createAsyncThunk<Group[], { userId: string }, { reje
 		const response = await ChatService.getGroupList(userId);
 		return response.data;
 	} catch (e: any) {
-		return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка');
+		return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка получения списка чатов');
+	}
+});
+
+export const deleteGroup = createAsyncThunk<void, { groupId: string }, { rejectValue: string }>('chats/deleteGroup', async ({ groupId }, thunkAPI) => {
+	try {
+		await ChatService.deleteGroup(groupId);
+	} catch (e: any) {
+		return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка удаления группы');
 	}
 });
 
