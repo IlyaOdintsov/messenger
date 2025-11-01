@@ -1,9 +1,9 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, replace, useLocation, useNavigate } from 'react-router-dom';
 import './styles.scss';
 import { FormInput } from '../../shared';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { checkAuth, login } from '../../store/slices/AuthSlice';
+import { checkAuth, login, resetState } from '../../store/slices/AuthSlice';
 import { useTypedSelector } from '../../hooks/useAppSelector';
 import { LS_ACCESS_TOKEN } from '../../constants/storage';
 
@@ -22,8 +22,12 @@ export const LoginPage = () => {
 
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+	const location = useLocation();
+
+	const from = location.state?.from?.pathname || '/';
 
 	useEffect(() => {
+		dispatch(resetState());
 		if (localStorage.getItem(LS_ACCESS_TOKEN)) {
 			dispatch(checkAuth());
 		}
@@ -31,7 +35,7 @@ export const LoginPage = () => {
 
 	useEffect(() => {
 		if (auth) {
-			navigate('/');
+			navigate(from, { replace: true });
 		}
 	}, [auth]);
 

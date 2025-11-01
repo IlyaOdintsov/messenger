@@ -34,7 +34,7 @@ export const Sidebar = () => {
 							</div>
 						</NavigationLink>
 
-						<NavigationLink to="/1">
+						<NavigationLink to="/">
 							<div className="iconWrapper">
 								<img src={bellIcon} alt="notifications" />
 							</div>
@@ -43,11 +43,7 @@ export const Sidebar = () => {
 
 					<div className="settingsWrapper">
 						<Link to="/profile" className="iconWrapper profile">
-							<img
-								src={profileAvatar ? `http://localhost:5000${profileAvatar}` : profileIcon}
-								alt="profile"
-								style={{ padding: profileAvatar ? '' : '4px' }}
-							/>
+							<img src={profileAvatar ? profileAvatar : profileIcon} alt="profile" style={{ padding: profileAvatar ? '' : '4px' }} />
 						</Link>
 
 						<Link to="/settings" className="iconWrapper">

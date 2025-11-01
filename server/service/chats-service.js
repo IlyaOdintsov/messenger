@@ -3,6 +3,7 @@ const GroupModel = require('../models/group-model');
 const UserModel = require('../models/user-model');
 const path = require('path');
 const GroupDto = require('../dtos/group_dto');
+const { deleteGroup } = require('../controllers/chat-controller');
 
 class ChatsService {
 	async createGroup(email, avatar, groupName) {
@@ -20,10 +21,10 @@ class ChatsService {
 			const uniqueName = Date.now() + '-' + avatar.name;
 			const avatarPath = path.join(__dirname, '..', 'uploads', 'groups', uniqueName);
 			await avatar.mv(avatarPath);
-			avatarUrl = `/uploads/groups/${uniqueName}`;
+			avatarUrl = `${process.env.API_URL}/uploads/groups/${uniqueName}`;
 		}
 
-		const group = await GroupModel.create({
+		await GroupModel.create({
 			avatarUrl,
 			groupName,
 			members: [
@@ -33,8 +34,6 @@ class ChatsService {
 				},
 			],
 		});
-
-		return group;
 	}
 
 	async getGroupList(userId) {
@@ -47,6 +46,16 @@ class ChatsService {
 		const groupListDto = groupList.map((group) => new GroupDto(group));
 
 		return groupListDto;
+	}
+
+	async deleteGroup(groupId) {
+		const group = await GroupModel.findById(groupId);
+
+		if (!group) {
+			throw ApiError.BadRequest('Группы не существует');
+		}
+
+		await GroupModel.deleteOne(group);
 	}
 }
 

@@ -4,6 +4,7 @@
 	background-color: $color-area;
 
 	max-width: 64px;
+	user-select: none;
 
 	.side-navs-panel {
 		@include flex-col-1();

@@ -28,7 +28,14 @@ function removeFromLs() {
 const authSLice = createSlice({
 	name: 'authorization',
 	initialState,
-	reducers: {},
+	reducers: {
+		resetState(state) {
+			state.status = '';
+			state.data = null;
+			state.error = null;
+			state.isAuth = false;
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(login.pending, (state) => {
@@ -128,12 +135,13 @@ export const registration = createAsyncThunk<AuthResponse, { formData: FormData 
 	}
 );
 
-export const logout = createAsyncThunk('authorization/logout', async () => {
+export const logout = createAsyncThunk<void, void, { rejectValue: string }>('authorization/logout', async (_, thunkAPI) => {
 	try {
 		await AuthService.logout();
 	} catch (e: any) {
-		console.log(e.response?.data?.message);
+		return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка проверки');
 	}
 });
 
+export const { resetState } = authSLice.actions;
 export default authSLice.reducer;

@@ -2,7 +2,7 @@ const userService = require('../service/user-service');
 const { validationResult } = require('express-validator');
 const ApiError = require('../exceptions/api-error');
 const jwt = require('jsonwebtoken');
-const chatsService = require('../service/chats-service');
+
 class UserController {
 	async registration(req, res, next) {
 		try {
@@ -102,34 +102,6 @@ class UserController {
 			}
 			const { newPassword, token } = req.body;
 			await userService.resetPassword(newPassword, token);
-		} catch (e) {
-			next(e);
-		}
-	}
-
-	async createGroup(req, res, next) {
-		try {
-			const email = req.body.email;
-			const groupName = req.body.groupName;
-			const avatar = req.files ? req.files.avatar : null;
-
-			const groupData = await chatsService.createGroup(email, avatar, groupName);
-
-			return res.json(groupData);
-		} catch (e) {
-			next(e);
-		}
-	}
-
-	async getGroupList(req, res, next) {
-		try {
-			const { userId } = req.body;
-			console.log('ID:', userId);
-
-			const groupList = await chatsService.getGroupList(userId);
-			console.log(groupList);
-
-			return res.json(groupList);
 		} catch (e) {
 			next(e);
 		}

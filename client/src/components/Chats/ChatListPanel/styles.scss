@@ -2,13 +2,15 @@
 	@include flex-col-2();
 	@include border-padding();
 	background-color: $color-area;
-	width: 29%;
+	width: 30%;
 	justify-content: start;
+	align-items: center;
 
 	.chats-row {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		width: 100%;
 
 		.chats-manage-btn {
 			cursor: pointer;

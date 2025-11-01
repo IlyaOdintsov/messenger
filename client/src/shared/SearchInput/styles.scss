@@ -1,5 +1,6 @@
 .searchWrapper {
 	@include flex-row();
+	width: 100%;
 	justify-content: left;
 	gap: 0;
 	cursor: text;
