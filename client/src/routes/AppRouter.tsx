@@ -15,9 +15,9 @@ const router = createBrowserRouter([
 	{
 		path: '/',
 		element: (
-			// <RequireAuth>
-			<Layout />
-			// </RequireAuth>
+			<RequireAuth>
+				<Layout />
+			</RequireAuth>
 		),
 		children: [
 			{

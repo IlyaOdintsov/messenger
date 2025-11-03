@@ -1,13 +1,15 @@
 const chatsService = require('../service/chats-service');
+const { getIo } = require('../router/socket');
 
 class ChatController {
 	async createGroup(req, res, next) {
 		try {
-			const email = req.body.email;
+			const userId = req.body.userId;
 			const groupName = req.body.groupName;
 			const avatar = req.files ? req.files.avatar : null;
 
-			await chatsService.createGroup(email, avatar, groupName);
+			const newGroup = await chatsService.createGroup(userId, avatar, groupName);
+			getIo().to(userId).emit('create_group', newGroup);
 		} catch (e) {
 			next(e);
 		}
@@ -16,7 +18,6 @@ class ChatController {
 	async getGroupList(req, res, next) {
 		try {
 			const { userId } = req.body;
-			console.log('1');
 
 			const groupList = await chatsService.getGroupList(userId);
 			return res.json(groupList);
@@ -29,7 +30,11 @@ class ChatController {
 		try {
 			const groupId = req.params.id;
 
-			await chatsService.deleteGroup(groupId);
+			const groupDto = await chatsService.deleteGroup(groupId);
+
+			groupDto.members.forEach((member) => {
+				getIo().to(member.userId.toString()).emit('delete_group', groupDto.id);
+			});
 		} catch (e) {
 			next(e);
 		}

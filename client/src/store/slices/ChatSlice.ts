@@ -17,7 +17,14 @@ const initialState: GroupState = {
 const ChatSlice = createSlice({
 	name: 'chats',
 	initialState,
-	reducers: {},
+	reducers: {
+		createNewGroup(state, action) {
+			state.groupData.push(action.payload);
+		},
+		deleteGroupById(state, action) {
+			state.groupData = state.groupData.filter((group) => group.id !== action.payload);
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(getGroupList.pending, (state) => {
@@ -36,20 +43,20 @@ const ChatSlice = createSlice({
 	},
 });
 
-export const createGroup = createAsyncThunk<void, { formData: FormData }, { rejectValue: string }>('chats/createGroup', async ({ formData }, thunkAPI) => {
-	try {
-		await ChatService.creategroup(formData);
-	} catch (e: any) {
-		return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка создания группы');
-	}
-});
-
 export const getGroupList = createAsyncThunk<Group[], { userId: string }, { rejectValue: string }>('chats/getGroupList', async ({ userId }, thunkAPI) => {
 	try {
 		const response = await ChatService.getGroupList(userId);
 		return response.data;
 	} catch (e: any) {
 		return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка получения списка чатов');
+	}
+});
+
+export const createGroup = createAsyncThunk<void, { formData: FormData }, { rejectValue: string }>('chats/createGroup', async ({ formData }, thunkAPI) => {
+	try {
+		await ChatService.creategroup(formData);
+	} catch (e: any) {
+		return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка создания группы');
 	}
 });
 
@@ -61,4 +68,5 @@ export const deleteGroup = createAsyncThunk<void, { groupId: string }, { rejectV
 	}
 });
 
+export const { createNewGroup, deleteGroupById } = ChatSlice.actions;
 export default ChatSlice.reducer;

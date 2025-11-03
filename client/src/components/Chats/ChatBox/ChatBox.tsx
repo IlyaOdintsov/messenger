@@ -7,12 +7,15 @@ import { ChatWindow } from './chat-window/ChatWindow';
 import { useEffect, useState } from 'react';
 import type { Group } from '../../../types/chats_Types';
 import { useTypedSelector } from '../../../hooks/useAppSelector';
+import { socket } from '../../../App';
 
 export const ChatBox = () => {
-	const [currentChat, setCurrentChat] = useState<Group | null>(null);
 	const { chatId } = useParams();
+	const [currentChat, setCurrentChat] = useState<Group | null>(null);
 
 	const groups = useTypedSelector((state) => state.chats.groupData);
+
+	console.log('chatbox');
 
 	useEffect(() => {
 		if (groups.length > 0 && chatId) {
@@ -23,6 +26,17 @@ export const ChatBox = () => {
 			}
 		}
 	}, [chatId, groups]);
+
+	useEffect(() => {
+		if (!chatId) {
+			return;
+		}
+		socket.emit('join_chat', chatId);
+
+		return () => {
+			socket.emit('leave_chat', chatId);
+		};
+	}, [chatId]);
 
 	if (!chatId || !currentChat) {
 		return (
