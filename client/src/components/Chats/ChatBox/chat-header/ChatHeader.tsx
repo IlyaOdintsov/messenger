@@ -3,10 +3,8 @@ import './styles.scss';
 import menuIcon from '../../../../assets/menu.svg';
 import { useState } from 'react';
 import { useAppDispatch } from '../../../../hooks/useAppDispatch';
-import { deleteGroup, getGroupList } from '../../../../store/slices/ChatSlice';
+import { deleteGroup } from '../../../../store/slices/ChatSlice';
 import { useNavigate } from 'react-router-dom';
-import { useTypedSelector } from '../../../../hooks/useAppSelector';
-import ChatService from '../../../../services/ChatService';
 
 interface ChatHeader {
 	currentChat: Group | null;
@@ -18,18 +16,14 @@ export const ChatHeader = ({ currentChat }: ChatHeader) => {
 	const membersCount = currentChat?.members.length;
 	const groupId = currentChat?.id;
 
-	const userId = useTypedSelector((state) => state.auth.data?.user.id);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	function handleDelete() {
-		if (!groupId || !userId) return;
+		if (!groupId) return;
 		dispatch(deleteGroup({ groupId }));
-		dispatch(getGroupList({ userId }));
-		// await ChatService.deleteGroup(groupId);
-		// await ChatService.getGroupList(userId);
 		navigate('/chats', { replace: true });
 	}
 

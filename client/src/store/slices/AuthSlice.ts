@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import AuthService from '../../services/AuthService';
 import type { AuthResponse } from '../../types/Auth_Response';
-import { LS_ACCESS_TOKEN } from '../../constants/storage';
+import { LS_ACCESS_TOKEN } from '../../constants/constants';
 import $api, { API_URL } from '../../http';
 
 export interface AuthState {

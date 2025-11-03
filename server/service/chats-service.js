@@ -3,14 +3,10 @@ const GroupModel = require('../models/group-model');
 const UserModel = require('../models/user-model');
 const path = require('path');
 const GroupDto = require('../dtos/group_dto');
-const { deleteGroup } = require('../controllers/chat-controller');
 
 class ChatsService {
-	async createGroup(email, avatar, groupName) {
-		const owner = await UserModel.findOne({ email });
-		console.log('email', email);
-		console.log('groupName', groupName);
-		console.log(avatar);
+	async createGroup(userId, avatar, groupName) {
+		const owner = await UserModel.findById(userId);
 
 		if (!owner) {
 			throw ApiError.BadRequest('Пользователь не найден');
@@ -24,7 +20,7 @@ class ChatsService {
 			avatarUrl = `${process.env.API_URL}/uploads/groups/${uniqueName}`;
 		}
 
-		await GroupModel.create({
+		const newGroup = await GroupModel.create({
 			avatarUrl,
 			groupName,
 			members: [
@@ -34,6 +30,8 @@ class ChatsService {
 				},
 			],
 		});
+		const newGroupDto = new GroupDto(newGroup);
+		return newGroupDto;
 	}
 
 	async getGroupList(userId) {
@@ -56,6 +54,8 @@ class ChatsService {
 		}
 
 		await GroupModel.deleteOne(group);
+		const groupDto = new GroupDto(group);
+		return groupDto;
 	}
 }
 

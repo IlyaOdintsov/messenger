@@ -14,9 +14,11 @@ export const ChatListPanel = () => {
 		<div className="chatListPanel">
 			<div className="chats-row">
 				<h3>Chats</h3>
+
 				<div className="chats-manage-btn" onClick={() => setIsModalShown(true)}>
 					<img src={plus} alt="plus" />
 				</div>
+
 				<ModalOverlay isOpen={isModalShown} onClose={() => setIsModalShown(false)}>
 					<NewChat onClose={() => setIsModalShown(false)} />
 				</ModalOverlay>

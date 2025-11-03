@@ -1,4 +1,6 @@
 import './styles.scss';
+import profileIcon from '../../assets/camera.svg';
+
 import { useTypedSelector } from '../../hooks/useAppSelector';
 
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -10,7 +12,6 @@ export const ProfilePage = () => {
 	const dispatch = useAppDispatch();
 
 	if (!user) return;
-	console.log(user);
 
 	const avatar = user.avatarUrl;
 	const nickName = `${user.firstName} ${user.secondName || ''}`.trim();
@@ -28,7 +29,7 @@ export const ProfilePage = () => {
 				</div>
 
 				<div className="avatar-wrapper">
-					<img src={avatar} alt="avatar" className="avatar-img" />
+					<img src={avatar ? avatar : profileIcon} alt="profile" style={{ padding: avatar ? '' : '12px' }} />
 				</div>
 
 				<div className="row">

@@ -3,20 +3,19 @@ import { AvatarInput, FormInput } from '../../../../shared';
 import { useState } from 'react';
 import { useTypedSelector } from '../../../../hooks/useAppSelector';
 import { useAppDispatch } from '../../../../hooks/useAppDispatch';
-import { createGroup, getGroupList } from '../../../../store/slices/ChatSlice';
+import { createGroup } from '../../../../store/slices/ChatSlice';
 
 export const NewChat = ({ onClose }: { onClose: () => void }) => {
 	const [groupAvatarInput, setGroupAvatarInput] = useState<File | null>(null);
 	const [groupName, setGroupName] = useState('');
 	const [error, setError] = useState('');
 
-	const email = useTypedSelector((state) => state.auth.data?.user.email);
 	const userId = useTypedSelector((state) => state.auth.data?.user.id);
 
 	const dispatch = useAppDispatch();
 
 	function handleCreation() {
-		if (!email) {
+		if (!userId) {
 			setError('Необходимо авторизоваться');
 			return;
 		}
@@ -27,14 +26,13 @@ export const NewChat = ({ onClose }: { onClose: () => void }) => {
 		}
 
 		const data = new FormData();
+
 		if (groupAvatarInput) data.append('avatar', groupAvatarInput);
-		data.append('email', email);
+		data.append('userId', userId);
 		data.append('groupName', groupName);
 
 		try {
 			dispatch(createGroup({ formData: data }));
-			if (userId) dispatch(getGroupList({ userId }));
-
 			onClose();
 		} catch (e: any) {
 			setError(e);

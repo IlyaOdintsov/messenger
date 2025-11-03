@@ -6,7 +6,3 @@ export interface IFormData {
 	password: string;
 	isEmailConfirmed: boolean;
 }
-
-export interface User {}
-
-export interface Participant extends User {}

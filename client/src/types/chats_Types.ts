@@ -13,6 +13,12 @@ export interface Group {
 	avatarUrl: string;
 	groupName: string;
 	members: Member[];
-	lastMessage: string;
-	unreadCounter: number;
+}
+
+export interface Message {
+	chatId: string;
+	sender: string;
+	text: string;
+	createdAt: string;
+	messageId: string;
 }

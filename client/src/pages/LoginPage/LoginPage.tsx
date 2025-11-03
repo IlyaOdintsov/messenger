@@ -1,11 +1,11 @@
-import { Link, replace, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './styles.scss';
 import { FormInput } from '../../shared';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { checkAuth, login, resetState } from '../../store/slices/AuthSlice';
 import { useTypedSelector } from '../../hooks/useAppSelector';
-import { LS_ACCESS_TOKEN } from '../../constants/storage';
+import { LS_ACCESS_TOKEN } from '../../constants/constants';
 
 import eye from '../../assets/eye.svg';
 import eyeClosed from '../../assets/eyeClosed.svg';
