@@ -3,13 +3,13 @@ import $api from '../http';
 import type { Group } from '../types/chats_Types';
 
 export default class ChatService {
-	static async creategroup(formData: FormData): Promise<void> {
-		return $api.post('/createGroup', formData);
+	static async createChat(formData: FormData): Promise<AxiosResponse<Group>> {
+		return $api.post('/createChat', formData);
 	}
-	static async getGroupList(userId: string): Promise<AxiosResponse<Group[]>> {
-		return $api.post<Group[]>('/getGroupList', { userId });
+	static async getChatList(userId: string): Promise<AxiosResponse<Group[]>> {
+		return $api.post<Group[]>('/getChatList', { userId });
 	}
-	static async deleteGroup(groupId: string): Promise<void> {
+	static async deleteGroup(groupId: string): Promise<AxiosResponse<string>> {
 		return $api.delete(`/deleteGroup/${groupId}`);
 	}
 }

@@ -9,10 +9,11 @@ interface Member {
 }
 
 export interface Group {
+	type: 'group' | 'private';
+	members: Member[];
 	id: string;
 	avatarUrl: string;
-	groupName: string;
-	members: Member[];
+	chatName: string;
 }
 
 export interface Message {

@@ -61,6 +61,10 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 		};
 	}, [groupId]);
 
+    useEffect(() => {
+
+    }, []);
+
 	return (
 		<div className="chat-window">
 			<div className="messages">window</div>

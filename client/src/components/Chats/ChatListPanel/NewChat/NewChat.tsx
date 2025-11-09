@@ -3,7 +3,7 @@ import { AvatarInput, FormInput } from '../../../../shared';
 import { useState } from 'react';
 import { useTypedSelector } from '../../../../hooks/useAppSelector';
 import { useAppDispatch } from '../../../../hooks/useAppDispatch';
-import { createGroup } from '../../../../store/slices/ChatSlice';
+import { createChat } from '../../../../store/slices/ChatSlice';
 
 export const NewChat = ({ onClose }: { onClose: () => void }) => {
 	const [groupAvatarInput, setGroupAvatarInput] = useState<File | null>(null);
@@ -27,12 +27,12 @@ export const NewChat = ({ onClose }: { onClose: () => void }) => {
 
 		const data = new FormData();
 
+		data.append('type', 'group');
 		if (groupAvatarInput) data.append('avatar', groupAvatarInput);
-		data.append('userId', userId);
 		data.append('groupName', groupName);
 
 		try {
-			dispatch(createGroup({ formData: data }));
+			dispatch(createChat({ formData: data }));
 			onClose();
 		} catch (e: any) {
 			setError(e);

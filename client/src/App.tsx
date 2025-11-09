@@ -5,7 +5,7 @@ import { SERVER_URL } from './constants/constants.ts';
 import { useEffect } from 'react';
 import { useTypedSelector } from './hooks/useAppSelector.ts';
 import { useAppDispatch } from './hooks/useAppDispatch.ts';
-import { createNewGroup, deleteGroupById, getGroupList } from './store/slices/ChatSlice.ts';
+import { getChatList } from './store/slices/ChatSlice.ts';
 
 export const socket = io(SERVER_URL, { autoConnect: true });
 
@@ -16,8 +16,12 @@ function App() {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
+		console.log(groups);
+	}, [groups]);
+
+	useEffect(() => {
 		if (!userId) return;
-		dispatch(getGroupList({ userId }));
+		dispatch(getChatList({ userId }));
 	}, [userId]);
 
 	useEffect(() => {
@@ -28,26 +32,12 @@ function App() {
 			socket.emit('join_group_room', group.id);
 		});
 
-		socket.on('create_group', (group) => {
-			dispatch(createNewGroup(group));
-			socket.emit('join_group_room', group.id);
-		});
-
-		socket.on('delete_group', (groupId) => {
-			console.log(groupId);
-
-			dispatch(deleteGroupById(groupId));
-			socket.emit('leave_group_room', groupId);
-		});
-
 		return () => {
 			socket.emit('leave_user_room', userId);
 
 			groups.forEach((group) => {
 				socket.emit('leave_groups_room', group.id);
 			});
-			socket.off('create_group');
-			socket.off('delete_group');
 		};
 	}, [groups, userId]);
 

@@ -15,32 +15,32 @@ function setupSocket(server) {
 		console.log('User connected', socket.id);
 
 		socket.on('join_user_room', (userId) => {
-			socket.join(userId);
+			socket.join(`user_${userId}`);
 			console.log(`User with id: ${socket.id} joined user room: ${userId}`);
 		});
 
 		socket.on('leave_user_room', (userId) => {
-			socket.leave(userId);
+			socket.leave(`user_${userId}`);
 			console.log(`User with id: ${socket.id} left user room: ${userId}`);
 		});
 
 		socket.on('join_group_room', (chatId) => {
-			socket.join(chatId);
+			socket.join(`group_${chatId}`);
 			console.log(`User with id: ${socket.id} joined groups room: ${chatId}`);
 		});
 
 		socket.on('leave_group_room', (chatId) => {
-			socket.leave(chatId);
+			socket.leave(`group_${chatId}`);
 			console.log(`User with id: ${socket.id} left groups room: ${chatId}`);
 		});
 
 		socket.on('join_chat', (chatId) => {
-			socket.join(chatId);
+			socket.join(`chat_${chatId}`);
 			console.log(`User with id: ${socket.id} joined chat: ${chatId}`);
 		});
 
 		socket.on('leave_chat', (chatId) => {
-			socket.leave(chatId);
+			socket.leave(`chat_${chatId}`);
 			console.log(`User with id: ${socket.id} left chat: ${chatId}`);
 		});
 
