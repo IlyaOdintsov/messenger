@@ -1,62 +1,129 @@
-const ApiError = require('../exceptions/api-error');
-const GroupModel = require('../models/group-model');
-const UserModel = require('../models/user-model');
-const path = require('path');
-const GroupDto = require('../dtos/group_dto');
+const ApiError = require("../exceptions/api-error");
+const ChatModel = require("../models/chat-model");
+const UserModel = require("../models/user-model");
+const path = require("path");
+const ChatDto = require("../dtos/chat_dto");
 
 class ChatsService {
-	async createGroup(userId, avatar, groupName) {
-		const owner = await UserModel.findById(userId);
+  async createChat(userId, type, privateMemberId, groupName, avatar) {
+    console.log("asdasdas", groupName);
+    const creator = await UserModel.findById(userId);
+    const privateMember = await UserModel.findById(privateMemberId);
 
-		if (!owner) {
-			throw ApiError.BadRequest('Пользователь не найден');
-		}
+    if (!creator || (privateMemberId && !privateMember)) {
+      throw ApiError.BadRequest("Пользователь не найден");
+    }
 
-		let avatarUrl = '';
-		if (avatar) {
-			const uniqueName = Date.now() + '-' + avatar.name;
-			const avatarPath = path.join(__dirname, '..', 'uploads', 'groups', uniqueName);
-			await avatar.mv(avatarPath);
-			avatarUrl = `${process.env.API_URL}/uploads/groups/${uniqueName}`;
-		}
+    if (type === "group" && !groupName) {
+      throw new Error("У группы должно быть название");
+    }
 
-		const newGroup = await GroupModel.create({
-			avatarUrl,
-			groupName,
-			members: [
-				{
-					userId: owner.id,
-					role: 'owner',
-				},
-			],
-		});
-		const newGroupDto = new GroupDto(newGroup);
-		return newGroupDto;
-	}
+    const existingChat = await ChatModel.findOne({
+      type: "private",
+      participants: { $all: [userId, privateMember], $size: 2 },
+    });
 
-	async getGroupList(userId) {
-		const user = await UserModel.findById(userId);
-		if (!user) {
-			throw ApiError.BadRequest('Пользователь не найден');
-		}
+    if (existingChat) {
+      return existingChat;
+    }
 
-		const groupList = await GroupModel.find({ 'members.userId': userId });
-		const groupListDto = groupList.map((group) => new GroupDto(group));
+    let groupAvatarUrl = "";
+    if (avatar) {
+      const uniqueName = Date.now() + "-" + avatar.name;
+      const avatarPath = path.join(
+        __dirname,
+        "..",
+        "uploads",
+        "groups",
+        uniqueName,
+      );
+      await avatar.mv(avatarPath);
+      groupAvatarUrl = `${process.env.API_URL}/uploads/groups/${uniqueName}`;
+    }
 
-		return groupListDto;
-	}
+    const participants =
+      type === "private"
+        ? [{ userId: userId }, { userId: privateMember }]
+        : [{ userId: userId, role: "owner" }];
 
-	async deleteGroup(groupId) {
-		const group = await GroupModel.findById(groupId);
+    const chatName =
+      type === "group"
+        ? groupName
+        : `${privateMember.firstName} ${privateMember.secondName || ""}`.trim();
 
-		if (!group) {
-			throw ApiError.BadRequest('Группы не существует');
-		}
+    const avatarUrl =
+      type === "group" ? groupAvatarUrl : privateMember.avatarUrl || "";
 
-		await GroupModel.deleteOne(group);
-		const groupDto = new GroupDto(group);
-		return groupDto;
-	}
+    const newGroup = await ChatModel.create({
+      type,
+      members: participants,
+      chatName: chatName,
+      avatarUrl: avatarUrl,
+    });
+
+    const newChatDto = new ChatDto(newGroup);
+    return newChatDto;
+  }
+
+  async getChatList(userId) {
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      throw ApiError.BadRequest("Пользователь не найден");
+    }
+
+    const chatList = await ChatModel.find({ "members.userId": userId });
+
+    const chatListWithPrivate = await Promise.all(
+      chatList.map(async (chat) => {
+        if (chat.type === "private") {
+          const contactId = chat.members
+            .find((member) => member.userId.toString() !== userId)
+            .userId.toString();
+
+          const contact = await UserModel.findById(contactId);
+
+          if (!contact) {
+            throw ApiError.BadRequest("Пользователь не найден");
+          }
+
+          const contactName = `${contact.firstName} ${contact.secondName || ""}`;
+          const contactAvatarUrl = contact.avatarUrl || "";
+
+          return {
+            id: chat.id,
+            type: chat.type,
+            members: chat.members,
+            chatName: contactName.trim(),
+            avatarUrl: contactAvatarUrl,
+          };
+        }
+
+        return {
+          id: chat.id,
+          type: chat.type,
+          members: chat.members,
+          chatName: chat.chatName,
+          avatarUrl: chat.avatarUrl,
+        };
+      }),
+    );
+
+    const chatListDto = chatListWithPrivate.map((group) => new ChatDto(group));
+    return chatListDto;
+  }
+
+  async deleteGroup(groupId) {
+    const group = await ChatModel.findById(groupId);
+
+    if (!group) {
+      throw ApiError.BadRequest("Группы не существует");
+    }
+
+    await ChatModel.deleteOne(group);
+    const groupDto = new ChatDto(group);
+    return groupDto;
+  }
 }
 
 module.exports = new ChatsService();

@@ -15,22 +15,16 @@ export const ChatBox = () => {
 
 	const groups = useTypedSelector((state) => state.chats.groupData);
 
-	console.log('chatbox');
-
 	useEffect(() => {
 		if (groups.length > 0 && chatId) {
 			const currChat = groups.find((group) => group.id === chatId);
-
-			if (currChat) {
-				setCurrentChat(currChat);
-			}
+			if (currChat) setCurrentChat(currChat);
 		}
 	}, [chatId, groups]);
 
 	useEffect(() => {
-		if (!chatId) {
-			return;
-		}
+		if (!chatId) return;
+
 		socket.emit('join_chat', chatId);
 
 		return () => {

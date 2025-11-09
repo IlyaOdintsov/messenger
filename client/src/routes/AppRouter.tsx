@@ -10,6 +10,8 @@ import { ResetPassword } from '../pages/ResetPassword/ResetPassword';
 import { ProfilePage } from '../pages/ProfilePage/ProfilePage';
 import { SettingsPage } from '../pages/SettingsPage/SettingPage';
 import { RequireAuth } from './RequireAuth';
+import {ContactsPage} from "../pages/ContactsPage/ContactsPage.tsx";
+import {ContactBox} from "../components/Contacts/ContactBox/ContactBox.tsx";
 
 const router = createBrowserRouter([
 	{
@@ -42,6 +44,24 @@ const router = createBrowserRouter([
 					},
 				],
 			},
+            {
+                path: 'contacts',
+                element: <ContactsPage />,
+                children: [
+                    {
+                        index: true,
+                        element: <ContactBox />
+                    },
+                    {
+                        path: ':contactId',
+                        element: <ContactBox />
+                    },
+                    {
+                        path: '*',
+                        element: <ContactBox />
+                    },
+                ],
+            },
 			{
 				path: 'profile',
 				element: <ProfilePage />,
