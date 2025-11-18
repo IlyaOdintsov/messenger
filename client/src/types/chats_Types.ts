@@ -1,7 +1,3 @@
-export interface Message {
-	text: string;
-	time: number;
-}
 
 interface Member {
 	userId: string;
@@ -9,10 +5,21 @@ interface Member {
 }
 
 export interface Group {
+	type: 'group' | 'private';
+	members: Member[];
 	id: string;
 	avatarUrl: string;
-	groupName: string;
-	members: Member[];
-	lastMessage: string;
-	unreadCounter: number;
+	chatName: string;
+	lastMessage: Message;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface Message {
+	chatId: string;
+	sender: string;
+	text: string;
+	createdAt: string;
+	updatedAt: string;
+	messageId: string;
 }

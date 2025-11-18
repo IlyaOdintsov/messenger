@@ -3,10 +3,8 @@ import './styles.scss';
 import menuIcon from '../../../../assets/menu.svg';
 import { useState } from 'react';
 import { useAppDispatch } from '../../../../hooks/useAppDispatch';
-import { deleteGroup, getGroupList } from '../../../../store/slices/ChatSlice';
+import { deleteGroup } from '../../../../store/slices/ChatSlice';
 import { useNavigate } from 'react-router-dom';
-import { useTypedSelector } from '../../../../hooks/useAppSelector';
-import ChatService from '../../../../services/ChatService';
 
 interface ChatHeader {
 	currentChat: Group | null;
@@ -14,31 +12,27 @@ interface ChatHeader {
 
 export const ChatHeader = ({ currentChat }: ChatHeader) => {
 	const avatarUrl = currentChat?.avatarUrl;
-	const groupName = currentChat?.groupName;
+	const chatName = currentChat?.chatName;
 	const membersCount = currentChat?.members.length;
 	const groupId = currentChat?.id;
 
-	const userId = useTypedSelector((state) => state.auth.data?.user.id);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	function handleDelete() {
-		if (!groupId || !userId) return;
+		if (!groupId) return;
 		dispatch(deleteGroup({ groupId }));
-		dispatch(getGroupList({ userId }));
-		// await ChatService.deleteGroup(groupId);
-		// await ChatService.getGroupList(userId);
 		navigate('/chats', { replace: true });
 	}
 
 	return (
 		<div className="chat-header" onClick={() => setIsMenuOpen(false)}>
-			<div className="avatarWrapper">{avatarUrl ? <img src={avatarUrl} alt="groupAvatar" /> : <h1>{groupName?.[0].toUpperCase()}</h1>}</div>
+			<div className="avatarWrapper">{avatarUrl ? <img src={avatarUrl} alt="groupAvatar" /> : <h1>{chatName?.[0].toUpperCase()}</h1>}</div>
 
 			<div className="infoWrapper">
-				<h3>{groupName}</h3>
+				<h3>{chatName}</h3>
 				<p>{membersCount}</p>
 			</div>
 

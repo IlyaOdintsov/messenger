@@ -1,7 +1,21 @@
 .chat-window {
 	@include border-padding();
+	@include flex-col-2;
 	padding-top: 0;
 
 	border: 1px solid white;
 	height: 100%;
+
+	.messages {
+		height: 100%;
+	}
+
+	.chat-footer {
+		width: 100%;
+		@include flex-row;
+
+		input {
+			width: 100%;
+		}
+	}
 }

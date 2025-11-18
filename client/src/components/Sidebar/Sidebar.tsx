@@ -1,7 +1,7 @@
 import { NavigationLink, ThemeSwitcher } from '../../shared';
 import './styles.scss';
 
-import friendsIcon from '../../assets/friends.svg';
+import contactsIcon from '../../assets/contacts.svg';
 import chatIcon from '../../assets/chat.svg';
 import settingsIcon from '../../assets/settings.svg';
 import bellIcon from '../../assets/bell.svg';
@@ -22,9 +22,9 @@ export const Sidebar = () => {
 
 				<div className="side-navs-panel">
 					<nav className="navBar">
-						<NavigationLink to="/1">
+						<NavigationLink to="/contacts">
 							<div className="iconWrapper">
-								<img src={friendsIcon} alt="friends" />
+								<img src={contactsIcon} alt="friends" />
 							</div>
 						</NavigationLink>
 

@@ -4,6 +4,7 @@ export interface IUser {
 	firstName: string;
 	secondName: string;
 	id: string;
+    friends: string[];
 }
 
 export interface AuthResponse {

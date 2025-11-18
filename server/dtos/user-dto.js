@@ -4,6 +4,7 @@ module.exports = class UserDto {
 	email;
 	avatarUrl;
 	id;
+    friends;
 
 	constructor(model) {
 		this.firstName = model.firstName;
@@ -11,5 +12,6 @@ module.exports = class UserDto {
 		this.email = model.email;
 		this.avatarUrl = model.avatarUrl;
 		this.id = model.id;
+        this.friends = model.friends;
 	}
 };

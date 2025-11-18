@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import AuthService from '../../services/AuthService';
 import type { AuthResponse } from '../../types/Auth_Response';
-import { LS_ACCESS_TOKEN } from '../../constants/storage';
+import { LS_ACCESS_TOKEN } from '../../constants/constants';
 import $api, { API_URL } from '../../http';
+import ContactsService from "../../services/ContactsService.tsx";
 
 export interface AuthState {
 	status: string;
@@ -98,7 +99,15 @@ const authSLice = createSlice({
 				state.status = 'failed';
 				state.data = null;
 				state.error = action.error.message || 'Неизвестная ошибка';
-			});
+			})
+
+            .addCase(addFriend.fulfilled, (state, action) => {
+                state.data?.user.friends.push(action.payload);
+            })
+            //
+            // .addCase(deleteFriend.fulfilled, (state, action) => {
+            //     state.data?.user.friends.filter(friend => friend !== action.payload);
+            // })
 	},
 });
 
@@ -142,6 +151,26 @@ export const logout = createAsyncThunk<void, void, { rejectValue: string }>('aut
 		return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка проверки');
 	}
 });
+
+export const addFriend = createAsyncThunk<string, string, { rejectValue: string }>(
+    'authorization/addFriend', async (contactId , thunkAPI) => {
+    try {
+        const response = await ContactsService.addContact(contactId);
+        return response.data;
+    }    catch (e: any) {
+        return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка проверки');
+    }
+});
+
+export const deleteFriend = createAsyncThunk<string, string, { rejectValue: string }>(
+    'authorization/addFriend', async (contactId , thunkAPI) => {
+        try {
+            const response = await ContactsService.deleteContact(contactId);
+            return response.data;
+        }    catch (e: any) {
+            return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка проверки');
+        }
+    });
 
 export const { resetState } = authSLice.actions;
 export default authSLice.reducer;
