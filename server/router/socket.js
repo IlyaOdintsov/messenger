@@ -24,15 +24,15 @@ function setupSocket(server) {
 			console.log(`User with id: ${socket.id} left user room: ${userId}`);
 		});
 
-		socket.on('join_group_room', (chatId) => {
-			socket.join(`group_${chatId}`);
-			console.log(`User with id: ${socket.id} joined groups room: ${chatId}`);
-		});
-
-		socket.on('leave_group_room', (chatId) => {
-			socket.leave(`group_${chatId}`);
-			console.log(`User with id: ${socket.id} left groups room: ${chatId}`);
-		});
+		// socket.on('join_group_room', (chatId) => {
+		// 	socket.join(`group_${chatId}`);
+		// 	console.log(`User with id: ${socket.id} joined groups room: ${chatId}`);
+		// });
+    //
+		// socket.on('leave_group_room', (chatId) => {
+		// 	socket.leave(`group_${chatId}`);
+		// 	console.log(`User with id: ${socket.id} left groups room: ${chatId}`);
+		// });
 
 		socket.on('join_chat', (chatId) => {
 			socket.join(`chat_${chatId}`);
@@ -44,28 +44,6 @@ function setupSocket(server) {
 			console.log(`User with id: ${socket.id} left chat: ${chatId}`);
 		});
 
-		// socket.on('get_groups', async (userId) => {
-		// 	try {
-		// 		console.log('get chats by: ', userId);
-
-		// 		const chatsList = await chatsService.getGroupList(userId);
-		// 		socket.emit('chats_list', chatsList);
-		// 	} catch (e) {
-		// 		socket.emit('error', { message: `Ошибка при получении списка групп: ${e}` });
-		// 	}
-		// });
-
-		// socket.on('delete_chat', async ({ chatId, userId }) => {
-		// 	try {
-		// 		console.log('Deleting chat:', chatId);
-		// 		await chatsService.deleteGroup(chatId);
-
-		// 		const chatsList = await chatsService.getGroupList(userId);
-		// 		socket.emit('chats_list', chatsList);
-		// 	} catch (e) {
-		// 		socket.emit('error', { message: `Ошибка при удалении списка групп: ${e}` });
-		// 	}
-		// });
 
 		// socket.on('get_messages', async (chatId) => {
 		// 	try {
@@ -76,17 +54,18 @@ function setupSocket(server) {
 		// 	}
 		// });
 
-		// socket.on('send_message', async (messageData) => {
-		// 	try {
-		// 		console.log(messageData);
+		socket.on('send_message', async (messageData) => {
+			try {
+				console.log(messageData);
 
-		// 		const message = await messageService.saveMessage(messageData);
+				const message = await messageService.saveMessage(messageData);
+        console.log('message', message);
 
-		// 		io.to(messageData.chatId).emit('receive_message', message);
-		// 	} catch (e) {
-		// 		socket.emit('error', { message: `Ошибка при отправке сообщения: ${e}` });
-		// 	}
-		// });
+				// ioInstance.to(messageData.chatId).emit('receive_message', message);
+			} catch (e) {
+				socket.emit('error', { message: `Ошибка при отправке сообщения: ${e}` });
+			}
+		});
 
 		socket.on('disconnect', () => {
 			console.log('User disconnected', socket.id);

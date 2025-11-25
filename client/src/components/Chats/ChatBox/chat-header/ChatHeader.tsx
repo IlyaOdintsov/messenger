@@ -12,7 +12,7 @@ interface ChatHeader {
 
 export const ChatHeader = ({ currentChat }: ChatHeader) => {
 	const avatarUrl = currentChat?.avatarUrl;
-	const groupName = currentChat?.groupName;
+	const chatName = currentChat?.chatName;
 	const membersCount = currentChat?.members.length;
 	const groupId = currentChat?.id;
 
@@ -29,10 +29,10 @@ export const ChatHeader = ({ currentChat }: ChatHeader) => {
 
 	return (
 		<div className="chat-header" onClick={() => setIsMenuOpen(false)}>
-			<div className="avatarWrapper">{avatarUrl ? <img src={avatarUrl} alt="groupAvatar" /> : <h1>{groupName?.[0].toUpperCase()}</h1>}</div>
+			<div className="avatarWrapper">{avatarUrl ? <img src={avatarUrl} alt="groupAvatar" /> : <h1>{chatName?.[0].toUpperCase()}</h1>}</div>
 
 			<div className="infoWrapper">
-				<h3>{groupName}</h3>
+				<h3>{chatName}</h3>
 				<p>{membersCount}</p>
 			</div>
 

@@ -7,10 +7,11 @@ const MemberSchema = new Schema({
 
 const ChatSchema = new Schema(
   {
-    type: { type: String, enum: ["private", "group"], required: true },
-    members: { type: [MemberSchema], required: true },
-    avatarUrl: { type: String },
-    chatName: { type: String },
+      type: { type: String, enum: ["private", "group"], required: true },
+      members: { type: [MemberSchema], required: true },
+      avatarUrl: { type: String },
+      chatName: { type: String },
+      lastMessage: { type: Schema.Types.ObjectId, ref: "Message", default: null },
   },
   {
     timestamps: true,

@@ -3,6 +3,7 @@ import type { Group, Message } from '../../../../types/chats_Types';
 import './styles.scss';
 import { socket } from '../../../../App';
 import { useTypedSelector } from '../../../../hooks/useAppSelector';
+import MessagesService from "../../../../services/MessagesService.tsx";
 
 interface ChatWindow {
 	currentChat: Group | null;
@@ -16,6 +17,11 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 
 	const [currentMessage, setCurrentMessage] = useState('');
 	const [messages, setMessages] = useState<Message[]>([]);
+
+	async function getMessagesList (groupId: string): Promise<void> {
+		const res = await MessagesService.getMessagesList(groupId)
+		setMessages(res.data)
+	}
 
 	useEffect(() => {
 		const handler = (message: any) => {
@@ -47,28 +53,21 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 
 	useEffect(() => {
 		if (!groupId) return;
-
-		socket.emit('get_messages', groupId);
-
-		const messageListHandler = (messages: Message[]) => {
-			setMessages(messages);
-		};
-
-		socket.on('message_list', messageListHandler);
-
-		return () => {
-			socket.off('message_list', messageListHandler);
-		};
+		getMessagesList(groupId);
 	}, [groupId]);
 
-    useEffect(() => {
+	useEffect(() => {
+		console.log(messages);
+	}, [messages]);
 
-    }, []);
+	useEffect(() => {
+		console.log(currentMessage);
+	}, [currentMessage]);
 
 	return (
 		<div className="chat-window">
 			<div className="messages">window</div>
-			{messages.map((message) => {
+			{messages && messages.map((message) => {
 				return <>{message.text}</>;
 			})}
 			<div className="chat-footer">

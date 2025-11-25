@@ -8,6 +8,11 @@ import type { IUser } from '../../../types/Auth_Response.ts';
 export const ContactsListPanel = () => {
 	const [friendsList, setFriendsList] = useState<IUser[]>([]);
 
+	async function getFriendsList() {
+		const res = await ContactsService.getFriendsList();
+		setFriendsList(res.data);
+	}
+
 	const handleSearch = async (value: string) => {
 		if (value === '') {
 			getFriendsList().catch((e) => console.log(e));
@@ -18,11 +23,6 @@ export const ContactsListPanel = () => {
 		const res = await ContactsService.searchContacts(value);
 		setFriendsList(res.data);
 	};
-
-	async function getFriendsList() {
-		const res = await ContactsService.getFriendsList();
-		setFriendsList(res.data);
-	}
 
 	useEffect(() => {
 		getFriendsList().catch((e) => console.log(e));

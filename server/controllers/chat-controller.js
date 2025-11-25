@@ -10,12 +10,6 @@ class ChatController {
       const groupName = req.body.groupName;
       const avatar = req.files?.avatar;
 
-      console.log(userId);
-      console.log(type);
-      console.log(privateMemberId);
-      console.log(groupName);
-      console.log(avatar);
-
       const newChat = await chatsService.createChat(
         userId,
         type,
@@ -32,7 +26,7 @@ class ChatController {
 
   async getChatList(req, res, next) {
     try {
-      const { userId } = req.body;
+      const userId = req.user.id;
 
       const chatList = await chatsService.getChatList(userId);
       return res.json(chatList);

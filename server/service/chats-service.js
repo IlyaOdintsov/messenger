@@ -1,12 +1,12 @@
 const ApiError = require("../exceptions/api-error");
 const ChatModel = require("../models/chat-model");
 const UserModel = require("../models/user-model");
+const MessageModel = require("../models/message-model");
 const path = require("path");
-const ChatDto = require("../dtos/chat_dto");
+const ChatDto = require("../dtos/chat-dto");
 
 class ChatsService {
   async createChat(userId, type, privateMemberId, groupName, avatar) {
-    console.log("asdasdas", groupName);
     const creator = await UserModel.findById(userId);
     const privateMember = await UserModel.findById(privateMemberId);
 
@@ -76,6 +76,8 @@ class ChatsService {
 
     const chatListWithPrivate = await Promise.all(
       chatList.map(async (chat) => {
+        const lastMessage = await MessageModel.findOne({ chatId: chat.id })
+
         if (chat.type === "private") {
           const contactId = chat.members
             .find((member) => member.userId.toString() !== userId)
@@ -96,6 +98,9 @@ class ChatsService {
             members: chat.members,
             chatName: contactName.trim(),
             avatarUrl: contactAvatarUrl,
+            lastMessage: lastMessage,
+            createdAt: chat.createdAt,
+            updatedAt: chat.updatedAt,
           };
         }
 
@@ -105,11 +110,14 @@ class ChatsService {
           members: chat.members,
           chatName: chat.chatName,
           avatarUrl: chat.avatarUrl,
+          lastMessage: lastMessage,
+          createdAt: chat.createdAt,
+          updatedAt: chat.updatedAt,
         };
       }),
     );
 
-    const chatListDto = chatListWithPrivate.map((group) => new ChatDto(group));
+    const chatListDto = chatListWithPrivate.map((chat) => new ChatDto(chat));
     return chatListDto;
   }
 

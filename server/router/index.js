@@ -7,6 +7,7 @@ const router = new Router();
 const { body } = require("express-validator");
 const authMiddleware = require("../middlewares/auth-middleware");
 
+// login | registration
 router.post(
   "/registration",
   [
@@ -34,16 +35,12 @@ router.post(
   userController.resetPassword,
 );
 
+// chat
 router.post("/createChat", authMiddleware, chatController.createChat);
-router.post("/getChatList", authMiddleware, chatController.getChatList);
+router.get("/getChatList", authMiddleware, chatController.getChatList);
 router.delete("/deleteGroup/:id", authMiddleware, chatController.deleteGroup);
 
-router.get(
-  "/getMessage/:chatId",
-  authMiddleware,
-  messagesController.getMessages,
-);
-
+// contacts
 router.post("/addContact", authMiddleware, contactsController.addContact);
 router.delete(
   "/deleteContact/:searchValue",
@@ -65,5 +62,13 @@ router.get(
   authMiddleware,
   contactsController.searchContacts,
 );
+
+// messages
+router.get(
+    "/getMessagesList/:chatId",
+    authMiddleware,
+    messagesController.getMessages,
+);
+
 
 module.exports = router;

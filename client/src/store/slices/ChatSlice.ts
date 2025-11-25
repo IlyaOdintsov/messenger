@@ -42,9 +42,9 @@ const ChatSlice = createSlice({
 	},
 });
 
-export const getChatList = createAsyncThunk<Group[], { userId: string }, { rejectValue: string }>('chats/getChatList', async ({ userId }, thunkAPI) => {
+export const getChatList = createAsyncThunk<Group[], void, { rejectValue: string }>('chats/getChatList', async (_, thunkAPI) => {
 	try {
-		const response = await ChatService.getChatList(userId);
+		const response = await ChatService.getChatList();
 		return response.data;
 	} catch (e: any) {
 		return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка получения списка чатов');

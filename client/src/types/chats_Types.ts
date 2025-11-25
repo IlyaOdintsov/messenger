@@ -1,7 +1,3 @@
-export interface Message {
-	text: string;
-	time: number;
-}
 
 interface Member {
 	userId: string;
@@ -14,6 +10,9 @@ export interface Group {
 	id: string;
 	avatarUrl: string;
 	chatName: string;
+	lastMessage: Message;
+	createdAt: string;
+	updatedAt: string;
 }
 
 export interface Message {
@@ -21,5 +20,6 @@ export interface Message {
 	sender: string;
 	text: string;
 	createdAt: string;
+	updatedAt: string;
 	messageId: string;
 }

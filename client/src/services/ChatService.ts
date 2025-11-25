@@ -6,8 +6,8 @@ export default class ChatService {
 	static async createChat(formData: FormData): Promise<AxiosResponse<Group>> {
 		return $api.post('/createChat', formData);
 	}
-	static async getChatList(userId: string): Promise<AxiosResponse<Group[]>> {
-		return $api.post<Group[]>('/getChatList', { userId });
+	static async getChatList(): Promise<AxiosResponse<Group[]>> {
+		return $api.get<Group[]>('/getChatList');
 	}
 	static async deleteGroup(groupId: string): Promise<AxiosResponse<string>> {
 		return $api.delete(`/deleteGroup/${groupId}`);
