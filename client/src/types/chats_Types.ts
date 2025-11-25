@@ -1,4 +1,3 @@
-
 interface Member {
 	userId: string;
 	role: 'owner' | 'member';
@@ -21,5 +20,5 @@ export interface Message {
 	text: string;
 	createdAt: string;
 	updatedAt: string;
-	messageId: string;
+	id: string;
 }

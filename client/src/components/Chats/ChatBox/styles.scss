@@ -1,8 +1,9 @@
 .chatBox {
-    flex-basis: 70%;
+	flex-basis: 70%;
 	border: 2px solid black;
 	border-radius: 24px;
 	overflow: hidden;
+	height: 100%;
 
 	@include flex-col-1();
 
