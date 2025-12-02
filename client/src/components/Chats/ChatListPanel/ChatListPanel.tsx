@@ -5,10 +5,27 @@ import './styles.scss';
 import plus from '../../../assets/plus.svg';
 import { ModalOverlay } from '../../../shared/ModalOverlay/ModalOverlay';
 import { NewChat } from './NewChat/NewChat';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { searchFriendsOrChatsList } from '../../../features/searchFriendsOrChatsList.ts';
+import ChatService from '../../../services/ChatService.ts';
+import type { Group } from '../../../types/chats_Types.ts';
 
 export const ChatListPanel = () => {
 	const [isModalShown, setIsModalShown] = useState(false);
+	const [chatsList, setChatsList] = useState<Group[]>([]);
+
+	async function getChatsList() {
+		const res = await ChatService.getChatList();
+		setChatsList(res.data);
+	}
+
+	useEffect(() => {
+		getChatsList().catch((e) => console.log(e));
+	}, []);
+
+	const handleSearch = (value: string) => {
+		searchFriendsOrChatsList({ value, type: 'chats', getList: getChatsList, setState: setChatsList });
+	};
 
 	return (
 		<div className="chatListPanel">
@@ -24,9 +41,9 @@ export const ChatListPanel = () => {
 				</ModalOverlay>
 			</div>
 
-			<SearchInput />
+			<SearchInput onChange={handleSearch} />
 
-			<ChatList />
+			<ChatList chatsList={chatsList} />
 		</div>
 	);
 };

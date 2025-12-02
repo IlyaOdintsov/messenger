@@ -14,14 +14,27 @@
 
 		.message {
 			width: fit-content;
-			display: inline-block;
+			max-width: 50%;
+			overflow-wrap: break-word;
 			padding: calc($def-padding-gap / 2);
 			background-color: $color-secondary;
 			border-radius: $border-radius;
+			display: inline-flex;
+			gap: calc($def-padding-gap / 2);
 
 			&.sender {
 				background-color: $color-accent;
 				align-self: flex-end;
+			}
+
+			.message-text {
+				padding: calc($def-padding-gap / 2);
+			}
+
+			.message-time {
+				font-size: 14px;
+				align-self: end;
+				opacity: 0.8;
 			}
 		}
 	}

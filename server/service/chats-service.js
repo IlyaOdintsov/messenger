@@ -76,7 +76,9 @@ class ChatsService {
 
     const chatListWithPrivate = await Promise.all(
       chatList.map(async (chat) => {
-        const lastMessage = await MessageModel.findOne({ chatId: chat.id })
+        const lastMessage = await MessageModel.findOne({
+          chatId: chat.id,
+        }).sort({ createdAt: -1 });
 
         if (chat.type === "private") {
           const contactId = chat.members
@@ -131,6 +133,19 @@ class ChatsService {
     await ChatModel.deleteOne(group);
     const groupDto = new ChatDto(group);
     return groupDto;
+  }
+
+  async searchChats(search) {
+    if (!search) {
+      throw ApiError.BadRequest("Нет значения поиска");
+    }
+
+    const chatsList = await ChatModel.find({
+      chatName: { $regex: search, $options: "i" },
+    }).limit(20);
+
+    const chatsListDto = chatsList.map((chat) => new ChatDto(chat));
+    return chatsListDto;
   }
 }
 

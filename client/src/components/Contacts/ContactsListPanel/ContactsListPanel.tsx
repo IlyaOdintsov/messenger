@@ -4,6 +4,7 @@ import { ContactsList } from './ContactsList/ContactsList.tsx';
 import { useEffect, useState } from 'react';
 import ContactsService from '../../../services/ContactsService.tsx';
 import type { IUser } from '../../../types/Auth_Response.ts';
+import { searchFriendsOrChatsList } from '../../../features/searchFriendsOrChatsList.ts';
 
 export const ContactsListPanel = () => {
 	const [friendsList, setFriendsList] = useState<IUser[]>([]);
@@ -13,20 +14,13 @@ export const ContactsListPanel = () => {
 		setFriendsList(res.data);
 	}
 
-	const handleSearch = async (value: string) => {
-		if (value === '') {
-			getFriendsList().catch((e) => console.log(e));
-		}
-
-		if (!value || value.length < 3) return;
-
-		const res = await ContactsService.searchContacts(value);
-		setFriendsList(res.data);
-	};
-
 	useEffect(() => {
 		getFriendsList().catch((e) => console.log(e));
 	}, []);
+
+	const handleSearch = (value: string) => {
+		searchFriendsOrChatsList({ value, type: 'friends', getList: getFriendsList, setState: setFriendsList });
+	};
 
 	return (
 		<div className="contactsListPanel">

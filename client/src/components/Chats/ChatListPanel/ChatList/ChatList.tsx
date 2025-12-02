@@ -4,9 +4,14 @@ import emptyChatListIcon from '../../../../assets/emptyChatList.svg';
 import { useScrollbar } from '../../../../hooks/useScrollbar';
 import { useRef } from 'react';
 import { useTypedSelector } from '../../../../hooks/useAppSelector';
+import type { Group } from '../../../../types/chats_Types.ts';
 
-export const ChatList = () => {
-	const chats = useTypedSelector((state) => state.chats.groupData);
+type TChatList = {
+	chatsList: Group[];
+};
+
+export const ChatList = ({ chatsList }: TChatList) => {
+	const chats = chatsList ? chatsList : useTypedSelector((state) => state.chats.groupData);
 
 	const chatListRef = useRef<HTMLDivElement>(null);
 	const hasScrollbar = useScrollbar(chatListRef, chats);

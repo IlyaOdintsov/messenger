@@ -64,9 +64,7 @@ class ContactsService {
       ],
     }).limit(20);
 
-    const contactsListDto = contactsList.map(
-      (contactsList) => new UserDto(contactsList),
-    );
+    const contactsListDto = contactsList.map((contact) => new UserDto(contact));
     return contactsListDto;
   }
 }
