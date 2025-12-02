@@ -23,25 +23,25 @@
 		flex: 1;
 		overflow: hidden;
 		white-space: nowrap;
+		height: 4rem;
 
-		.chat-title {
-			overflow: hidden;
-			text-overflow: ellipsis;
+		.title-and-time {
+			display: flex;
+			justify-content: space-between;
+
+			.chat-title {
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.time {
+				opacity: 0.8;
+			}
 		}
 
 		.last-message {
 			overflow: hidden;
 			text-overflow: ellipsis;
-		}
-	}
-
-	.time-and-counter {
-		@include flex-col-1();
-		height: 100%;
-		min-width: 22px;
-		align-items: end;
-
-		.time {
 		}
 
 		.counter {

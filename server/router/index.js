@@ -39,6 +39,7 @@ router.post(
 router.post("/createChat", authMiddleware, chatController.createChat);
 router.get("/getChatList", authMiddleware, chatController.getChatList);
 router.delete("/deleteGroup/:id", authMiddleware, chatController.deleteGroup);
+router.get("/searchChats", authMiddleware, chatController.searchChats);
 
 // contacts
 router.post("/addContact", authMiddleware, contactsController.addContact);
@@ -65,10 +66,9 @@ router.get(
 
 // messages
 router.get(
-    "/getMessagesList/:chatId",
-    authMiddleware,
-    messagesController.getMessages,
+  "/getMessagesList/:chatId",
+  authMiddleware,
+  messagesController.getMessages,
 );
-
 
 module.exports = router;

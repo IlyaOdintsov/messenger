@@ -1,5 +1,6 @@
 const chatsService = require("../service/chats-service");
 const { getIo } = require("../router/socket");
+const contactsService = require("../service/contacts-service");
 
 class ChatController {
   async createChat(req, res, next) {
@@ -41,6 +42,17 @@ class ChatController {
 
       const groupDto = await chatsService.deleteGroup(groupId);
       return res.json(groupDto.id);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async searchChats(req, res, next) {
+    try {
+      const { search } = req.query;
+
+      const chatsList = await chatsService.searchChats(search);
+      return res.json(chatsList);
     } catch (e) {
       next(e);
     }

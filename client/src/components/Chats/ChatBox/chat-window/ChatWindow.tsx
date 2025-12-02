@@ -7,6 +7,7 @@ import MessagesService from '../../../../services/MessagesService.tsx';
 import paperclip from '../../../../assets/paperclip.svg';
 import sendIcon from '../../../../assets/sendIcon.svg';
 import { useScrollbar } from '../../../../hooks/useScrollbar.ts';
+import { formatDate } from '../../../../features/formatDate.ts';
 
 interface ChatWindow {
 	currentChat: Group | null;
@@ -71,7 +72,8 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 					messages.map((message) => {
 						return (
 							<div key={message.id} className={`message${message.sender === userId ? ' sender' : ''}`}>
-								{message.text}
+								<span className="message-text">{message.text}</span>
+								<div className="message-time">{formatDate(new Date(message.createdAt), 'time')}</div>
 							</div>
 						);
 					})}
