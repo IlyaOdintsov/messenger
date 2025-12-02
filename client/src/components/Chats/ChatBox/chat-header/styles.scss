@@ -48,7 +48,9 @@
 				background-color: $color-area;
 				transform: scale(0);
 				opacity: 0;
-				transition: transform 0.4s cubic-bezier(0.33, 1.45, 0.6, 1), opacity 0.2s;
+				transition:
+					transform 0.4s cubic-bezier(0.33, 1.45, 0.6, 1),
+					opacity 0.2s;
 			}
 
 			&_active::before {
@@ -64,11 +66,14 @@
 			position: absolute;
 			top: 100%;
 			right: 0;
+			z-index: 11;
 
 			transform-origin: top right;
 			transform: scale(0.1) translate(20px, -20px);
 			opacity: 0;
-			transition: transform 0.2s ease, opacity 0.2s ease;
+			transition:
+				transform 0.2s ease,
+				opacity 0.2s ease;
 			pointer-events: none;
 
 			&_active {

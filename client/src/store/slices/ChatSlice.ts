@@ -38,6 +38,9 @@ const ChatSlice = createSlice({
 			})
 			.addCase(deleteGroup.fulfilled, (state, action) => {
 				state.groupData = state.groupData.filter((group) => group.id !== action.payload);
+			})
+			.addCase(editChat.fulfilled, (state, action) => {
+				state.groupData = state.groupData.map((group) => (group.id === action.payload.id ? action.payload : group));
 			});
 	},
 });
@@ -68,5 +71,17 @@ export const deleteGroup = createAsyncThunk<string, { groupId: string }, { rejec
 		return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка удаления группы');
 	}
 });
+
+export const editChat = createAsyncThunk<Group, { chatId: string; formData: FormData }, { rejectValue: string }>(
+	'chats/editChat',
+	async ({ chatId, formData }, thunkAPI) => {
+		try {
+			const response = await ChatService.editChat(chatId, formData);
+			return response.data;
+		} catch (e: any) {
+			return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка редактирования группы');
+		}
+	}
+);
 
 export default ChatSlice.reducer;

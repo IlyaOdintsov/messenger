@@ -9,6 +9,7 @@ export const ChatBlock = (chat: Group) => {
 	const avatarUrl = chat.avatarUrl;
 	const lastMessage = chat.lastMessage?.text || '';
 	const time = new Date(chat.updatedAt);
+	const type = chat.type;
 
 	const date = formatDate(time, 'def');
 
@@ -19,6 +20,7 @@ export const ChatBlock = (chat: Group) => {
 			<div className="chat-description">
 				<div className="title-and-time">
 					<h4 className="chat-title">{chatName}</h4>
+					<span className="chat-type">{type === 'private' ? 'chat' : type}</span>
 					<div className="time">{date}</div>
 				</div>
 

@@ -40,6 +40,7 @@ router.post("/createChat", authMiddleware, chatController.createChat);
 router.get("/getChatList", authMiddleware, chatController.getChatList);
 router.delete("/deleteGroup/:id", authMiddleware, chatController.deleteGroup);
 router.get("/searchChats", authMiddleware, chatController.searchChats);
+router.patch("/editChat/:id", authMiddleware, chatController.editChat);
 
 // contacts
 router.post("/addContact", authMiddleware, contactsController.addContact);
