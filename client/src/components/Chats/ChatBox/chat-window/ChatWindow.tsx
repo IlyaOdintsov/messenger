@@ -67,8 +67,8 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 
 	return (
 		<div className="chat-window">
-			<div ref={messagesRef} className={`messages${hasScrollbar ? ' has-scrollbar' : ''}`}>
-				{messages &&
+			<div ref={messagesRef} className={`messages${hasScrollbar ? ' has-scrollbar' : ''} ${messages.length > 0 ? '' : ' empty'}`}>
+				{messages.length > 0 ? (
 					messages.map((message) => {
 						return (
 							<div key={message.id} className={`message${message.sender === userId ? ' sender' : ''}`}>
@@ -76,7 +76,13 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 								<div className="message-time">{formatDate(new Date(message.createdAt), 'time')}</div>
 							</div>
 						);
-					})}
+					})
+				) : (
+					<>
+						<h4>No Messages Yet</h4>
+						<p>Send a message to start a dialogue.</p>
+					</>
+				)}
 			</div>
 
 			<div className="chat-footer">

@@ -57,6 +57,19 @@ class ChatController {
       next(e);
     }
   }
+
+  async editChat(req, res, next) {
+    try {
+      const chatId = req.params.id;
+      const newChatName = req.body.chatName;
+      const newAvatar = req.files?.avatar;
+
+      const chat = await chatsService.editChat(chatId, newAvatar, newChatName);
+      return res.json(chat);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = new ChatController();

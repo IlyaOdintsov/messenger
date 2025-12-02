@@ -27,15 +27,21 @@
 
 		.title-and-time {
 			display: flex;
-			justify-content: space-between;
+			justify-content: flex-start;
+			align-items: center;
 
 			.chat-title {
 				overflow: hidden;
 				text-overflow: ellipsis;
 			}
 
+			.chat-type {
+				margin-left: $def-padding-gap;
+			}
+
 			.time {
 				opacity: 0.8;
+				margin-left: auto;
 			}
 		}
 

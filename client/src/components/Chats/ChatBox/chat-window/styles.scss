@@ -6,11 +6,17 @@
 	overflow: auto;
 
 	.messages {
-		height: 100%;
 		padding: 0 $def-padding-gap;
 		@include flex-col-1;
 		flex-direction: column-reverse;
 		overflow-y: scroll;
+		height: 100vh;
+
+		&.empty {
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
 
 		.message {
 			width: fit-content;

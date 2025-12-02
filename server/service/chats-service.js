@@ -3,6 +3,7 @@ const ChatModel = require("../models/chat-model");
 const UserModel = require("../models/user-model");
 const MessageModel = require("../models/message-model");
 const path = require("path");
+const fs = require("fs/promises");
 const ChatDto = require("../dtos/chat-dto");
 
 class ChatsService {
@@ -146,6 +147,53 @@ class ChatsService {
 
     const chatsListDto = chatsList.map((chat) => new ChatDto(chat));
     return chatsListDto;
+  }
+
+  async editChat(chatId, newAvatar, newChatName) {
+    const chat = ChatModel.findById(chatId);
+
+    if (!chat) {
+      throw ApiError.BadRequest("Группы не существует");
+    }
+
+    let groupAvatarUrl = chat.avatarUrl;
+    if (newAvatar) {
+      if (groupAvatarUrl) {
+        const filename = groupAvatarUrl.split("/").pop();
+        const oldPath = path.join(
+          __dirname,
+          "..",
+          "uploads",
+          "groups",
+          filename,
+        );
+        await fs.unlink(oldPath);
+      }
+
+      const uniqueName = Date.now() + "-" + newAvatar.name;
+      const avatarPath = path.join(
+        __dirname,
+        "..",
+        "uploads",
+        "groups",
+        uniqueName,
+      );
+      await newAvatar.mv(avatarPath);
+      groupAvatarUrl = `${process.env.API_URL}/uploads/groups/${uniqueName}`;
+    }
+
+    const updateData = {
+      avatarUrl: groupAvatarUrl,
+      chatName: newChatName,
+    };
+
+    const updatedChat = await ChatModel.findByIdAndUpdate(chatId, updateData, {
+      new: true,
+    });
+
+    console.log("updatedChat", updatedChat);
+    const chatDto = new ChatDto(updatedChat);
+    return chatDto;
   }
 }
 

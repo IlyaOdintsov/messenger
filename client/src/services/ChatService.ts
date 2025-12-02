@@ -18,4 +18,8 @@ export default class ChatService {
 	static async searchChats(searchValue: string): Promise<AxiosResponse<Group[]>> {
 		return $api.get(`/searchChats`, { params: { search: searchValue } });
 	}
+
+	static async editChat(chatId: string, formData: FormData): Promise<AxiosResponse<Group>> {
+		return $api.patch(`/editChat/${chatId}`, formData);
+	}
 }
