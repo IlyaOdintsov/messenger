@@ -25,6 +25,11 @@ export const NewChat = ({ onClose }: { onClose: () => void }) => {
 			return;
 		}
 
+		if (groupName.length < 2) {
+			setError('Название группы не может быть меньше 2 символов');
+			return;
+		}
+
 		const data = new FormData();
 
 		data.append('type', 'group');

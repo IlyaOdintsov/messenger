@@ -32,7 +32,7 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 	useEffect(() => {
 		socket.on('receive_message', (message: any) => {
 			console.log('message', message);
-			setMessages((prev) => [...prev, message]);
+			setMessages((prev) => [message, ...prev]);
 		});
 
 		return () => {
@@ -90,7 +90,16 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 					<img src={paperclip} alt="paperclip" />
 				</button>
 
-				<input className="chat-input" type="text" placeholder="message..." value={currentMessage} onChange={(e) => setCurrentMessage(e.target.value)} />
+				<input
+					className="chat-input"
+					type="text"
+					placeholder="message..."
+					value={currentMessage}
+					onChange={(e) => setCurrentMessage(e.target.value)}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter') sendMessage();
+					}}
+				/>
 
 				<button className="chat-btn" onClick={sendMessage}>
 					<img src={sendIcon} alt="send" />
