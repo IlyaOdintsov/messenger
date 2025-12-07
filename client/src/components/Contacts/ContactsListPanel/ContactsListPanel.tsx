@@ -2,25 +2,20 @@ import { SearchInput } from '../../../shared';
 import './styles.scss';
 import { ContactsList } from './ContactsList/ContactsList.tsx';
 import { useEffect, useState } from 'react';
-import ContactsService from '../../../services/ContactsService.tsx';
 import type { IUser } from '../../../types/Auth_Response.ts';
 import { searchFriendsOrChatsList } from '../../../features/searchFriendsOrChatsList.ts';
 
 export const ContactsListPanel = () => {
-	const [friendsList, setFriendsList] = useState<IUser[]>([]);
-
-	async function getFriendsList() {
-		const res = await ContactsService.getFriendsList();
-		setFriendsList(res.data);
-	}
-
-	useEffect(() => {
-		getFriendsList().catch((e) => console.log(e));
-	}, []);
+	const [searchedFriends, setSearchedFriends] = useState<IUser[] | null>(null);
+	const [searchValue, setSearchValue] = useState('');
 
 	const handleSearch = (value: string) => {
-		searchFriendsOrChatsList({ value, type: 'friends', getList: getFriendsList, setState: setFriendsList });
+		setSearchValue(value);
 	};
+
+	useEffect(() => {
+		searchFriendsOrChatsList({ value: searchValue, type: 'friends', setState: setSearchedFriends });
+	}, [searchValue, searchedFriends]);
 
 	return (
 		<div className="contactsListPanel">
@@ -30,7 +25,7 @@ export const ContactsListPanel = () => {
 
 			<SearchInput onChange={handleSearch} />
 
-			<ContactsList friendsList={friendsList} />
+			<ContactsList searchedFriends={searchedFriends} />
 		</div>
 	);
 };
