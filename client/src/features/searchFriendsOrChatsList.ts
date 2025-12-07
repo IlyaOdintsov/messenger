@@ -4,18 +4,18 @@ import ChatService from '../services/ChatService.ts';
 
 type searchFriendsOrChatsList<T> = {
 	value: string;
-	getList: () => Promise<void>;
 	type: 'friends' | 'chats';
-	setState: Dispatch<SetStateAction<T[]>>;
+	setState: Dispatch<SetStateAction<T[] | null>>;
 };
 
-export const searchFriendsOrChatsList = <T>({ value, type, getList, setState }: searchFriendsOrChatsList<T>): void => {
+export const searchFriendsOrChatsList = <T>({ value, type, setState }: searchFriendsOrChatsList<T>): void => {
 	const handleSearch = async (value: string) => {
 		if (value === '') {
-			getList().catch((e) => console.log(e));
+			setState(null);
+			return;
 		}
 
-		if (!value || value.length < 2) return;
+		if (value.length < 2) return;
 
 		const res = type === 'friends' ? await ContactsService.searchContacts(value) : await ChatService.searchChats(value);
 		setState(res.data as T[]);
