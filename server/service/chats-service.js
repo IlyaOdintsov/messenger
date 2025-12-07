@@ -131,7 +131,15 @@ class ChatsService {
       throw ApiError.BadRequest("Группы не существует");
     }
 
-    await ChatModel.deleteOne(group);
+    const groupAvatarUrl = group.avatarUrl;
+
+    if (groupAvatarUrl) {
+      const filename = groupAvatarUrl.split("/").pop();
+      const oldPath = path.join(__dirname, "..", "uploads", "groups", filename);
+      await fs.unlink(oldPath);
+    }
+
+    await ChatModel.deleteOne({ _id: groupId });
     const groupDto = new ChatDto(group);
     return groupDto;
   }
