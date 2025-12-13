@@ -67,7 +67,7 @@ export const EditChat = ({ currentChat, onClose }: TEditChat) => {
 	}
 
 	return (
-		<div className="newChat">
+		<div className="editChat">
 			<div className="row">
 				<h4>Редактировать группу</h4>
 			</div>

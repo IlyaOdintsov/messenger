@@ -2,12 +2,9 @@ import type { Group } from '../../../../types/chats_Types';
 import './styles.scss';
 import menuIcon from '../../../../assets/menu.svg';
 import { useEffect, useRef, useState } from 'react';
-import { useAppDispatch } from '../../../../hooks/useAppDispatch';
-import { deleteGroup } from '../../../../store/slices/ChatSlice';
-import { useNavigate } from 'react-router-dom';
 import { ModalOverlay } from '../../../../shared/ModalOverlay/ModalOverlay.tsx';
 import { EditChat } from '../EditChat/EditChat.tsx';
-import { deleteFriend } from '../../../../store/slices/AuthSlice.ts';
+import { InfoChat } from '../InfoChat/InfoChat.tsx';
 
 interface ChatHeader {
 	currentChat: Group | null;
@@ -17,21 +14,12 @@ export const ChatHeader = ({ currentChat }: ChatHeader) => {
 	const avatarUrl = currentChat?.avatarUrl;
 	const chatName = currentChat?.chatName;
 	const membersCount = currentChat?.members.length;
-	const chatId = currentChat?.id;
 	const type = currentChat?.type;
 
 	const menuRef = useRef<HTMLDivElement>(null);
-	const [isModalShown, setIsModalShown] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
-
-	function handleDelete() {
-		if (!chatId) return;
-		type === 'group' ? dispatch(deleteGroup({ groupId: chatId })) : dispatch(deleteFriend({ contactId: chatId }));
-		navigate('/chats', { replace: true });
-	}
+	const [isEditModalShown, setIsEditModalShown] = useState(false);
+	const [isInfoModalShown, setIsInfoModalShown] = useState(false);
 
 	useEffect(() => {
 		function handleCloseMenu(e: MouseEvent) {
@@ -73,34 +61,38 @@ export const ChatHeader = ({ currentChat }: ChatHeader) => {
 					</button>
 
 					<div className={`groupMenu${isMenuOpen ? ' groupMenu_active' : ''}`} onClick={(e) => e.stopPropagation()}>
-						{type === 'group' ? (
-							<>
+						<>
+							<button
+								onClick={() => {
+									setIsInfoModalShown(true);
+									setIsMenuOpen(false);
+								}}
+								className="defaultBtn"
+							>
+								Информация
+							</button>
+							{type === 'group' && (
 								<button
 									onClick={() => {
-										setIsModalShown(true);
+										setIsEditModalShown(true);
 										setIsMenuOpen(false);
 									}}
 									className="defaultBtn"
 								>
 									Редактировать
 								</button>
-								<button onClick={handleDelete} className="defaultBtn">
-									Удалить чат
-								</button>
-							</>
-						) : (
-							<>
-								<button onClick={handleDelete} className="defaultBtn">
-									Удалить
-								</button>
-							</>
-						)}
+							)}
+						</>
 					</div>
 				</div>
 			</div>
 
-			<ModalOverlay isOpen={isModalShown} onClose={() => setIsModalShown(false)}>
-				<EditChat currentChat={currentChat} onClose={() => setIsModalShown(false)} />
+			<ModalOverlay isOpen={isEditModalShown} onClose={() => setIsEditModalShown(false)}>
+				<EditChat currentChat={currentChat} onClose={() => setIsEditModalShown(false)} />
+			</ModalOverlay>
+
+			<ModalOverlay isOpen={isInfoModalShown} onClose={() => setIsInfoModalShown(false)}>
+				<InfoChat currentChat={currentChat} onClose={() => setIsInfoModalShown(false)} />
 			</ModalOverlay>
 		</>
 	);
