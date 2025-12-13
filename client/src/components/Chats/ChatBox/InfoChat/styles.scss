@@ -1,0 +1,62 @@
+.infoChat {
+	@include flex-col-2();
+	@include border-padding();
+	align-items: center;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	min-width: 25%;
+	min-height: 30%;
+	background-color: $color-area;
+
+	.avatarAndChatName {
+		@include flex-col-1();
+		align-items: center;
+
+		.avatarWrapper {
+			width: 5em;
+			height: 5em;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 50%;
+			border: 2px solid $color-accent;
+			background-color: $color-area;
+			overflow: hidden;
+		}
+	}
+
+	.membersList {
+		@include flex-col-1();
+		width: 100%;
+		overflow: auto;
+		height: 250px;
+		justify-content: start;
+	}
+
+	.buttonsWrapper {
+		@include flex-col-1();
+		width: 100%;
+	}
+}
+
+.membersList::-webkit-scrollbar {
+	width: 8px;
+}
+
+.membersList::-webkit-scrollbar-track {
+	border-radius: 10px;
+	background-color: rgba(87, 78, 123, 0.2);
+}
+
+.membersList::-webkit-scrollbar-thumb {
+	background-color: rgba(87, 78, 123, 0.5);
+	border-radius: 10px;
+}
+
+.membersList:not(.has-scrollbar)::-webkit-scrollbar-track {
+	background-color: rgba(87, 78, 123, 0);
+}
