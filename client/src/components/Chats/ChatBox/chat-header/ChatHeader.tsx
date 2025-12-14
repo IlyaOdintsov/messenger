@@ -55,7 +55,7 @@ export const ChatHeader = ({ currentChat }: ChatHeader) => {
 							e.stopPropagation();
 							setIsMenuOpen((prev) => !prev);
 						}}
-						className={`menuBtn ${isMenuOpen ? 'menuBtn_active' : ''}`}
+						className={`menuBtn${isMenuOpen ? ' menuBtn_active' : ''}`}
 					>
 						<img src={menuIcon} alt="menu" />
 					</button>

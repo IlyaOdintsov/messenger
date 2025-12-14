@@ -8,6 +8,7 @@
 	.messages {
 		padding: 0 $def-padding-gap;
 		@include flex-col-1;
+		justify-content: end;
 		flex-direction: column-reverse;
 		overflow-y: scroll;
 		height: 100vh;

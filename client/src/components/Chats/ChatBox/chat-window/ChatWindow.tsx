@@ -8,6 +8,8 @@ import paperclip from '../../../../assets/paperclip.svg';
 import sendIcon from '../../../../assets/sendIcon.svg';
 import { useScrollbar } from '../../../../hooks/useScrollbar.ts';
 import { formatDate } from '../../../../features/formatDate.ts';
+import { useAppDispatch } from '../../../../hooks/useAppDispatch.ts';
+import { updateChatLastMessage } from '../../../../store/slices/ChatSlice.ts';
 
 interface ChatWindow {
 	currentChat: Group | null;
@@ -21,6 +23,8 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 	const [currentMessage, setCurrentMessage] = useState('');
 	const [messages, setMessages] = useState<Message[]>([]);
 
+	const dispatch = useAppDispatch();
+
 	const messagesRef = useRef<HTMLDivElement>(null);
 	const hasScrollbar = useScrollbar(messagesRef, messages);
 
@@ -30,8 +34,9 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 	}
 
 	useEffect(() => {
-		socket.on('receive_message', (message: any) => {
+		socket.on('receive_message', (message: Message) => {
 			console.log('message', message);
+			dispatch(updateChatLastMessage(message));
 			setMessages((prev) => [message, ...prev]);
 		});
 

@@ -8,7 +8,8 @@ export const ChatBlock = (chat: Group) => {
 	const chatName = chat.chatName;
 	const avatarUrl = chat.avatarUrl;
 	const lastMessage = chat.lastMessage?.text || '';
-	const time = new Date(chat.updatedAt);
+	const time =
+		new Date(chat.updatedAt).getTime() > new Date(chat.lastMessage?.createdAt || 0).getTime() ? new Date(chat.updatedAt) : new Date(chat.lastMessage.createdAt);
 	const type = chat.type;
 
 	const date = formatDate(time, 'def');

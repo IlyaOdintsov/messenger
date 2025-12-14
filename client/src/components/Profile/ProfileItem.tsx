@@ -82,11 +82,10 @@ export const ProfileItem = ({ user }: ProfileItemProps) => {
 				<img src={avatar ? avatar : profileIcon} alt="profile" style={{ padding: avatar ? '' : '12px' }} />
 			</div>
 
-			<div className="row">
+			<div className="infoWrapper">
 				<span>{nickName}</span>
+				<span>{email}</span>
 			</div>
-
-			<div className="row">{email}</div>
 
 			{isMyProfilePage ? (
 				<button className="defaultBtn" onClick={handleLogout}>

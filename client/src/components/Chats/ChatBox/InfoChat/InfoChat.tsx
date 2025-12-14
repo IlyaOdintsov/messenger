@@ -67,12 +67,14 @@ export const InfoChat = ({ currentChat, onClose }: TEditChat) => {
 			</div>
 
 			<div className="buttonsWrapper">
-				<button className="defaultBtn" onClick={onClose}>
-					Добавить участников
-				</button>
+				{type === 'group' && (
+					<button className="defaultBtn" onClick={onClose}>
+						Добавить участников
+					</button>
+				)}
 
 				<button className="defaultBtn" onClick={handleDelete}>
-					Удалить
+					{type === 'group' ? 'Удалить группу' : 'Удалить из друзей'}
 				</button>
 			</div>
 		</div>
