@@ -25,9 +25,12 @@
 				box-shadow: 0 0 0 2px $color-accent;
 				transition: box-shadow 0.15s;
 				overflow: hidden;
+			}
 
+			> *:not(:last-child):not(:first-of-type) {
+				border-radius: 8px;
 				&:hover {
-					box-shadow: 0 0 0 3px $color-accent;
+					background: $color-secondary;
 				}
 			}
 		}
