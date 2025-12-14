@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import type { Group } from '../../types/chats_Types';
+import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { Group, Message } from '../../types/chats_Types';
 import ChatService from '../../services/ChatService';
 
 interface GroupState {
@@ -17,7 +17,14 @@ const initialState: GroupState = {
 const ChatSlice = createSlice({
 	name: 'chats',
 	initialState,
-	reducers: {},
+	reducers: {
+		updateChatLastMessage(state, action: PayloadAction<Message>) {
+			const { chatId } = action.payload;
+			const newMessage = action.payload;
+
+			state.groupData = state.groupData.map((chat) => (chat.id === chatId ? { ...chat, lastMessage: newMessage } : chat));
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(getChatList.pending, (state) => {
@@ -84,4 +91,5 @@ export const editChat = createAsyncThunk<Group, { chatId: string; formData: Form
 	}
 );
 
+export const { updateChatLastMessage } = ChatSlice.actions;
 export default ChatSlice.reducer;

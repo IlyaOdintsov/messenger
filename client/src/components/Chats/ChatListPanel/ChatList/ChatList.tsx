@@ -2,7 +2,7 @@ import { ChatBlock } from '../../../../shared';
 import './styles.scss';
 import emptyChatListIcon from '../../../../assets/emptyChatList.svg';
 import { useScrollbar } from '../../../../hooks/useScrollbar';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useTypedSelector } from '../../../../hooks/useAppSelector';
 import type { Group } from '../../../../types/chats_Types.ts';
 
@@ -12,14 +12,16 @@ type TChatList = {
 
 export const ChatList = ({ searchedChats }: TChatList) => {
 	const chatsList = useTypedSelector((state) => state.chats.groupData);
-	const chats = searchedChats ? searchedChats : chatsList;
+	const filteredChats = [...chatsList].sort((a, b) => {
+		const timeA = a.lastMessage?.createdAt ? new Date(a.lastMessage.createdAt).getTime() : new Date(a.updatedAt).getTime();
+		const timeB = b.lastMessage?.createdAt ? new Date(b.lastMessage.createdAt).getTime() : new Date(b.updatedAt).getTime();
+
+		return timeB - timeA;
+	});
+	const chats = searchedChats ? searchedChats : filteredChats;
 
 	const chatListRef = useRef<HTMLDivElement>(null);
 	const hasScrollbar = useScrollbar(chatListRef, chats);
-
-	useEffect(() => {
-		console.log('chats list: ', chats);
-	}, [chats]);
 
 	return (
 		<div ref={chatListRef} className={`chatsList${chats.length <= 0 ? ' empty' : ''} ${hasScrollbar ? ' has-scrollbar' : ''}`}>
