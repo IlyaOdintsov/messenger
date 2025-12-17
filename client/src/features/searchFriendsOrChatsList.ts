@@ -1,4 +1,4 @@
-import ContactsService from '../services/ContactsService.tsx';
+import ContactsService from '../services/ContactsService.ts';
 import type { Dispatch, SetStateAction } from 'react';
 import ChatService from '../services/ChatService.ts';
 

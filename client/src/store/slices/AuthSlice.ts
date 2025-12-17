@@ -3,7 +3,7 @@ import AuthService from '../../services/AuthService';
 import type { AuthResponse } from '../../types/Auth_Response';
 import { LS_ACCESS_TOKEN } from '../../constants/constants';
 import $api, { API_URL } from '../../http';
-import ContactsService from '../../services/ContactsService.tsx';
+import ContactsService from '../../services/ContactsService.ts';
 
 export interface AuthState {
 	status: string;

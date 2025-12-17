@@ -16,10 +16,12 @@ export const ChatBox = () => {
 	const groups = useTypedSelector((state) => state.chats.groupData);
 
 	useEffect(() => {
+		console.log('ChatBox');
 		if (groups.length > 0 && chatId) {
 			const currChat = groups.find((group) => group.id === chatId);
 			if (currChat) setCurrentChat(currChat);
 		}
+		console.log('groups', groups);
 	}, [chatId, groups]);
 
 	useEffect(() => {

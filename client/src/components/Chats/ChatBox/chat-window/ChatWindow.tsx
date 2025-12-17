@@ -3,7 +3,7 @@ import type { Group, Message } from '../../../../types/chats_Types';
 import './styles.scss';
 import { socket } from '../../../../App';
 import { useTypedSelector } from '../../../../hooks/useAppSelector';
-import MessagesService from '../../../../services/MessagesService.tsx';
+import MessagesService from '../../../../services/MessagesService.ts';
 import paperclip from '../../../../assets/paperclip.svg';
 import sendIcon from '../../../../assets/sendIcon.svg';
 import { useScrollbar } from '../../../../hooks/useScrollbar.ts';
@@ -29,6 +29,7 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 	const hasScrollbar = useScrollbar(messagesRef, messages);
 
 	async function getMessagesList(groupId: string): Promise<void> {
+		console.log('groupId', groupId);
 		const res = await MessagesService.getMessagesList(groupId);
 		setMessages(res.data);
 	}
@@ -69,6 +70,10 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 	useEffect(() => {
 		console.log(messages);
 	}, [messages]);
+
+	useEffect(() => {
+		console.log('groupId chatWindow', groupId);
+	}, [groupId]);
 
 	return (
 		<div className="chat-window">

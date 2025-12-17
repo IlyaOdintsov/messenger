@@ -203,6 +203,29 @@ class ChatsService {
     const chatDto = new ChatDto(updatedChat);
     return chatDto;
   }
+
+  async addMemberToGroup(userId, groupId, contactId) {
+    const chat = await ChatModel.findById(groupId);
+    const user = await UserModel.findById(userId);
+    const contact = await UserModel.findById(contactId);
+
+    if (!user || !contact) {
+      throw ApiError.BadRequest("Пользователь не найден");
+    }
+
+    if (!chat) {
+      throw ApiError.BadRequest("Группы не существует");
+    }
+
+    const chatWithNewMember = await ChatModel.findByIdAndUpdate(
+      groupId,
+      { $push: { members: { userId: contactId, role: "member" } } },
+      { new: true },
+    );
+
+    const chatDto = new ChatDto(chatWithNewMember);
+    return chatDto;
+  }
 }
 
 module.exports = new ChatsService();

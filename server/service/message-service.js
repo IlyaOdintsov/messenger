@@ -1,5 +1,5 @@
 const ApiError = require("../exceptions/api-error");
-const GroupModel = require("../models/chat-model");
+const ChatModel = require("../models/chat-model");
 const MessageModel = require("../models/message-model");
 const UserModel = require("../models/user-model");
 const MessageDto = require("../dtos/message-dto");
@@ -13,13 +13,6 @@ class MessageService {
       throw ApiError.BadRequest("Пользователь не найден");
     }
 
-    // chatId: string;
-    // sender: string;
-    // text: string;
-    // createdAt: string;
-    // updatedAt: string;
-    // messageId: string;
-
     const message = await MessageModel.create({
       chatId: messageData.chatId,
       sender: messageData.sender,
@@ -31,7 +24,7 @@ class MessageService {
   }
 
   async getMessages(chatId) {
-    const chat = await GroupModel.findById(chatId);
+    const chat = await ChatModel.findById(chatId);
 
     if (!chat) {
       throw ApiError.BadRequest("Группа не найдена");
@@ -39,8 +32,10 @@ class MessageService {
 
     const messagesList = await MessageModel.find({ chatId });
 
-    const messagesListDto = messagesList.map((message) => new MessageDto(message));
-    console.log('getMessages', messagesListDto);
+    const messagesListDto = messagesList.map(
+      (message) => new MessageDto(message),
+    );
+    console.log("getMessages", messagesListDto);
     return messagesListDto;
   }
 }

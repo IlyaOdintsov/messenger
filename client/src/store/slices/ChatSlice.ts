@@ -48,6 +48,9 @@ const ChatSlice = createSlice({
 			})
 			.addCase(editChat.fulfilled, (state, action) => {
 				state.groupData = state.groupData.map((group) => (group.id === action.payload.id ? action.payload : group));
+			})
+			.addCase(addMemberToGroup.fulfilled, (state, action) => {
+				state.groupData = state.groupData.map((group) => (group.id === action.payload.id ? action.payload : group));
 			});
 	},
 });
@@ -87,6 +90,18 @@ export const editChat = createAsyncThunk<Group, { chatId: string; formData: Form
 			return response.data;
 		} catch (e: any) {
 			return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка редактирования группы');
+		}
+	}
+);
+
+export const addMemberToGroup = createAsyncThunk<Group, { groupId: string; contactId: string }, { rejectValue: string }>(
+	'chats/addMemberToGroup',
+	async ({ groupId, contactId }, thunkAPI) => {
+		try {
+			const response = await ChatService.addMemberToGroup(groupId, contactId);
+			return response.data;
+		} catch (e: any) {
+			return thunkAPI.rejectWithValue(e.response.data.message || 'Ошибка создания группы');
 		}
 	}
 );

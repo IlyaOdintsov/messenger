@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ModalOverlay } from '../../../../shared/ModalOverlay/ModalOverlay.tsx';
 import { EditChat } from '../EditChat/EditChat.tsx';
 import { InfoChat } from '../InfoChat/InfoChat.tsx';
+import { NewMemberModal } from '../NewMemberModal/NewMemberModal.tsx';
 
 interface ChatHeader {
 	currentChat: Group | null;
@@ -14,12 +15,14 @@ export const ChatHeader = ({ currentChat }: ChatHeader) => {
 	const avatarUrl = currentChat?.avatarUrl;
 	const chatName = currentChat?.chatName;
 	const membersCount = currentChat?.members.length;
+	const chatId = currentChat?.id || '';
 	const type = currentChat?.type;
 
 	const menuRef = useRef<HTMLDivElement>(null);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isEditModalShown, setIsEditModalShown] = useState(false);
 	const [isInfoModalShown, setIsInfoModalShown] = useState(false);
+	const [isNewMembersModalShown, setIsNewMembersModalShown] = useState(false);
 
 	useEffect(() => {
 		function handleCloseMenu(e: MouseEvent) {
@@ -30,8 +33,6 @@ export const ChatHeader = ({ currentChat }: ChatHeader) => {
 
 		if (isMenuOpen) {
 			document.addEventListener('click', handleCloseMenu);
-		} else {
-			document.removeEventListener('click', handleCloseMenu);
 		}
 
 		return () => {
@@ -92,7 +93,17 @@ export const ChatHeader = ({ currentChat }: ChatHeader) => {
 			</ModalOverlay>
 
 			<ModalOverlay isOpen={isInfoModalShown} onClose={() => setIsInfoModalShown(false)}>
-				<InfoChat currentChat={currentChat} onClose={() => setIsInfoModalShown(false)} />
+				<InfoChat
+					currentChat={currentChat}
+					handleAddMembers={() => {
+						setIsInfoModalShown(false);
+						setIsNewMembersModalShown(true);
+					}}
+				/>
+			</ModalOverlay>
+
+			<ModalOverlay isOpen={isNewMembersModalShown} onClose={() => setIsNewMembersModalShown(false)}>
+				<NewMemberModal currentChatId={chatId} onClose={() => setIsNewMembersModalShown(false)} />
 			</ModalOverlay>
 		</>
 	);

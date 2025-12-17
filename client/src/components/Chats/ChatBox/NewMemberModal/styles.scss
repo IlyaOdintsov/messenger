@@ -1,0 +1,43 @@
+.newMemberModal {
+	@include flex-col-2();
+	@include border-padding();
+
+	background-color: $color-area;
+
+	.friendsList {
+		@include flex-col-1();
+		overflow: auto;
+		height: 300px;
+
+		.friendsRow {
+			display: flex;
+			gap: $def-padding-gap;
+			width: 100%;
+
+			> * {
+				width: 100%;
+			}
+			.defaultBtn {
+				width: auto;
+			}
+		}
+	}
+}
+
+.friendsList::-webkit-scrollbar {
+	width: 8px;
+}
+
+.friendsList::-webkit-scrollbar-track {
+	border-radius: 10px;
+	background-color: rgba(87, 78, 123, 0.2);
+}
+
+.friendsList::-webkit-scrollbar-thumb {
+	background-color: rgba(87, 78, 123, 0.5);
+	border-radius: 10px;
+}
+
+.friendsList:not(.has-scrollbar)::-webkit-scrollbar-track {
+	background-color: rgba(87, 78, 123, 0);
+}

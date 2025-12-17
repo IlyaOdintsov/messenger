@@ -4,7 +4,7 @@ import { useAppDispatch } from '../../../../hooks/useAppDispatch';
 import { deleteGroup } from '../../../../store/slices/ChatSlice';
 import type { Group } from '../../../../types/chats_Types.ts';
 import type { IUser } from '../../../../types/Auth_Response.ts';
-import ContactsService from '../../../../services/ContactsService.tsx';
+import ContactsService from '../../../../services/ContactsService.ts';
 import { useNavigate } from 'react-router-dom';
 import { deleteFriend } from '../../../../store/slices/AuthSlice.ts';
 import { ContactBlock } from '../../../Contacts/ContactsListPanel/ContactsList/ContactBlock/ContactBlock.tsx';
@@ -12,10 +12,10 @@ import { useScrollbar } from '../../../../hooks/useScrollbar.ts';
 
 type TEditChat = {
 	currentChat: Group | null;
-	onClose: () => void;
+	handleAddMembers: () => void;
 };
 
-export const InfoChat = ({ currentChat, onClose }: TEditChat) => {
+export const InfoChat = ({ currentChat, handleAddMembers }: TEditChat) => {
 	const avatarUrl = currentChat?.avatarUrl;
 	const chatName = currentChat?.chatName;
 	const members = currentChat?.members;
@@ -60,15 +60,17 @@ export const InfoChat = ({ currentChat, onClose }: TEditChat) => {
 				<h3>{chatName}</h3>
 			</div>
 
-			<div ref={membersRef} className={`membersList${hasScrollbar ? ' has-scrollbar' : ''}`}>
-				{membersList?.map((member) => (
-					<ContactBlock key={member.id} {...member} />
-				))}
-			</div>
+			{type === 'group' && (
+				<div ref={membersRef} className={`membersList${hasScrollbar ? ' has-scrollbar' : ''}`}>
+					{membersList?.map((member) => (
+						<ContactBlock key={member.id} {...member} />
+					))}
+				</div>
+			)}
 
 			<div className="buttonsWrapper">
 				{type === 'group' && (
-					<button className="defaultBtn" onClick={onClose}>
+					<button className="defaultBtn" onClick={handleAddMembers}>
 						Добавить участников
 					</button>
 				)}
