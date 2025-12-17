@@ -22,4 +22,8 @@ export default class ChatService {
 	static async editChat(chatId: string, formData: FormData): Promise<AxiosResponse<Group>> {
 		return $api.patch(`/editChat/${chatId}`, formData);
 	}
+
+	static async addMemberToGroup(groupId: string, contactId: string): Promise<AxiosResponse<Group>> {
+		return $api.post<Group>(`/addMemberToGroup`, { groupId, contactId });
+	}
 }

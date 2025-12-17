@@ -1,6 +1,4 @@
 const chatsService = require("../service/chats-service");
-const { getIo } = require("../router/socket");
-const contactsService = require("../service/contacts-service");
 
 class ChatController {
   async createChat(req, res, next) {
@@ -65,6 +63,24 @@ class ChatController {
       const newAvatar = req.files?.avatar;
 
       const chat = await chatsService.editChat(chatId, newAvatar, newChatName);
+      return res.json(chat);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async addMemberToGroup(req, res, next) {
+    try {
+      const userId = req.user.id;
+      const groupId = req.body.groupId;
+      const contactId = req.body.contactId;
+
+      const chat = await chatsService.addMemberToGroup(
+        userId,
+        groupId,
+        contactId,
+      );
+
       return res.json(chat);
     } catch (e) {
       next(e);
