@@ -20,6 +20,7 @@ function App() {
 	}, [groups]);
 
 	useEffect(() => {
+		if (!userId) return;
 		dispatch(getChatList());
 	}, [userId]);
 

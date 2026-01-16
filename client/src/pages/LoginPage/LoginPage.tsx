@@ -12,6 +12,7 @@ import eyeClosed from '../../assets/eyeClosed.svg';
 
 export const LoginPage = () => {
 	const auth = useTypedSelector((state) => state.auth.isAuth);
+	const isLoggedOut = useTypedSelector((state) => state.auth.isLoggedOut);
 	const loginError = useTypedSelector((state) => state.auth.error);
 
 	const [email, setEmail] = useState('');
@@ -27,6 +28,7 @@ export const LoginPage = () => {
 	const from = location.state?.from?.pathname || '/';
 
 	useEffect(() => {
+		if (isLoggedOut) return;
 		dispatch(resetState());
 		if (localStorage.getItem(LS_ACCESS_TOKEN)) {
 			dispatch(checkAuth());
@@ -60,6 +62,16 @@ export const LoginPage = () => {
 	function handlePasswordInput(e: string) {
 		setError('');
 		setPassword(e);
+	}
+
+	function fillMailAndPass(acc: '1' | '2') {
+		if (acc === '1') {
+			setEmail('gabb@gmail.com');
+			setPassword('12345Ww@');
+		} else if (acc === '2') {
+			setEmail('gag@gmail.com');
+			setPassword('12345Ww@');
+		}
 	}
 
 	return (
@@ -96,6 +108,16 @@ export const LoginPage = () => {
 									{isVisible ? <img src={eye} alt="eye" /> : <img src={eyeClosed} alt="eyeClosed" />}
 								</button>
 							)}
+						</div>
+					</div>
+
+					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+						<div style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => fillMailAndPass('1')}>
+							Заполнить данные
+						</div>
+
+						<div style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => fillMailAndPass('2')}>
+							Заполнить данные #2
 						</div>
 					</div>
 

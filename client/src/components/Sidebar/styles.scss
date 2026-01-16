@@ -1,6 +1,7 @@
 .sidebar {
 	@include flex-col-2();
 	@include border-padding();
+	@include shadow-def();
 	background-color: $color-area;
 
 	max-width: 64px;

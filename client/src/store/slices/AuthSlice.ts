@@ -10,6 +10,7 @@ export interface AuthState {
 	data: null | AuthResponse;
 	error: null | string;
 	isAuth: boolean;
+	isLoggedOut: boolean;
 }
 
 const initialState: AuthState = {
@@ -17,6 +18,7 @@ const initialState: AuthState = {
 	data: null,
 	error: null,
 	isAuth: false,
+	isLoggedOut: false,
 };
 
 function saveToLs(token: string) {
@@ -48,6 +50,7 @@ const authSLice = createSlice({
 				state.data = action.payload;
 				saveToLs(state.data.accessToken);
 				state.isAuth = true;
+				state.isLoggedOut = false;
 			})
 			.addCase(login.rejected, (state, action) => {
 				state.status = 'failed';
@@ -78,6 +81,7 @@ const authSLice = createSlice({
 				state.data = action.payload;
 				saveToLs(state.data.accessToken);
 				state.isAuth = true;
+				state.isLoggedOut = false;
 			})
 			.addCase(registration.rejected, (state, action) => {
 				state.status = 'failed';
@@ -94,11 +98,13 @@ const authSLice = createSlice({
 				state.data = null;
 				state.error = null;
 				state.isAuth = false;
+				state.isLoggedOut = true;
 			})
 			.addCase(logout.rejected, (state, action) => {
 				state.status = 'failed';
 				state.data = null;
 				state.error = action.error.message || 'Неизвестная ошибка';
+				state.isLoggedOut = false;
 			})
 
 			.addCase(addFriend.fulfilled, (state, action) => {

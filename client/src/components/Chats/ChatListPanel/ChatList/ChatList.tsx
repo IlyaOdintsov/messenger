@@ -1,10 +1,9 @@
 import { ChatBlock } from '../../../../shared';
 import './styles.scss';
 import emptyChatListIcon from '../../../../assets/emptyChatList.svg';
-import { useScrollbar } from '../../../../hooks/useScrollbar';
-import { useRef } from 'react';
 import { useTypedSelector } from '../../../../hooks/useAppSelector';
 import type { Group } from '../../../../types/chats_Types.ts';
+import { ScrollBarContainer } from '../../../../shared/ScrollbarContainer/ScrollBar.tsx';
 
 type TChatList = {
 	searchedChats: Group[] | null;
@@ -20,11 +19,8 @@ export const ChatList = ({ searchedChats }: TChatList) => {
 	});
 	const chats = searchedChats ? searchedChats : filteredChats;
 
-	const chatListRef = useRef<HTMLDivElement>(null);
-	const hasScrollbar = useScrollbar(chatListRef, chats);
-
 	return (
-		<div ref={chatListRef} className={`chatsList${chats.length <= 0 ? ' empty' : ''} ${hasScrollbar ? ' has-scrollbar' : ''}`}>
+		<ScrollBarContainer dependencies={chats} className={`chatsList${chats.length <= 0 ? ' empty' : ''}`}>
 			{chats.length <= 0 && (
 				<>
 					<img src={emptyChatListIcon} alt="emptyChat" />
@@ -36,6 +32,6 @@ export const ChatList = ({ searchedChats }: TChatList) => {
 			{chats.map((chat) => (
 				<ChatBlock key={chat.id} {...chat} />
 			))}
-		</div>
+		</ScrollBarContainer>
 	);
 };

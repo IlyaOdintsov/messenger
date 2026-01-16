@@ -1,6 +1,7 @@
 .profileItem {
 	@include flex-col-2();
 	@include border-padding();
+	@include shadow-def();
 	align-items: center;
 	align-self: center;
 	justify-content: center;

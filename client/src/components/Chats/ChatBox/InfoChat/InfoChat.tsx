@@ -1,5 +1,5 @@
 import './styles.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../../../hooks/useAppDispatch';
 import { deleteGroup } from '../../../../store/slices/ChatSlice';
 import type { Group } from '../../../../types/chats_Types.ts';
@@ -8,7 +8,7 @@ import ContactsService from '../../../../services/ContactsService.ts';
 import { useNavigate } from 'react-router-dom';
 import { deleteFriend } from '../../../../store/slices/AuthSlice.ts';
 import { ContactBlock } from '../../../Contacts/ContactsListPanel/ContactsList/ContactBlock/ContactBlock.tsx';
-import { useScrollbar } from '../../../../hooks/useScrollbar.ts';
+import { ScrollBarContainer } from '../../../../shared/ScrollbarContainer/ScrollBar.tsx';
 
 type TEditChat = {
 	currentChat: Group | null;
@@ -23,9 +23,6 @@ export const InfoChat = ({ currentChat, handleAddMembers }: TEditChat) => {
 	const type = currentChat?.type;
 
 	const [membersList, setMembersList] = useState<IUser[]>([]);
-
-	const membersRef = useRef<HTMLDivElement>(null);
-	const hasScrollbar = useScrollbar(membersRef, membersList);
 
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
@@ -61,11 +58,11 @@ export const InfoChat = ({ currentChat, handleAddMembers }: TEditChat) => {
 			</div>
 
 			{type === 'group' && (
-				<div ref={membersRef} className={`membersList${hasScrollbar ? ' has-scrollbar' : ''}`}>
+				<ScrollBarContainer dependencies={membersList} className="membersList">
 					{membersList?.map((member) => (
 						<ContactBlock key={member.id} {...member} />
 					))}
-				</div>
+				</ScrollBarContainer>
 			)}
 
 			<div className="buttonsWrapper">

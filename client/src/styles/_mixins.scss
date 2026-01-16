@@ -45,3 +45,7 @@
 	padding: $def-padding-gap;
 	border-radius: $border-radius;
 }
+
+@mixin shadow-def() {
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+}

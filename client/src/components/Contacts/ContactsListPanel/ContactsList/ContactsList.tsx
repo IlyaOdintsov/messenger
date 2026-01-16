@@ -1,10 +1,9 @@
 import './styles.scss';
 import emptyChatListIcon from '../../../../assets/emptyChatList.svg';
-import { useScrollbar } from '../../../../hooks/useScrollbar';
-import { useRef } from 'react';
 import { ContactBlock } from './ContactBlock/ContactBlock.tsx';
 import type { IUser } from '../../../../types/Auth_Response.ts';
 import { useFriendsList } from '../../../../hooks/useFriendsList.ts';
+import { ScrollBarContainer } from '../../../../shared/ScrollbarContainer/ScrollBar.tsx';
 
 interface ContactsListProps {
 	searchedFriends: IUser[] | null;
@@ -15,11 +14,8 @@ export const ContactsList = ({ searchedFriends }: ContactsListProps) => {
 
 	const friends = searchedFriends ? searchedFriends : friendsList;
 
-	const contactsListRef = useRef<HTMLDivElement>(null);
-	const hasScrollbar = useScrollbar(contactsListRef, friends);
-
 	return (
-		<div ref={contactsListRef} className={`contactsList ${friends.length <= 0 ? 'empty' : ''} ${hasScrollbar ? 'has-scrollbar' : ''}`}>
+		<ScrollBarContainer dependencies={friends} className={`contactsList ${friends.length <= 0 ? 'empty' : ''}`}>
 			{friends.length <= 0 && (
 				<>
 					<img src={emptyChatListIcon} alt="emptyChat" />
@@ -31,6 +27,6 @@ export const ContactsList = ({ searchedFriends }: ContactsListProps) => {
 			{friends.map((friend: IUser) => (
 				<ContactBlock key={friend.id} {...friend} />
 			))}
-		</div>
+		</ScrollBarContainer>
 	);
 };

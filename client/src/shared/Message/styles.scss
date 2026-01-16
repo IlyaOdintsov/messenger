@@ -1,0 +1,70 @@
+$padding: calc(var(--def-padding-gap));
+$message-border: calc($border-radius * 0.75);
+
+.messageBlock {
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+
+	&.sender {
+		flex-direction: row-reverse;
+		.message {
+			justify-self: end;
+			align-items: end;
+
+			.message-text {
+				background-color: $color-accent;
+				border-radius: $message-border 0 $message-border $message-border;
+			}
+
+			.messageInfoWrapper {
+			}
+		}
+	}
+
+	.message {
+		width: fit-content;
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		min-width: 5rem;
+		max-width: 60%;
+
+		.messageInfoWrapper {
+			display: flex;
+			gap: 1rem;
+			justify-content: space-between;
+			width: 100%;
+
+			.message-sender {
+				font-size: 16px;
+			}
+
+			.message-time {
+				font-size: 14px;
+				opacity: 0.8;
+			}
+		}
+
+		.message-text {
+			width: 100%;
+			min-width: 3rem;
+			text-align: start;
+			overflow-wrap: break-word;
+			padding: calc($padding * 0.75) $padding $padding $padding;
+			background-color: $color-secondary;
+			border-radius: 0 $message-border $message-border $message-border;
+		}
+	}
+
+	.avatarWrapper {
+		width: 3em;
+		height: 3em;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		overflow: hidden;
+		border: 2px solid $color-accent;
+	}
+}

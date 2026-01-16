@@ -1,8 +1,9 @@
 .chatListPanel {
 	@include flex-col-2();
 	@include border-padding();
+	@include shadow-def();
 	background-color: $color-area;
-    flex-basis: 30%;
+	flex-basis: 30%;
 	justify-content: start;
 	align-items: center;
 

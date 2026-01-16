@@ -1,6 +1,7 @@
 .editChat {
 	@include flex-col-2();
 	@include border-padding();
+	@include shadow-def();
 	align-items: center;
 
 	position: absolute;
