@@ -1,0 +1,17 @@
+.scrollbarContainer::-webkit-scrollbar {
+	width: 8px;
+}
+
+.scrollbarContainer::-webkit-scrollbar-track {
+	border-radius: 10px;
+	background-color: rgba(var(--color-secondary-rba), 0.4);
+}
+
+.scrollbarContainer::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: rgba(var(--color-secondary-rba), 0.8);
+}
+
+.scrollbarContainer:not(.has-scrollbar)::-webkit-scrollbar-track {
+	background: none;
+}

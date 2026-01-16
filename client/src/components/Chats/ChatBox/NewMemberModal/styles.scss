@@ -1,6 +1,7 @@
 .newMemberModal {
 	@include flex-col-2();
 	@include border-padding();
+	@include shadow-def();
 
 	background-color: $color-area;
 
@@ -22,22 +23,4 @@
 			}
 		}
 	}
-}
-
-.friendsList::-webkit-scrollbar {
-	width: 8px;
-}
-
-.friendsList::-webkit-scrollbar-track {
-	border-radius: 10px;
-	background-color: rgba(87, 78, 123, 0.2);
-}
-
-.friendsList::-webkit-scrollbar-thumb {
-	background-color: rgba(87, 78, 123, 0.5);
-	border-radius: 10px;
-}
-
-.friendsList:not(.has-scrollbar)::-webkit-scrollbar-track {
-	background-color: rgba(87, 78, 123, 0);
 }

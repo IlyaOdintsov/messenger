@@ -1,11 +1,10 @@
 import './styles.scss';
-import { useRef } from 'react';
 import { useAppDispatch } from '../../../../hooks/useAppDispatch';
 import type { IUser } from '../../../../types/Auth_Response.ts';
 import { ContactBlock } from '../../../Contacts/ContactsListPanel/ContactsList/ContactBlock/ContactBlock.tsx';
-import { useScrollbar } from '../../../../hooks/useScrollbar.ts';
 import { useFriendsList } from '../../../../hooks/useFriendsList.ts';
 import { addMemberToGroup } from '../../../../store/slices/ChatSlice.ts';
+import { ScrollBarContainer } from '../../../../shared/ScrollbarContainer/ScrollBar.tsx';
 
 type TNewMemberModal = {
 	currentChatId: string;
@@ -14,9 +13,6 @@ type TNewMemberModal = {
 
 export const NewMemberModal = ({ currentChatId, onClose }: TNewMemberModal) => {
 	const friendsList = useFriendsList();
-
-	const friendsListRef = useRef<HTMLDivElement>(null);
-	const hasScrollbar = useScrollbar(friendsListRef, friendsList);
 
 	const dispatch = useAppDispatch();
 
@@ -30,7 +26,7 @@ export const NewMemberModal = ({ currentChatId, onClose }: TNewMemberModal) => {
 		<div className="newMemberModal">
 			<h2>Добавить участников</h2>
 
-			<div ref={friendsListRef} className={`friendsList${hasScrollbar ? ' has-scrollbar' : ''}`}>
+			<ScrollBarContainer dependencies={friendsList} className="friendsList">
 				{friendsList.length <= 0 && <h4>No Friends Yet</h4>}
 
 				{friendsList.map((friend: IUser) => (
@@ -41,7 +37,7 @@ export const NewMemberModal = ({ currentChatId, onClose }: TNewMemberModal) => {
 						</button>
 					</div>
 				))}
-			</div>
+			</ScrollBarContainer>
 		</div>
 	);
 };

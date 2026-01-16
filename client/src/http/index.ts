@@ -1,6 +1,7 @@
 import axios from 'axios';
 import type { AuthResponse } from '../types/Auth_Response';
 import { SERVER_URL } from '../constants/constants';
+import { useTypedSelector } from '../hooks/useAppSelector.ts';
 
 export const API_URL = `${SERVER_URL}/api`;
 
@@ -19,8 +20,9 @@ $api.interceptors.response.use(
 		return config;
 	},
 	async (error) => {
+		const isLoggedOut = useTypedSelector((state) => state.auth.isLoggedOut);
 		const originalRequest = error.config;
-		if (error.response.status == 401 && error.config && !error.config._isRetry) {
+		if (error.response.status == 401 && error.config && !error.config._isRetry && isLoggedOut) {
 			originalRequest._isRetry = true;
 			try {
 				const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, { withCredentials: true });

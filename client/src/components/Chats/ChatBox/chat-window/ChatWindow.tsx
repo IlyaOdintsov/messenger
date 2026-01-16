@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Group, Message } from '../../../../types/chats_Types';
 import './styles.scss';
 import { socket } from '../../../../App';
@@ -6,10 +6,10 @@ import { useTypedSelector } from '../../../../hooks/useAppSelector';
 import MessagesService from '../../../../services/MessagesService.ts';
 import paperclip from '../../../../assets/paperclip.svg';
 import sendIcon from '../../../../assets/sendIcon.svg';
-import { useScrollbar } from '../../../../hooks/useScrollbar.ts';
-import { formatDate } from '../../../../features/formatDate.ts';
 import { useAppDispatch } from '../../../../hooks/useAppDispatch.ts';
 import { updateChatLastMessage } from '../../../../store/slices/ChatSlice.ts';
+import { ScrollBarContainer } from '../../../../shared/ScrollbarContainer/ScrollBar.tsx';
+import { MessageBlock } from '../../../../shared/Message/Message.tsx';
 
 interface ChatWindow {
 	currentChat: Group | null;
@@ -25,9 +25,6 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 
 	const dispatch = useAppDispatch();
 
-	const messagesRef = useRef<HTMLDivElement>(null);
-	const hasScrollbar = useScrollbar(messagesRef, messages);
-
 	async function getMessagesList(groupId: string): Promise<void> {
 		console.log('groupId', groupId);
 		const res = await MessagesService.getMessagesList(groupId);
@@ -35,6 +32,9 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 	}
 
 	useEffect(() => {
+		if (!groupId) return;
+		getMessagesList(groupId);
+
 		socket.on('receive_message', (message: Message) => {
 			console.log('message', message);
 			dispatch(updateChatLastMessage(message));
@@ -47,9 +47,7 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 	}, [groupId]);
 
 	async function sendMessage() {
-		if (!currentMessage) {
-			return;
-		}
+		if (!currentMessage.trim()) return;
 
 		const messageData = {
 			chatId: groupId,
@@ -63,11 +61,6 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 	}
 
 	useEffect(() => {
-		if (!groupId) return;
-		getMessagesList(groupId);
-	}, [groupId]);
-
-	useEffect(() => {
 		console.log(messages);
 	}, [messages]);
 
@@ -77,23 +70,16 @@ export const ChatWindow = ({ currentChat }: ChatWindow) => {
 
 	return (
 		<div className="chat-window">
-			<div ref={messagesRef} className={`messages${hasScrollbar ? ' has-scrollbar' : ''} ${messages.length > 0 ? '' : ' empty'}`}>
+			<ScrollBarContainer dependencies={messages} className={`messages${messages.length > 0 ? '' : ' empty'}`}>
 				{messages.length > 0 ? (
-					messages.map((message) => {
-						return (
-							<div key={message.id} className={`message${message.sender === userId ? ' sender' : ''}`}>
-								<span className="message-text">{message.text}</span>
-								<div className="message-time">{formatDate(new Date(message.createdAt), 'time')}</div>
-							</div>
-						);
-					})
+					messages.map((message) => <MessageBlock message={message} key={message.id} />)
 				) : (
 					<>
 						<h4>No Messages Yet</h4>
 						<p>Send a message to start a dialogue.</p>
 					</>
 				)}
-			</div>
+			</ScrollBarContainer>
 
 			<div className="chat-footer">
 				<button className="chat-attach iconWrapper">
