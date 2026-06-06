@@ -1,0 +1,110 @@
+import './styles.scss';
+import menuIcon from '@/FSD_shared/assets/icons/menu.svg';
+import { useEffect, useRef, useState } from 'react';
+import { Group } from '@/FSD_shared/types/chats_Types.ts';
+import { ModalOverlay } from '@/FSD_shared/ui';
+import { EditChat } from '@/FSD_widgets/ChatBox/EditChat/EditChat.tsx';
+import { NewMemberModal } from '@/FSD_widgets/ChatBox/NewMemberModal/NewMemberModal.tsx';
+import { InfoChat } from '@/FSD_widgets/ChatBox/InfoChat/InfoChat.tsx';
+
+interface ChatHeader {
+	currentChat: Group | null;
+}
+
+export const ChatHeader = ({ currentChat }: ChatHeader) => {
+	const avatarUrl = currentChat?.avatarUrl;
+	const chatName = currentChat?.chatName;
+	const membersCount = currentChat?.members.length;
+	const chatId = currentChat?.id || '';
+	const type = currentChat?.type;
+
+	const menuRef = useRef<HTMLDivElement>(null);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [isEditModalShown, setIsEditModalShown] = useState(false);
+	const [isInfoModalShown, setIsInfoModalShown] = useState(false);
+	const [isNewMembersModalShown, setIsNewMembersModalShown] = useState(false);
+
+	useEffect(() => {
+		function handleCloseMenu(e: MouseEvent) {
+			if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+				setIsMenuOpen(false);
+			}
+		}
+
+		if (isMenuOpen) {
+			document.addEventListener('click', handleCloseMenu);
+		}
+
+		return () => {
+			document.removeEventListener('click', handleCloseMenu);
+		};
+	}, [isMenuOpen]);
+
+	return (
+		<>
+			<div className="chat-header">
+				<div className="avatarWrapper">{avatarUrl ? <img src={avatarUrl} alt="groupAvatar" /> : <h1>{chatName?.[0].toUpperCase()}</h1>}</div>
+
+				<div className="infoWrapper">
+					<h3>{chatName}</h3>
+					<p>{membersCount} members</p>
+				</div>
+
+				<div ref={menuRef} className="buttonsWrapper">
+					<button
+						onClick={(e) => {
+							e.stopPropagation();
+							setIsMenuOpen((prev) => !prev);
+						}}
+						className={`menuBtn${isMenuOpen ? ' menuBtn_active' : ''}`}
+					>
+						<img src={menuIcon} alt="menu" />
+					</button>
+
+					<div className={`groupMenu${isMenuOpen ? ' groupMenu_active' : ''}`} onClick={(e) => e.stopPropagation()}>
+						<>
+							<button
+								onClick={() => {
+									setIsInfoModalShown(true);
+									setIsMenuOpen(false);
+								}}
+								className="defaultBtn"
+							>
+								Информация
+							</button>
+							{type === 'group' && (
+								<button
+									onClick={() => {
+										setIsEditModalShown(true);
+										setIsMenuOpen(false);
+									}}
+									className="defaultBtn"
+								>
+									Редактировать
+								</button>
+							)}
+						</>
+					</div>
+				</div>
+			</div>
+
+			<ModalOverlay isOpen={isEditModalShown} onClose={() => setIsEditModalShown(false)}>
+				<EditChat currentChat={currentChat} onClose={() => setIsEditModalShown(false)} />
+			</ModalOverlay>
+
+			<ModalOverlay isOpen={isInfoModalShown} onClose={() => setIsInfoModalShown(false)}>
+				<InfoChat
+					currentChat={currentChat}
+					handleAddMembers={() => {
+						setIsInfoModalShown(false);
+						setIsNewMembersModalShown(true);
+					}}
+				/>
+			</ModalOverlay>
+
+			<ModalOverlay isOpen={isNewMembersModalShown} onClose={() => setIsNewMembersModalShown(false)}>
+				<NewMemberModal currentChatId={chatId} onClose={() => setIsNewMembersModalShown(false)} />
+			</ModalOverlay>
+		</>
+	);
+};

@@ -2,10 +2,11 @@ import js from '@eslint/js';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import tseslint from 'typescript-eslint';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import prettier from 'eslint-plugin-prettier';
 import { defineConfig, globalIgnores } from 'eslint/config';
+import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 
 export default defineConfig([
 	globalIgnores(['dist']),
@@ -21,19 +22,26 @@ export default defineConfig([
 		],
 		plugins: {
 			prettier,
+			'@typescript-eslint': tsPlugin,
 		},
 		languageOptions: {
-			ecmaVersion: 2020,
-			globals: globals.browser,
+			parser: tsParser,
+			parserOptions: {
+				ecmaVersion: 'latest',
+				sourceType: 'module',
+			},
+			globals: {
+				...globals.browser,
+				...globals.node,
+			},
 		},
-		rules: {
-			'prettier/prettier': 'error',
-			'react/react-in-jsx-scope': 'off',
-			'prettier/prettier': 'error',
-			'@typescript-eslint/no-unused-vars': 'warn',
-			'@typescript-eslint/explicit-module-boundary-types': 'off',
-			'react/react-in-jsx-scope': 'off',
 
+		rules: {
+			'import/no-relative-packages': 'error',
+			'import/no-relative-parent-imports': 'error',
+			'prettier/prettier': 'error',
+			'react/react-in-jsx-scope': 'off',
+			'@typescript-eslint/explicit-module-boundary-types': 'off',
 			'no-console': 'warn',
 			eqeqeq: ['warn', 'smart'],
 			curly: ['warn', 'multi-line'],
@@ -41,7 +49,13 @@ export default defineConfig([
 			'react/prop-types': 'off',
 			'no-empty-function': 'warn',
 			semi: ['warn', 'always'],
-			'react/react-in-jsx-scope': 'off',
+			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{
+					argsIgnorePattern: '^_',
+					varsIgnorePattern: '^_',
+				},
+			],
 		},
 	},
 ]);
