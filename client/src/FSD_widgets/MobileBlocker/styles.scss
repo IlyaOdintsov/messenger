@@ -1,0 +1,59 @@
+// styles/mobile-blocker.scss
+.mobile-blocker {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 9999;
+
+	&__content {
+		text-align: center;
+		padding: 2rem;
+		max-width: 400px;
+		background: rgba(255, 255, 255, 0.95);
+		border-radius: 24px;
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+		backdrop-filter: blur(10px);
+	}
+
+	&__icon {
+		font-size: 64px;
+		margin-bottom: 1rem;
+	}
+
+	&__title {
+		font-size: 28px;
+		font-weight: bold;
+		margin-bottom: 1rem;
+		color: #333;
+	}
+
+	&__message {
+		font-size: 16px;
+		color: #666;
+		margin-bottom: 0.5rem;
+		line-height: 1.5;
+	}
+
+	&__submessage {
+		font-size: 14px;
+		color: #999;
+		margin-bottom: 1.5rem;
+	}
+
+	&__info {
+		font-size: 12px;
+		color: #aaa;
+		padding-top: 1rem;
+		border-top: 1px solid #eee;
+
+		p {
+			margin: 0;
+		}
+	}
+}

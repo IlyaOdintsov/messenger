@@ -6,16 +6,16 @@ export default defineConfig({
 	plugins: [react()],
 	resolve: {
 		alias: {
-			'@': path.resolve(__dirname, 'src'),
+			'@': path.resolve(__dirname, './src'),
 		},
 	},
 	css: {
 		preprocessorOptions: {
 			scss: {
 				additionalData: `
-          @use "@/styles/variables" as *;
-          @use "@/styles/mixins" as *;
-        `,
+					@use "@/FSD_app/styles/variables" as *;
+					@use "@/FSD_app/styles/mixins" as *;
+                `,
 			},
 		},
 	},
