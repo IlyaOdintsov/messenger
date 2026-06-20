@@ -10,7 +10,6 @@ export const Step3 = () => {
 	const currentEmail = formData.email;
 
 	async function handleSendCode(email: string) {
-		console.log(`письмо отправлено на ${currentEmail}`);
 		try {
 			await AuthService.sendEmailActivationCode(email);
 		} catch (e: any) {
@@ -51,21 +50,22 @@ export const Step3 = () => {
 			<p>
 				We just sent it to <b>{currentEmail}</b>
 			</p>
-			<p>
+
+			<CodeInput onComplete={(v) => handleSubmit(v)} onChange={() => setError('')} />
+			{error && <div className="error">{error}</div>}
+
+			<p className="flex justify-between w-full max-w-50">
 				Haven’t received?
 				<button
 					onClick={() => {
 						setError('');
 						handleSendCode(currentEmail);
 					}}
-					className="resendBtn"
+					className="btn btn-ghost"
 				>
 					Resend
 				</button>
 			</p>
-
-			<CodeInput onComplete={(v) => handleSubmit(v)} onChange={() => setError('')} />
-			{error && <div className="error">{error}</div>}
 		</>
 	);
 };

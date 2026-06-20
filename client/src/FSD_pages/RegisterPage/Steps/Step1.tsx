@@ -17,11 +17,11 @@ export const Step1 = () => {
 		<>
 			<h2>Sign up</h2>
 
-			<button onClick={nextStep} className="defaultBtn">
+			<button onClick={nextStep} className="btn btn-primary">
 				Continue with email
 			</button>
 
-			<div className="navigate-row">
+			<div className="w-full flex gap-2 justify-center">
 				Already have an account?
 				<Link to="/login" replace>
 					Sign in

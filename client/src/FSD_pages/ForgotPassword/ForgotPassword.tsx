@@ -27,16 +27,18 @@ export const ForgotPassword = () => {
 	}
 
 	return (
-		<div className="container">
-			<div className="forgotPassFrom">
+		<div className="center-screen">
+			<div className="container gap-8 max-w-25 forgotPassPage">
 				<div>
 					<h2>Reset password</h2>
 					<p>Enter your email</p>
 				</div>
-				<form method="POST" action="/submit" autoComplete="off" noValidate>
+
+				<form className="flex flex-col gap-4 w-full" method="POST" action="/submit" autoComplete="off" noValidate>
 					<b>Email</b>
+
 					<FormInput
-						callback={(e) => {
+						onChange={(e) => {
 							setError('');
 							setResetEmail(e);
 						}}
@@ -45,13 +47,19 @@ export const ForgotPassword = () => {
 						inputName="email"
 						placeholder="mail@example.com"
 					/>
-					<button onClick={handleReset} className="defaultBtn">
+
+					<button onClick={handleReset} className="btn btn-primary">
 						Reset
 					</button>
 				</form>
+
 				{success && <div style={{ alignSelf: 'center' }}>{success}</div>}
+
 				{error && <div className="error">{error}</div>}
-				<Link to="/login">Войти в аккаунт</Link>
+
+				<Link className="link" to="/login">
+					Войти в аккаунт
+				</Link>
 			</div>
 		</div>
 	);

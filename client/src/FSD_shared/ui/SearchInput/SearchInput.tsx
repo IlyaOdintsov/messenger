@@ -16,10 +16,9 @@ export const SearchInput = ({ onChange }: SearchInputProps) => {
 	};
 
 	return (
-		<label htmlFor="search" className="searchWrapper">
-			<div className="iconWrapper search-icon">
-				<img src={searchIcon} alt="search" />
-			</div>
+		<label htmlFor="search" className="element searchWrapper p-3">
+			<img className="avatar-sm p-1" src={searchIcon} alt="search" />
+
 			<input type="text" placeholder="Search here..." id="search" autoComplete="off" value={searchValue} onChange={handleChange} />
 		</label>
 	);

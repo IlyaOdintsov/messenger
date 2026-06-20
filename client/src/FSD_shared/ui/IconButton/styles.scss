@@ -1,0 +1,84 @@
+.icon-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	cursor: pointer;
+	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	background: transparent;
+	border: none;
+	flex-shrink: 0;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+	}
+
+	&-sm {
+		width: 32px;
+		height: 32px;
+		padding: 4px;
+	}
+
+	&-md {
+		width: 40px;
+		height: 40px;
+		padding: 6px;
+	}
+
+	&-lg {
+		width: 48px;
+		height: 48px;
+		padding: 8px;
+	}
+
+	&-default {
+		&:hover {
+			background-color: var(--bg-hover);
+			transform: scale(1.05);
+		}
+
+		&:active {
+			transform: scale(0.95);
+		}
+
+		&.icon-button-active {
+			background-color: var(--bg-elements);
+
+			&:hover {
+				background-color: var(--bg-hover);
+			}
+		}
+	}
+
+	&-accent {
+		color: var(--accent-text);
+
+		&:hover {
+			background-color: var(--accent-hover);
+			transform: scale(1.05);
+		}
+
+		&.icon-button-active {
+			background-color: var(--accent);
+			color: var(--accent-text);
+
+			&:hover {
+				background-color: var(--accent-dark);
+			}
+		}
+	}
+
+	&-danger {
+		&:hover {
+			background-color: rgba(239, 68, 68, 0.1);
+			color: var(--error);
+		}
+
+		&.icon-button-active {
+			background-color: var(--error);
+			color: white;
+		}
+	}
+}

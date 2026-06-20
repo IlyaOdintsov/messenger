@@ -54,16 +54,18 @@ export const ResetPassword = () => {
 	}
 
 	return (
-		<div className="container">
-			<div className="resetPassFrom">
+		<div className="center-screen">
+			<div className="container max-w-25 gap-8 resetPassPage">
 				<div>
 					<h2>New password</h2>
 					<p>Change the password for your account</p>
 				</div>
-				<form method="POST" action="/submit" autoComplete="off" noValidate>
+
+				<form className="flex flex-col gap-4 w-full" method="POST" action="/submit" autoComplete="off" noValidate>
 					<b>New password</b>
+
 					<FormInput
-						callback={(e) => {
+						onChange={(e) => {
 							setError('');
 							setNewPassword(e);
 						}}
@@ -74,8 +76,9 @@ export const ResetPassword = () => {
 					/>
 
 					<b>Confirm the password</b>
+
 					<FormInput
-						callback={(e) => {
+						onChange={(e) => {
 							setError('');
 							setConPassword(e);
 						}}
@@ -98,12 +101,16 @@ export const ResetPassword = () => {
 						показать пароль
 					</label>
 
-					<button onClick={handleReset} className="defaultBtn">
+					<button onClick={handleReset} className="btn btn-primary w-full">
 						Continue
 					</button>
 				</form>
+
 				{error && <div className="error">{error}</div>}
-				<Link to="/login">Войти в аккаунт</Link>
+
+				<Link className="link" to="/login">
+					Войти в аккаунт
+				</Link>
 			</div>
 		</div>
 	);

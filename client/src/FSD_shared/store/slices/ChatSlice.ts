@@ -6,12 +6,14 @@ interface GroupState {
 	status: string;
 	error: null | string;
 	groupData: Group[];
+	currentChat: Group | null;
 }
 
 const initialState: GroupState = {
 	status: '',
 	error: null,
 	groupData: [],
+	currentChat: null,
 };
 
 const ChatSlice = createSlice({
@@ -23,6 +25,25 @@ const ChatSlice = createSlice({
 			const newMessage = action.payload;
 
 			state.groupData = state.groupData.map((chat) => (chat.id === chatId ? { ...chat, lastMessage: newMessage } : chat));
+		},
+		setCurrentChat: (state, action: PayloadAction<string | null>) => {
+			const currentChatId = action.payload;
+
+			if (!currentChatId) {
+				state.currentChat = null;
+				return;
+			}
+
+			state.currentChat = state.groupData.find((group) => group.id === currentChatId) || null;
+		},
+		updateCurrentChat: (state, action: PayloadAction<Partial<Group>>) => {
+			if (state.currentChat) {
+				state.currentChat = { ...state.currentChat, ...action.payload };
+			}
+		},
+
+		clearCurrentChat: (state) => {
+			state.currentChat = null;
 		},
 	},
 	extraReducers: (builder) => {
@@ -45,12 +66,24 @@ const ChatSlice = createSlice({
 			})
 			.addCase(deleteGroup.fulfilled, (state, action) => {
 				state.groupData = state.groupData.filter((group) => group.id !== action.payload);
+
+				if (state.currentChat?.id === action.payload) {
+					state.currentChat = null;
+				}
 			})
 			.addCase(editChat.fulfilled, (state, action) => {
 				state.groupData = state.groupData.map((group) => (group.id === action.payload.id ? action.payload : group));
+
+				if (state.currentChat?.id === action.payload.id) {
+					state.currentChat = action.payload;
+				}
 			})
 			.addCase(addMemberToGroup.fulfilled, (state, action) => {
 				state.groupData = state.groupData.map((group) => (group.id === action.payload.id ? action.payload : group));
+
+				if (state.currentChat?.id === action.payload.id) {
+					state.currentChat = action.payload;
+				}
 			});
 	},
 });
@@ -106,5 +139,6 @@ export const addMemberToGroup = createAsyncThunk<Group, { groupId: string; conta
 	}
 );
 
-export const { updateChatLastMessage } = ChatSlice.actions;
+export const { updateChatLastMessage, setCurrentChat, updateCurrentChat, clearCurrentChat } = ChatSlice.actions;
+
 export default ChatSlice.reducer;

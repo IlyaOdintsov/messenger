@@ -13,8 +13,8 @@ export default defineConfig({
 		preprocessorOptions: {
 			scss: {
 				additionalData: `
-					@use "@/FSD_app/styles/variables" as *;
-					@use "@/FSD_app/styles/mixins" as *;
+					@use "@/FSD_shared/styles/variables" as *;
+					@use "@/FSD_shared/styles/mixins" as *;
                 `,
 			},
 		},

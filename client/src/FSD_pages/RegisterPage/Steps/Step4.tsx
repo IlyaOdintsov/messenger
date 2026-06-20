@@ -36,8 +36,9 @@ export const Step4 = () => {
 	return (
 		<>
 			<h4>Enter your password</h4>
+
 			<FormInput
-				callback={(e) => {
+				onChange={(e) => {
 					setError('');
 					setFormData((prev) => ({ ...prev, password: e }));
 				}}
@@ -46,8 +47,9 @@ export const Step4 = () => {
 				inputName="password"
 				placeholder="password"
 			/>
+
 			<FormInput
-				callback={(e) => {
+				onChange={(e) => {
 					setError('');
 					setConPass(e);
 				}}
@@ -56,6 +58,7 @@ export const Step4 = () => {
 				inputName="conPassword"
 				placeholder="repeat the password"
 			/>
+
 			<label className="showPass">
 				<button
 					type="button"
@@ -68,8 +71,10 @@ export const Step4 = () => {
 				</button>
 				показать пароль
 			</label>
+
 			{error && <div className="error">{error}</div>}
-			<button onClick={handleSubmit} className="defaultBtn nextBtn">
+
+			<button onClick={handleSubmit} className="btn btn-primary">
 				Next
 			</button>
 		</>

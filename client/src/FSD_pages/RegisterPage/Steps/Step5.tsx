@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTypedSelector } from '@/FSD_shared/lib/hooks/useAppSelector.ts';
+import { useTypedSelector } from '@/FSD_shared/lib/hooks/useTypedSelector.ts';
 import { useStepper } from '@/FSD_shared/lib/hooks/useStepper.tsx';
 import { useAppDispatch } from '@/FSD_shared/lib/hooks/useAppDispatch.ts';
 import { IFormData } from '@/FSD_shared/types/users_Types.ts';
@@ -71,9 +71,11 @@ export const Step5 = () => {
 	return (
 		<>
 			<h3>New account</h3>
+
 			<AvatarInput onChange={(file) => setFormData((prev) => ({ ...prev, avatarUrl: file }))} value={formData.avatarUrl} />
+
 			<FormInput
-				callback={(e) => {
+				onChange={(e) => {
 					setError('');
 					setFormData((prev) => ({ ...prev, firstName: e }));
 				}}
@@ -82,8 +84,9 @@ export const Step5 = () => {
 				inputName="firstName"
 				placeholder="First name"
 			/>
+
 			<FormInput
-				callback={(e) => {
+				onChange={(e) => {
 					setError('');
 					setFormData((prev) => ({ ...prev, secondName: e }));
 				}}
@@ -94,7 +97,8 @@ export const Step5 = () => {
 			/>
 
 			{error && <div className="error">{error}</div>}
-			<button onClick={handleSubmit} className="defaultBtn">
+
+			<button onClick={handleSubmit} className="btn btn-primary">
 				Finish
 			</button>
 		</>

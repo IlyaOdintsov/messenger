@@ -9,24 +9,27 @@ export const RegisterPage = () => {
 	const { step } = useStepper();
 
 	return (
-		<div className="container">
-			<div className="registerForm">
-				{step > 1 && (
-					<button onClick={prevStep} className="backBtn">
-						<img src={goBackBtn} alt="back" />
-					</button>
-				)}
-				<div className="stepContainer">
-					{step === 1 && <Step1 />}
-					{step === 2 && <Step2 />}
-					{step === 3 && <Step3 />}
-					{step === 4 && <Step4 />}
-					{step === 5 && <Step5 />}
+		<div className="center-screen w-full m-auto">
+			<div className="registerForm rounded-lg shadow-md max-w-50 w-full flex p-8">
+				<div className="relative flex flex-col flex-center max-w-50 gap-8 w-full">
+					{step > 1 && (
+						<button onClick={prevStep} className="backBtn">
+							<img src={goBackBtn} alt="back" />
+						</button>
+					)}
+
+					<div className="flex flex-col justify-center gap-4 p-4 w-full ">
+						{step === 1 && <Step1 />}
+						{step === 2 && <Step2 />}
+						{step === 3 && <Step3 />}
+						{step === 4 && <Step4 />}
+						{step === 5 && <Step5 />}
+					</div>
 				</div>
-			</div>
-			<div className="registerLogo">
-				<img src="/logo.svg" alt="logo" />
-				<div className="overlay"></div>
+				<div className="registerLogo max-w-50 w-full">
+					<img src="/logo.svg" alt="logo" className="" />
+					<div className="overlay"></div>
+				</div>
 			</div>
 		</div>
 	);

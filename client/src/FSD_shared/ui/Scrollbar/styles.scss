@@ -4,12 +4,12 @@
 
 .scrollbarContainer::-webkit-scrollbar-track {
 	border-radius: 10px;
-	background-color: rgba(var(--color-secondary-rba), 0.4);
+	background-color: var(--accent-hover);
 }
 
 .scrollbarContainer::-webkit-scrollbar-thumb {
 	border-radius: 10px;
-	background-color: rgba(var(--color-secondary-rba), 0.8);
+	background-color: var(--accent);
 }
 
 .scrollbarContainer:not(.has-scrollbar)::-webkit-scrollbar-track {

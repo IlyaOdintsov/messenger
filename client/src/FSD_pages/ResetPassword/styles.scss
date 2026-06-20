@@ -1,18 +1,13 @@
-.resetPassFrom {
-	@include flex-col-2();
-	@include border-padding();
+.resetPassPage {
+	align-items: start;
 
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-
-	min-width: 25%;
-
-	background-color: $color-area;
+	.error {
+		align-self: center;
+		color: var(--error);
+	}
 
 	.showPass {
-		margin-left: $def-padding-gap;
+		margin-left: 1rem;
 		display: flex;
 		align-items: center;
 		gap: 8px;
@@ -26,17 +21,7 @@
 		}
 	}
 
-	.error {
-		align-self: center;
-		color: red;
-	}
-
-	form {
-		@include flex-col-1();
-		width: 100%;
-	}
-
-	a {
+	.link {
 		align-self: center;
 	}
 }

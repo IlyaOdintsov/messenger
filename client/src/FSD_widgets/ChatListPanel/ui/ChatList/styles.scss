@@ -1,0 +1,13 @@
+.chatsList {
+	justify-content: start;
+	align-items: start;
+	overflow-y: scroll;
+	padding: 0 4px;
+
+	&.empty {
+		overflow: hidden;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+	}
+}

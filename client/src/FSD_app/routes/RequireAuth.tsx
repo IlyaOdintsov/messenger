@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useTypedSelector } from '@/FSD_shared/lib/hooks/useAppSelector.ts';
+import { useTypedSelector } from '@/FSD_shared/lib/hooks/useTypedSelector.ts';
 
 interface RequireAuth {
 	children: React.ReactNode;

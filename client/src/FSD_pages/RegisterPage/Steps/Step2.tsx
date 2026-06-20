@@ -28,7 +28,7 @@ export const Step2 = () => {
 		<>
 			<h4>What’s your email?</h4>
 			<FormInput
-				callback={(e) => {
+				onChange={(e) => {
 					setError('');
 					setFormData((prev) => ({ ...prev, email: e }));
 				}}
@@ -38,10 +38,11 @@ export const Step2 = () => {
 				placeholder="Email"
 			/>
 
-			{error && <div className="error">{error}</div>}
-			<button onClick={handleSubmit} className="defaultBtn nextBtn">
+			<button onClick={handleSubmit} className="btn btn-primary">
 				Next
 			</button>
+
+			<div className="errorWrapper">{error && <div className="error">{error}</div>}</div>
 		</>
 	);
 };

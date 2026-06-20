@@ -1,64 +1,20 @@
-.chatBlock {
-	@include flex-row();
+.time {
+	opacity: 0.8;
+	margin-left: auto;
+}
 
-	&:hover {
-		background-color: $color-hover;
-	}
+.text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 
-	.avatarWrapper {
-		width: 3em;
-		height: 3em;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: 50%;
-		box-shadow: 0 0 0 4px $color-area;
-		overflow: hidden;
-		flex-shrink: 0;
-		background-color: $color-area;
-	}
+.counter {
+	align-items: end;
+	min-width: 22px;
+	height: 22px;
 
-	.chat-description {
-		@include flex-col-1();
-		flex: 1;
-		overflow: hidden;
-		white-space: nowrap;
-		height: 4rem;
-
-		.title-and-time {
-			display: flex;
-			justify-content: flex-start;
-			align-items: center;
-
-			.chat-title {
-				overflow: hidden;
-				text-overflow: ellipsis;
-			}
-
-			.chat-type {
-				margin-left: $def-padding-gap;
-			}
-
-			.time {
-				opacity: 0.8;
-				margin-left: auto;
-			}
-		}
-
-		.last-message {
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-
-		.counter {
-			align-items: end;
-			min-width: 22px;
-			height: 22px;
-
-			text-align: center;
-			padding: 2px 1px 0 0;
-			background-color: white;
-			border-radius: 24px;
-		}
-	}
+	text-align: center;
+	padding: 2px 1px 0 0;
+	background-color: white;
+	border-radius: 24px;
 }

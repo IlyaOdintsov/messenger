@@ -1,9 +1,9 @@
-import './styles/main.scss';
+import '@/FSD_shared/styles/index.scss';
 import AppRouter from './routes/AppRouter.tsx';
 import io from 'socket.io-client';
 import { useEffect } from 'react';
 import { SERVER_URL } from '@/FSD_shared/config/constants.ts';
-import { useTypedSelector } from '@/FSD_shared/lib/hooks/useAppSelector.ts';
+import { useTypedSelector } from '@/FSD_shared/lib/hooks/useTypedSelector.ts';
 import { useAppDispatch } from '@/FSD_shared/lib/hooks/useAppDispatch.ts';
 import { getChatList } from '@/FSD_shared/store/slices/ChatSlice.ts';
 
@@ -14,10 +14,6 @@ function App() {
 	const groups = useTypedSelector((state) => state.chats.groupData);
 
 	const dispatch = useAppDispatch();
-
-	useEffect(() => {
-		console.log(groups);
-	}, [groups]);
 
 	useEffect(() => {
 		if (!userId) return;

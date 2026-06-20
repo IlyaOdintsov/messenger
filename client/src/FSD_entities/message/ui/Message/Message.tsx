@@ -1,10 +1,11 @@
 import './styles.scss';
-import { formatDate } from '@/FSD_shared/lib/formatDate.ts';
-import { useTypedSelector } from '@/FSD_shared/lib/hooks/useAppSelector.ts';
-import type { Message } from '@/FSD_shared/types/chats_Types.ts';
 import { useEffect, useState } from 'react';
-import type { IUser } from '@/FSD_shared/types/Auth_Response.ts';
+import { formatDate } from '@/FSD_shared/lib/formatDate.ts';
+import { useTypedSelector } from '@/FSD_shared/lib/hooks/useTypedSelector.ts';
 import ContactsService from '@/FSD_shared/api/ContactsService.ts';
+import type { Message } from '@/FSD_shared/types/chats_Types.ts';
+import type { IUser } from '@/FSD_shared/types/Auth_Response.ts';
+import { Avatar } from '@/FSD_shared/ui/Avatar/Avatar.tsx';
 
 type TMessageBlock = {
 	message: Message;
@@ -23,14 +24,15 @@ export const MessageBlock = ({ message }: TMessageBlock) => {
 
 	useEffect(() => {
 		if (!message.sender) return;
-		handleFindContact(message.sender);
+		handleFindContact(message.sender).catch((error) => {
+			console.error('Failed to fetch contact:', error);
+		});
 	}, [message.sender]);
 
 	return (
-		<div className={`messageBlock${isUserSender ? ' sender' : ''}`}>
-			<div className="avatarWrapper">
-				{messageOwner?.avatarUrl ? <img src={messageOwner?.avatarUrl} alt="messageAvatar" /> : <h1>{messageOwner?.firstName?.[0].toUpperCase()}</h1>}
-			</div>
+		<div className={`messageWrapper ${isUserSender ? 'sender' : ''}`}>
+			{messageOwner && <Avatar avatarUrl={messageOwner.avatarUrl} firstName={messageOwner.firstName} size="sm" borderColor="accent" />}
+
 			<div className="message">
 				<div className="messageInfoWrapper">
 					<span className="message-sender">{isUserSender ? 'You' : `${messageOwner?.firstName || 'friend'}`}</span>

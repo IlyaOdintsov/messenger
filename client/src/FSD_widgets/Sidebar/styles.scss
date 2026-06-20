@@ -1,39 +1,9 @@
 .sidebar {
-	@include flex-col-2();
-	@include border-padding();
-	@include shadow-def();
-	background-color: $color-area;
-
+	padding: 1rem;
 	max-width: 64px;
 	user-select: none;
+}
 
-	.side-navs-panel {
-		@include flex-col-1();
-		height: 100%;
-		padding-top: 3rem;
-
-		.navBar {
-			@include flex-col-1();
-		}
-
-		.settingsWrapper {
-			@include flex-col-1();
-
-			.profile {
-				padding: 0;
-				border-radius: 50%;
-				background: $color-secondary;
-				box-shadow: 0 0 0 2px $color-accent;
-				transition: box-shadow 0.15s;
-				overflow: hidden;
-			}
-
-			> *:not(:last-child):not(:first-of-type) {
-				border-radius: 8px;
-				&:hover {
-					background: $color-secondary;
-				}
-			}
-		}
-	}
+.side-navs-panel {
+	padding-top: 3rem;
 }

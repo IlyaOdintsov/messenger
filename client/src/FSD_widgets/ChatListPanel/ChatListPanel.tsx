@@ -1,15 +1,15 @@
-import { ChatList } from './ChatList/ChatList.tsx';
+import { ChatList } from '@/FSD_widgets/ChatListPanel/ui/ChatList/ChatList.tsx';
 import './styles.scss';
 import plus from '@/FSD_shared/assets/icons/plus.svg';
-import { NewChat } from './NewChat/NewChat.tsx';
+import { NewChat } from '@/FSD_widgets/ChatListPanel/ui/NewChat/NewChat.tsx';
 import { useEffect, useState } from 'react';
 import { Group } from '@/FSD_shared/types/chats_Types.ts';
-import { useTypedSelector } from '@/FSD_shared/lib/hooks/useAppSelector.ts';
+import { useTypedSelector } from '@/FSD_shared/lib/hooks/useTypedSelector.ts';
 import { searchFriendsOrChatsList } from '@/FSD_shared/lib/searchFriendsOrChatsList.ts';
-import { ModalOverlay, SearchInput } from '@/FSD_shared/ui';
+import { SearchInput } from '@/FSD_shared/ui';
+import { ActionButton } from '@/FSD_shared/ui/ButtonAction/ButtonAction.tsx';
 
 export const ChatListPanel = () => {
-	const [isModalShown, setIsModalShown] = useState(false);
 	const [searchedChats, setSearchedChats] = useState<Group[] | null>(null);
 	const [searchValue, setSearchValue] = useState('');
 
@@ -23,18 +23,14 @@ export const ChatListPanel = () => {
 		searchFriendsOrChatsList({ value: searchValue, type: 'chats', setState: setSearchedChats });
 	}, [searchValue, chatsList]);
 
+	const modal = <NewChat />;
+
 	return (
-		<div className="chatListPanel">
-			<div className="chats-row">
+		<div className="container chatsListPanel">
+			<div className="flex gap-2 justify-between w-full items-center">
 				<h3>Chats</h3>
 
-				<div className="chats-manage-btn" onClick={() => setIsModalShown(true)}>
-					<img src={plus} alt="plus" />
-				</div>
-
-				<ModalOverlay isOpen={isModalShown} onClose={() => setIsModalShown(false)}>
-					<NewChat onClose={() => setIsModalShown(false)} />
-				</ModalOverlay>
+				<ActionButton icon={plus} iconVariant="accent" modal={modal} />
 			</div>
 
 			<SearchInput onChange={handleSearch} />

@@ -1,30 +1,42 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './styles.scss';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useTypedSelector } from '@/FSD_shared/lib/hooks/useAppSelector.ts';
-import { useAppDispatch } from '@/FSD_shared/lib/hooks/useAppDispatch.ts';
+import { useTypedSelector } from '@/FSD_shared/lib/hooks/useTypedSelector.ts';
 import { checkAuth, login, resetState } from '@/FSD_shared/store/slices/AuthSlice.ts';
 import { LS_ACCESS_TOKEN } from '@/FSD_shared/config/constants.ts';
-import { FormInput } from '@/FSD_shared/ui';
-import eye from '@/FSD_shared/assets/icons/eye.svg';
-import eyeClosed from '@/FSD_shared/assets/icons/eyeClosed.svg';
+import { LoginForm } from '@/FSD_features/auth/login/ui/LoginForm.tsx';
+import { useAppDispatch } from '@/FSD_shared/lib/hooks/useAppDispatch.ts';
 
 export const LoginPage = () => {
-	const auth = useTypedSelector((state) => state.auth.isAuth);
-	const isLoggedOut = useTypedSelector((state) => state.auth.isLoggedOut);
-	const loginError = useTypedSelector((state) => state.auth.error);
-
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [rememberMe, setRememberMe] = useState<boolean>(false);
-	const [isVisible, setIsVisible] = useState(false);
 	const [error, setError] = useState('');
+
+	const auth = useTypedSelector((state) => state.auth.isAuth);
+	const isLoggedOut = useTypedSelector((state) => state.auth.isLoggedOut);
+	const loginError = useTypedSelector((state) => state.auth.error);
 
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 	const location = useLocation();
 
 	const from = location.state?.from?.pathname || '/';
+
+	function handleEmailInput(value: string) {
+		setError('');
+		setEmail(value);
+	}
+
+	function handlePasswordInput(value: string) {
+		setError('');
+		setPassword(value);
+	}
+
+	function handleSubmit(e: React.FormEvent) {
+		e.preventDefault();
+		dispatch(login({ email, password, rememberMe }));
+	}
 
 	useEffect(() => {
 		if (isLoggedOut) return;
@@ -35,33 +47,12 @@ export const LoginPage = () => {
 	}, []);
 
 	useEffect(() => {
-		if (auth) {
-			navigate(from, { replace: true });
-		}
-	}, [auth]);
-
-	function handleSubmit(e: React.FormEvent) {
-		e.preventDefault();
-
-		dispatch(login({ email, password, rememberMe }));
-	}
-
-	useEffect(() => {
 		if (!auth) {
 			setError(loginError || '');
 			return;
 		}
-	}, [loginError]);
-
-	function handleEmailInput(e: string) {
-		setError('');
-		setEmail(e);
-	}
-
-	function handlePasswordInput(e: string) {
-		setError('');
-		setPassword(e);
-	}
+		navigate(from, { replace: true });
+	}, [auth, loginError]);
 
 	function fillMailAndPass(acc: '1' | '2') {
 		if (acc === '1') {
@@ -74,75 +65,50 @@ export const LoginPage = () => {
 	}
 
 	return (
-		<div className="container">
-			<div className="loginForm">
-				<div className="logoWrapper">
-					<img src="/logo.svg" alt="logo" />
-				</div>
+		<div className="center-screen">
+			<div className="container max-w-25 loginPage">
+				<img src="/logo.svg" alt="logo" className="avatar-xxl" />
 
 				<h2>Sign in</h2>
 
-				<form method="POST" onSubmit={handleSubmit} action="/submit" autoComplete="off" noValidate>
-					<div className="group-wrapper">
-						<span>Email address</span>
-						<FormInput inputValue={email} callback={handleEmailInput} inputType="email" inputName="email" placeholder="mail@example.com" />
+				<LoginForm
+					LoginValue={email}
+					PasswordValue={password}
+					handleLoginInput={handleEmailInput}
+					handlePasswordInput={handlePasswordInput}
+					SubmitForm={handleSubmit}
+				/>
 
-						<span>Password</span>
-						<div className="passwordInput">
-							<FormInput
-								inputValue={password}
-								callback={handlePasswordInput}
-								inputType={isVisible ? 'text' : 'password'}
-								inputName="pass"
-								placeholder="* * * * * *"
-							/>
-							{password && (
-								<button
-									type="button"
-									className="visibilityBtn"
-									onClick={() => {
-										setIsVisible(!isVisible);
-									}}
-								>
-									{isVisible ? <img src={eye} alt="eye" /> : <img src={eyeClosed} alt="eyeClosed" />}
-								</button>
-							)}
-						</div>
+				<div className="flex flex-between w-full">
+					<label className="flex gap-2 pointer">
+						<input className="hidden" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} type="checkbox" name="remember" id="remember" />
+						<span className="rememberCheckbox"></span>Remember for 30 days
+					</label>
+					<Link to="/forgot-password">Forgot password</Link>
+				</div>
+
+				{error && <div className="error">{error}</div>}
+
+				<button form="login-form" type="submit" className="w-full btn btn-primary">
+					Sign in
+				</button>
+
+				<div className="flex gap-2">
+					Don’t have an account?
+					<Link to="/register" replace>
+						Sign up
+					</Link>
+				</div>
+
+				<div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+					<div style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => fillMailAndPass('1')}>
+						Заполнить данные
 					</div>
 
-					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-						<div style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => fillMailAndPass('1')}>
-							Заполнить данные
-						</div>
-
-						<div style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => fillMailAndPass('2')}>
-							Заполнить данные #2
-						</div>
+					<div style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => fillMailAndPass('2')}>
+						Заполнить данные #2
 					</div>
-
-					<div className="actions-row">
-						<label>
-							<input checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} type="checkbox" name="remember" id="remember" />
-							<span className="rememberCheckbox"></span>Remember for 30 days
-						</label>
-						<Link to="/forgot-password">Forgot password</Link>
-					</div>
-
-					{error && <div className="error">{error}</div>}
-
-					<div className="group-wrapper">
-						<button className="defaultBtn" type="submit">
-							Sign in
-						</button>
-					</div>
-
-					<div className="navigate-row">
-						Don’t have an account?
-						<Link to="/register" replace>
-							Sign up
-						</Link>
-					</div>
-				</form>
+				</div>
 			</div>
 		</div>
 	);

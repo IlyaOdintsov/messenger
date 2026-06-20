@@ -1,0 +1,36 @@
+.chatWindow {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	padding: 0 2rem 2rem 2rem;
+	justify-content: end;
+	overflow: auto;
+}
+
+.messages {
+	padding: 0 0.5rem;
+	display: flex;
+	flex-direction: column-reverse;
+	justify-content: end;
+	overflow-y: scroll;
+	height: 100vh;
+	width: 100%;
+}
+
+.emptyMessages {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+.chatInput {
+	background: var(--accent);
+	color: var(--accent-text);
+	padding: 0.5rem 0.75rem;
+}
+.chatInput::placeholder {
+	color: rgba(255, 255, 255, 0.71);
+}

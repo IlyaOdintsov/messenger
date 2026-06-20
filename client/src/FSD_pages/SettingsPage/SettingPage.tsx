@@ -2,10 +2,8 @@ import './styles.scss';
 
 export const SettingsPage = () => {
 	return (
-		<div className="container">
-			<div className="settingsPage">
-				<h4>Settings</h4>
-			</div>
+		<div className="container h-full max-w-50 settingsPage">
+			<h3>Settings</h3>
 		</div>
 	);
 };

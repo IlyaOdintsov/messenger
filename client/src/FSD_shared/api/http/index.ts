@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { SERVER_URL } from '@/FSD_shared/config/constants.ts';
-import { useTypedSelector } from '@/FSD_shared/lib/hooks/useAppSelector.ts';
+import { useTypedSelector } from '@/FSD_shared/lib/hooks/useTypedSelector.ts';
 import { AuthResponse } from '@/FSD_shared/types/Auth_Response.ts';
 
 export const API_URL = `${SERVER_URL}/api`;

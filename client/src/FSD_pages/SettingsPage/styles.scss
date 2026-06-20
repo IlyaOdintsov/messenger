@@ -1,15 +1,5 @@
 .settingsPage {
-	@include flex-col-2();
-	@include border-padding();
-	align-items: center;
-
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-
-	min-width: 25%;
-	min-height: 50%;
-
-	background-color: $color-area;
+	justify-self: center;
+	justify-content: start;
+	align-items: start;
 }

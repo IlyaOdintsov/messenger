@@ -22,7 +22,13 @@ export const AvatarInput = ({ onChange, value = null, name = '', size = 112 }: A
 
 	return (
 		<div onClick={() => inputRef.current?.click()} className="avatar-input" style={{ width: size, height: size }}>
-			{preview ? <img src={preview} alt="avatar" /> : name ? <h1>{name[0]}</h1> : <img style={{ width: size / 3, height: size / 3 }} src={camera} alt="camera" />}
+			{preview ? (
+				<img src={preview} alt="avatar" />
+			) : name ? (
+				<h1>{name[0].toUpperCase()}</h1>
+			) : (
+				<img style={{ width: size / 3, height: size / 3 }} src={camera} alt="camera" />
+			)}
 			<input ref={inputRef} type="file" accept="image/*" onChange={handlePreviewChange} />
 		</div>
 	);

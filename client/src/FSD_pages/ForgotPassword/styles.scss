@@ -1,26 +1,12 @@
-.forgotPassFrom {
-	@include flex-col-2();
-	@include border-padding();
-
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-
-	min-width: 25%;
-
-	background-color: $color-area;
+.forgotPassPage {
+	align-items: start;
 
 	.error {
 		align-self: center;
-		color: red;
-	}
-	form {
-		@include flex-col-1();
-		width: 100%;
+		color: var(--error);
 	}
 
-	a {
+	.link {
 		align-self: center;
 	}
 }

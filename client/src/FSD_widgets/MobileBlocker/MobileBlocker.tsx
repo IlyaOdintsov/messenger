@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.scss';
 
-const MOBILE_BREAKPOINT = 768; // px
+const MOBILE_BREAKPOINT = 768;
 
 export const MobileBlocker = ({ children }: { children: React.ReactNode }) => {
 	const [isMobile, setIsMobile] = useState<boolean | null>(null);
@@ -17,17 +17,14 @@ export const MobileBlocker = ({ children }: { children: React.ReactNode }) => {
 		return () => window.removeEventListener('resize', checkScreen);
 	}, []);
 
-	// Пока не определили размер экрана, показываем ничего (или лоадер)
 	if (isMobile === null) {
 		return null;
 	}
 
-	// Если мобильное устройство - показываем блокировку
 	if (isMobile) {
 		return <MobileBlockerScreen />;
 	}
 
-	// Если десктоп - показываем приложение
 	return <>{children}</>;
 };
 
